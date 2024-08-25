@@ -29,6 +29,7 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
   implementation("org.springframework.boot:spring-boot-starter-data-jpa")
   implementation("org.jetbrains.kotlin:kotlin-reflect")
+  implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
   compileOnly("org.projectlombok:lombok")
   runtimeOnly("org.postgresql:postgresql")
   annotationProcessor("org.projectlombok:lombok")
