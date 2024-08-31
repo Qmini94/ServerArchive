@@ -1,0 +1,15 @@
+package com.example.serverarchive.web.controller
+
+import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.GetMapping
+
+@Controller
+class WebViewController {
+
+  @GetMapping("/")
+  fun home(): String {
+    return "index"
+  }
+
+
+}
