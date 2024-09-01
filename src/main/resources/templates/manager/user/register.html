@@ -8,7 +8,13 @@
   <meta name="author" content=""/>
   <title>Register</title>
   <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"
+        rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
+          crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+          integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
           crossorigin="anonymous"></script>
 </head>
 <body class="bg-primary">
@@ -22,7 +28,7 @@
               <div class="card-header"><h3 class="text-center font-weight-light my-4">Create
                 Account</h3></div>
               <div class="card-body">
-                <form type="post" action="/user/register">
+                <form id="registerForm">
                   <div class="row mb-3">
                     <div class="col-md-6">
                       <div class="form-floating mb-3 mb-md-0">
@@ -54,9 +60,14 @@
                            placeholder="연구원" name="position"/>
                     <label for="inputPosition">직책</label>
                   </div>
+                  <div class="form-floating mb-3">
+                    <input class="form-control" id="inputPhone" type="text"
+                           placeholder="010-1234-5678" name="phone"/>
+                    <label for="inputPhone">연락처</label>
+                  </div>
                   <div class="row mb-3">
                     <div class="col-md-6">
-                      <div class="form-floating mb-3 mb-md-0">
+                      <div class="form-floating mb-3">
                         <input class="form-control" id="inputPassword" type="password"
                                placeholder="Create a password" name="password"/>
                         <label for="inputPassword">비밀번호</label>
@@ -64,8 +75,11 @@
                     </div>
                   </div>
                   <div class="mt-4 mb-0">
-                    <div class="d-grid"><a class="btn btn-primary btn-block" href="#">Create
-                      Account</a></div>
+                    <div class="d-grid">
+                      <button class="btn btn-primary btn-block btn-register" type="button">Create
+                        Account
+                      </button>
+                    </div>
                   </div>
                 </form>
               </div>
@@ -88,5 +102,43 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
 <script th:src="@{/js/scripts.js}"></script>
+<script th:src="@{/js/user/form.js}"></script>
+<script>
+  $(function () {
+    $(".btn-register").on('click', function (e) {
+      e.preventDefault();
+
+      const formData = {
+        userId: $("#inputFirstName").val(),
+        userName: $("#inputLastName").val(),
+        email: $("#inputEmail").val(),
+        department: $("#inputDepartment").val(),
+        position: $("#inputPosition").val(),
+        phone: $("#inputPhone").val(),
+        password: $("#inputPassword").val()
+      };
+
+      if (!checkRegisterForm(formData)) {
+        return;
+      }
+
+      $.ajax({
+        type: "POST",
+        url: "/api/user/register",
+        data: JSON.stringify(formData),
+        contentType: 'application/json; charset=utf-8',
+        success: function (res) {
+          showAlert('Success!', '회원가입 완료', 'success').then(() => {
+            window.location = '/user/list';
+          });
+        },
+        error: function (error) {
+          showAlert('Error!', '회원가입 실패', 'error');
+          console.error(error);
+        }
+      });
+    })
+  })
+</script>
 </body>
 </html>

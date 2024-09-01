@@ -13,7 +13,7 @@ data class User(
   @Column(nullable = false, length = 10)
   val userName: String,
 
-  @Column(nullable = false, length = 10)
+  @Column(nullable = false, length = 100)
   val userId: String,
 
   @Column(nullable = false, length = 255)
@@ -25,10 +25,10 @@ data class User(
   @Column(length = 10)
   val position: String? = null,
 
-  @Column(length = 20)
+  @Column(length = 50)
   val email: String? = null,
 
-  @Column(length = 10)
+  @Column(length = 11)
   val phone: String? = null,
 
   @Column
