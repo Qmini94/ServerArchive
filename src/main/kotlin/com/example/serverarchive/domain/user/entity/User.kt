@@ -17,7 +17,7 @@ data class User(
   val userId: String,
 
   @Column(nullable = false, length = 255)
-  val password: String,
+  var password: String,
 
   @Column(length = 30)
   val department: String? = null,
@@ -38,13 +38,13 @@ data class User(
   val otp: String? = null,
 
   @Column
-  val createdDate: LocalDateTime? = null,
+  val createdDate: LocalDateTime? = LocalDateTime.now(),
 
   @Column
   val updatedDate: LocalDateTime? = null,
 
   @Column(length = 30)
-  val regId: String? = null,
+  var regId: String? = null,
 
   @Column(columnDefinition = "TEXT")
   val log: String? = null

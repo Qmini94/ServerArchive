@@ -1,5 +1,6 @@
 package com.example.serverarchive.api.controller
 
+import com.example.serverarchive.api.request.user.UserRequest
 import com.example.serverarchive.api.response.user.UserResponse
 import com.example.serverarchive.domain.user.entity.User
 import com.example.serverarchive.service.user.UserServiceImpl
@@ -14,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController
 class UserController(private val userService: UserServiceImpl) {
 
   @PostMapping("/register")
-  fun registerUser(@RequestBody user: User): ResponseEntity<UserResponse> {
-    val createdUser = userService.createUser(user)
+  fun registerUser(@RequestBody req: UserRequest): ResponseEntity<UserResponse?> {
+    val createdUser = userService.createUser(req)
     return ResponseEntity.ok(createdUser)
   }
 }
