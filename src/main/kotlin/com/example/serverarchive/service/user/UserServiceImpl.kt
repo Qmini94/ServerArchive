@@ -1,5 +1,7 @@
 package com.example.serverarchive.service.user
 
+import com.example.serverarchive.api.response.user.UserResponse
+import com.example.serverarchive.api.response.user.UserResponse.Companion.toResponse
 import com.example.serverarchive.domain.user.entity.User
 import com.example.serverarchive.domain.user.repository.UserRepository
 import com.example.serverarchive.util.ErrorCodes
@@ -10,7 +12,7 @@ import java.time.LocalDateTime
 @Service
 class UserServiceImpl(private val userRepository: UserRepository) : UserService {
 
-  override fun createUser(user: User): User {
+  override fun createUser(user: User): UserResponse {
 
     // 중복 아이디 체크
     if (userRepository.existsByUserId(user.userId)) {
@@ -31,6 +33,6 @@ class UserServiceImpl(private val userRepository: UserRepository) : UserService 
       regId = currentRegId,
       log = "$currentRegId-$currentCreatedDate 등록"
     )
-    return userRepository.save(userToSave)
+    return userRepository.save(userToSave).toResponse()
   }
 }

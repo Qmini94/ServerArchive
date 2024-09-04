@@ -16,6 +16,6 @@ class UserController(private val userService: UserServiceImpl) {
   @PostMapping("/register")
   fun registerUser(@RequestBody user: User): ResponseEntity<UserResponse> {
     val createdUser = userService.createUser(user)
-    return ResponseEntity.ok(UserResponse.registerFrom(createdUser))
+    return ResponseEntity.ok(createdUser)
   }
 }

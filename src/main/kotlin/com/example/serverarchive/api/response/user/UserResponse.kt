@@ -19,9 +19,21 @@ data class UserResponse(
   val log: String? = null
 ) {
   companion object {
+    fun User.toResponse(): UserResponse {
+      return UserResponse(
+//        idx = user.idx,
+        userName = this.userName,
+        userId = this.userId,
+        department = this.department,
+        position = this.position,
+        email = this.email,
+        phone = this.phone,
+        level = this.level,
+      )
+    }
     fun registerFrom(user: User): UserResponse {
       return UserResponse(
-        idx = user.idx,
+//        idx = user.idx,
         userName = user.userName,
         userId = user.userId,
         department = user.department,
@@ -29,11 +41,11 @@ data class UserResponse(
         email = user.email,
         phone = user.phone,
         level = user.level,
-        otp = user.otp,
-        createdDate = user.createdDate,
-        updatedDate = user.updatedDate,
-        regId = user.regId,
-        log = user.log
+//        otp = user.otp,
+//        createdDate = user.createdDate,
+//        updatedDate = user.updatedDate,
+//        regId = user.regId,
+//        log = user.log
       )
     }
   }
