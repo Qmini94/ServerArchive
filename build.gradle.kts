@@ -31,6 +31,7 @@ dependencies {
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
   implementation("org.springframework.boot:spring-boot-starter-security")
+  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
   implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
   testImplementation("org.springframework.security:spring-security-test")
   compileOnly("org.projectlombok:lombok")

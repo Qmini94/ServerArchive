@@ -5,16 +5,19 @@ import com.example.serverarchive.api.response.ResponseCode
 import com.example.serverarchive.api.response.SingleResponse
 import com.example.serverarchive.api.response.user.UserResponse
 import com.example.serverarchive.service.user.UserServiceImpl
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/user")
+@Tag(name = "User", description = "회원 관련 API")
 class UserController(private val userService: UserServiceImpl) {
 
   @PostMapping("/register")
+  @ResponseStatus(HttpStatus.OK)
+  @Operation(summary = "회원가입", description = "신규 회원을 등록합니다.")
   fun registerUser(@RequestBody req: UserRequest): SingleResponse<UserResponse?> {
     var result = ResponseCode.ERROR
     var message = "Request Failed"
