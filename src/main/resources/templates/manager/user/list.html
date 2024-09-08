@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>New User</title>
-</head>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{common/layouts/defaultLayout}">
 <body>
-
+<div layout:fragment="Content">
+	<h1 th:text="${message}"></h1>
+</div>
 </body>
 </html>

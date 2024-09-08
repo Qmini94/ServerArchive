@@ -15,6 +15,13 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   mvc:
     static-path-pattern: /static/**
+  thymeleaf:
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    cache: false  # 개발 중일 때는 false
+    encoding: UTF-8  # 템플릿 파일의 인코딩 설정
 
 springdoc:
   api-docs:

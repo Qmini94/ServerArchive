@@ -1,0 +1,27 @@
+<head th:fragment="ConfigFragment">
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+
+    <!-- 동적으로 제목을 설정 -->
+    <title th:text="${pageTitle}">Default Title</title>
+
+    <!-- 공통 CSS 파일 -->
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet"/>
+
+    <!-- 페이지마다 추가되는 CSS 파일 -->
+    <th:block layout:fragment="css"></th:block>
+
+    <!-- 공통 JS 파일 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
+
+    <!-- 페이지마다 추가되는 JS 파일 -->
+    <th:block layout:fragment="script"></th:block>
+</head>

@@ -10,27 +10,30 @@ import org.springframework.web.servlet.function.router
 @Configuration
 class UserRouter {
 
-    @Bean
-    fun userRoutes() = router {
-        ("/user").nest {
-            GET("/register", ::showRegisterPage)
-            GET("/list", ::showSuccessPage)
-            GET("/login", ::showLoginPage)
-        }
-    }
+	@Bean
+	fun userRoutes() = router {
+		("/user").nest {
+			GET("/register", ::showRegisterPage)
+			GET("/list", ::showSuccessPage)
+			GET("/login", ::showLoginPage)
+		}
+	}
 
-    fun showRegisterPage(req: ServerRequest): ServerResponse {
-        val data = mapOf("message" to "Register New User")
-        return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("manager/user/register", data)
-    }
+	fun showRegisterPage(req: ServerRequest): ServerResponse {
+		val data = mapOf(
+			"message" to "Register New User",
+			"pageTitle" to "회원가입"
+		)
+		return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("manager/user/register", data)
+	}
 
-    fun showSuccessPage(req: ServerRequest): ServerResponse {
-        val data = mapOf("message" to "Success New User")
-        return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("manager/user/list", data)
-    }
+	fun showSuccessPage(req: ServerRequest): ServerResponse {
+		val data = mapOf("message" to "Success New User")
+		return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("manager/user/list", data)
+	}
 
-    fun showLoginPage(req: ServerRequest): ServerResponse {
-        val data = mapOf("message" to "Login New User")
-        return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/user/login", data)
-    }
+	fun showLoginPage(req: ServerRequest): ServerResponse {
+		val data = mapOf("message" to "Login New User")
+		return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/user/login", data)
+	}
 }
