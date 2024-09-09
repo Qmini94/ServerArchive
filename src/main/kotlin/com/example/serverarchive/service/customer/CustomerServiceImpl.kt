@@ -8,12 +8,11 @@ import org.springframework.stereotype.Service
 
 @Service
 class CustomerServiceImpl(private val customerRepository : CustomerRepository) : CustomerService {
-    override fun createCustomer(req: CustomerRequest): Boolean {
+    override fun createCustomer(req: CustomerRequest): CustomerResponse? {
         return try {
-            customerRepository.save(req.toEntity())
-            true  // 업체가 성공적으로 생성된 경우
+            customerRepository.save(req.toEntity()).toResponse()
         } catch (e: Exception) {
-            false // 예외 발생 시 false 반환
+            throw Exception("Something went wrong while creating a customer.")
         }
     }
 
