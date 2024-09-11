@@ -6,6 +6,7 @@ import com.example.serverarchive.api.response.ResponseCode
 import com.example.serverarchive.api.response.SingleResponse
 import com.example.serverarchive.api.response.user.UserResponse
 import com.example.serverarchive.service.user.UserServiceImpl
+import com.example.serverarchive.util.ErrorCodes
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
@@ -40,7 +41,6 @@ class UserController(private val userService: UserServiceImpl) {
 	@ResponseStatus(HttpStatus.OK)
 	@Operation(summary = "로그인", description = "로그인을 합니다.")
 	fun login(@RequestBody req: UserLoginRequest): SingleResponse<UserResponse?> {
-
 		var result = ResponseCode.ERROR
 		var message = "Request Failed"
 

@@ -42,6 +42,7 @@ const checkLoginForm = async (formData) => {
             await showAlert('Error!', '비밀번호를 입력해주세요', 'error', $("#inputPassword"));
             return false;
         }
+        return true;
     } catch (e) {
         console.error(e.message)
     }

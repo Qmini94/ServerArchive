@@ -39,7 +39,7 @@ class UserServiceImpl(private val userRepository: UserRepository) : UserService 
 			userRepository.findByUserId(req.userId) ?: throw IllegalArgumentException(ErrorCodes.getMessage(1005))
 		if (req.validate()) {
 			val passwordEncoder = BCryptPasswordEncoder()
-			if (!passwordEncoder.matches(req.password, req.password)) {
+			if (!passwordEncoder.matches(req.password, user.password)) {
 				throw IllegalArgumentException(ErrorCodes.getMessage(1006))
 			}
 
@@ -51,7 +51,6 @@ class UserServiceImpl(private val userRepository: UserRepository) : UserService 
 		} else {
 			return null
 		}
-
 
 	}
 }

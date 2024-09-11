@@ -85,7 +85,7 @@
 	<script th:src="@{/js/user/form.js}"></script>
 	<script type="application/javascript">
         $(function () {
-            $(".btn-register").on('click', async function (e) {
+            $(".btn-register").on('click', function (e) {
                 e.preventDefault();
 
                 const formData = {
@@ -98,7 +98,7 @@
                     password: $("#inputPassword").val()
                 };
 
-                if (!await checkRegisterForm(formData)) {
+                if (!checkRegisterForm(formData)) {
                     return false;
                 }
 

@@ -26,6 +26,9 @@
 										<input class="form-control" id="inputOtp" type="text"
 											   placeholder="Enter issued OTP number" name="otp"/>
 										<label for="inputOtp">OTP</label>
+										<div>
+											<button>OTP 발급 받기</button>
+										</div>
 									</div>
 									<div class="form-check mb-3">
 										<input class="form-check-input" id="inputRememberPassword" type="checkbox"
@@ -56,17 +59,19 @@
 	<script th:src="@{/js/user/form.js}"></script>
 	<script type="application/javascript">
         $(function () {
-            $(".btn-login").on('click', async function (e) {
+            $(".btn-login").on('click', function (e) {
                 e.preventDefault();
 
                 const formData = {
-                    userId: $("#inputFirstName").val(),
+                    userId: $("#inputUserId").val(),
                     password: $("#inputPassword").val(),
                     isRememberPassword: $("#inputRememberPassword").is(":checked"),
                     opt: $("#inputOtp").val()
                 };
 
-                if (!await checkLoginForm(formData)) {
+                console.log(formData)
+
+                if (!checkLoginForm(formData)) {
                     return false;
                 }
 
@@ -76,34 +81,22 @@
                     data: JSON.stringify(formData),
                     contentType: 'application/json; charset=utf-8',
                     success: function (res) {
-                        const {statusCode, userName} = res;
+                        console.log(res)
+                        const {result, data: {userName}} = res;
                         let title = '';
                         let message = '';
                         let alertType = 'success';
                         let redirectUrl = null;
 
-                        switch (statusCode) {
-                            case 200:
-                                title = 'Success!';
-                                message = `${userName}님 반갑습니다.`;
-                                redirectUrl = '/user/list';
-                                break;
-                            case 401:
-                                title = 'Error!';
-                                message = 'OTP 번호를 확인해주세요.';
-                                alertType = 'error';
-                                break;
-                            case 404:
-                                title = 'Error!';
-                                message = '회원정보가 없습니다. 관리자에게 문의바랍니다.';
-                                alertType = 'error';
-                                break;
-                            default:
-                                title = 'Error!';
-                                message = '알 수 없는 오류가 발생했습니다.';
-                                alertType = 'error';
+                        if (result) {
+                            title = 'Success!';
+                            message = `${userName}님 반갑습니다.`;
+                            redirectUrl = '/user/list';
+                        } else {
+                            title = 'Error!';
+                            message = '로그인 도중 문제가 발생했습니다.';
+                            alertType = 'error';
                         }
-
                         showAlert(title, message, alertType).then(() => {
                             if (redirectUrl) {
                                 window.location = redirectUrl;
@@ -111,7 +104,7 @@
                         });
                     },
                     error: function (error) {
-                        showAlert('Error!', '로그인 도중 오류가 발생했습니다. 개발팀에 문의바랍니다.', 'error');
+                        showAlert('Error!', '로그인 도중 오류가 발생했습니다.', 'error');
                         console.error(error);
                     }
                 });
