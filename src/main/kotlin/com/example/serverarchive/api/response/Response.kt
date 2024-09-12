@@ -7,7 +7,7 @@ import org.springframework.data.domain.PageImpl
 @Schema(description = "단일건 응답 객체", title = "SingleResponse")
 data class SingleResponse<T>(
     @Schema(description = "응답 결과", nullable = false)
-    val result: ResponseCode? = ResponseCode.SUCCESS,
+    val result: ResponseCode? = ResponseCode.ERROR,
     @Schema(description = "응답 메시지", nullable = false)
     val message: String? = null,
     @Schema(description = "응답 데이터", nullable = false)
@@ -17,7 +17,7 @@ data class SingleResponse<T>(
 @Schema(description = "복수건 응답 객체", title = "MultiResponse")
 data class MultiResponse<T>(
     @Schema(description = "응답 결과", nullable = false)
-    val result: ResponseCode? = ResponseCode.SUCCESS,
+    val result: ResponseCode? = ResponseCode.ERROR,
     @Schema(description = "응답 메시지", nullable = false)
     val message: String? = null,
     @Schema(description = "응답 데이터", nullable = false)
@@ -27,7 +27,7 @@ data class MultiResponse<T>(
 @Schema(description = "페이징 응답 객체", title = "PageResponse")
 data class PageResponse<T>(
     @Schema(description = "응답 결과", nullable = false)
-    val result: ResponseCode? = ResponseCode.SUCCESS,
+    val result: ResponseCode? = ResponseCode.ERROR,
     @Schema(description = "응답 메시지", nullable = false)
     val message: String? = null,
     @Schema(description = "응답 데이터", nullable = false)

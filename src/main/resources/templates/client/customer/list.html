@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{common/layouts/defaultLayout}">
+<body>
+<div layout:fragment="Content">
+	<h1 th:text="${message}"></h1>
+
+	<table>
+		<thead>
+		<tr>
+			<th>ID</th>
+			<th>Name</th>
+			<th>Memo</th>
+			<th>RegId</th>
+			<th>CreateDate</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr th:each="customer : ${customers}">
+			<td th:text="${customer.idx}"></td>
+			<td th:text="${customer.name}"></td>
+			<td th:text="${customer.memo}"></td>
+			<td th:text="${customer.regId}"></td>
+			<td th:text="${customer.createdDate}"></td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+</body>
+</html>
