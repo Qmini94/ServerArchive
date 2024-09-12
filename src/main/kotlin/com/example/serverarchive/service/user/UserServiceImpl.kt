@@ -3,12 +3,8 @@ package com.example.serverarchive.service.user
 import com.example.serverarchive.api.request.user.UserRequest
 import com.example.serverarchive.api.response.user.UserResponse
 import com.example.serverarchive.api.response.user.UserResponse.Companion.toResponse
-import com.example.serverarchive.domain.user.entity.User
 import com.example.serverarchive.domain.user.repository.UserRepository
 import com.example.serverarchive.util.ErrorCodes
-import com.example.serverarchive.util.PasswordUtil
-import org.hibernate.query.sqm.tree.SqmNode.log
-import org.springframework.data.jpa.domain.AbstractAuditable_.createdDate
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/defaultLayout}">
+<head>
+  <meta charset="UTF-8">
+  <title>서버 정보 등록</title>
+</head>
+<body>
+<h2>서버 정보 등록</h2>
+<div layout:fragment="Content">
+  <form action="/" method="POST">
+    <label for="ip">IP 주소</label>
+    <input type="text" id="ip" name="ip" placeholder="49.254.140.140" required>
+
+    <label for="port">접속 포트 번호</label>
+    <input type="text" id="port" name="port" placeholder="8080" required>
+
+    <label for="serverUser">사용자 계정</label>
+    <input type="text" id="serverUser" name="serverUser" placeholder="root" required>
+
+    <label for="rootPassword">root 계정 비밀번호</label>
+    <input type="password" id="rootPassword" name="rootPassword" required>
+
+    <label for="databaseName">데이터베이스 이름</label>
+    <input type="text" id="databaseName" name="databaseName" required>
+
+    <input type="submit" class="btn-submit" value="등록">
+  </form>
+</div>
+</body>
+<th:block layout:fragment="script">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+          crossorigin="anonymous"></script>
+  <script th:src="@{/js/scripts.js}"></script>
+  <script th:src="@{/js/user/form.js}"></script>
+  <script>
+    $(function () {
+      $(".btn-submit").on('click', async function (e) {
+        e.preventDefault();
+
+        const formData = {
+          ip: $("#ip").val(),
+          port: $("#port").val(),
+          serverUser: $("#serverUser").val(),
+          rootPassword: $("#rootPassword").val(),
+          databaseName: $("#databaseName").val()
+        };
+
+        $.ajax({
+          type: "POST",
+          url: "/api/server/create",
+          data: JSON.stringify(formData),
+          contentType: 'application/json; charset=utf-8',
+          success: function (res) {
+            showAlert('Success!', '서버 등록 완료', 'success').then(() => {
+              window.location = '/server/create';
+            });
+          },
+          error: function (error) {
+            showAlert('Error!', '서버 등록 실패', 'error');
+            console.error(error);
+          }
+        });
+      })
+    })
+  </script>
+</th:block>
+</html>
