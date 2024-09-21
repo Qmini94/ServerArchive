@@ -79,22 +79,13 @@
                     data: JSON.stringify(formData),
                     contentType: 'application/json; charset=utf-8',
                     success: (res) => {
-                        const {result, data: {userName}} = res;
-                        let title = '';
-                        let message = '';
-                        let alertType = 'success';
-                        let redirectUrl = null;
+                        const {result, data: {userName} = {}} = res;
+                        let title = result === 'SUCCESS' ? 'Success!' : 'Error!';
+                        let alertMessage = result === 'SUCCESS' ? `${userName}님 반갑습니다.` : '로그인 도중 문제가 발생했습니다.';
+                        let alertType = result === 'SUCCESS' ? 'success' : 'error';
+                        let redirectUrl = result === 'SUCCESS' ? '/server/list' : '/user/login';
 
-                        if (result) {
-                            title = 'Success!';
-                            message = `${userName}님 반갑습니다.`;
-                            redirectUrl = '/server/list';
-                        } else {
-                            title = 'Error!';
-                            message = '로그인 도중 문제가 발생했습니다.';
-                            alertType = 'error';
-                        }
-                        showAlert(title, message, alertType).then(() => {
+                        showAlert(title, alertMessage, alertType).then(() => {
                             if (redirectUrl) {
                                 window.location = redirectUrl;
                             }
@@ -105,8 +96,8 @@
                         console.error(error);
                     }
                 });
-            })
-        })
+            });
+        });
 	</script>
 </th:block>
 </html>

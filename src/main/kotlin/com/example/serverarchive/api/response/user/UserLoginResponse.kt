@@ -15,15 +15,18 @@ data class UserLoginResponse(
 	val level: Int? = null,
 	@Schema(description = "OTP 인증 Key 값", nullable = true, required = false)
 	val otp: String? = null,
+	@Schema(description = "JWT 토큰", nullable = false, required = true)
+	val token: String // JWT 토큰 필드 추가
 ) {
 	companion object {
-		fun User.toUserLoginResponse(): UserLoginResponse {
+		fun User.toUserLoginResponse(token: String): UserLoginResponse {
 			return UserLoginResponse(
 				idx = this.idx,
 				userName = this.userName,
 				userId = this.userId,
 				level = this.level,
-				otp = this.otp
+				otp = this.otp,
+				token = token
 			)
 		}
 	}

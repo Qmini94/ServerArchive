@@ -1,6 +1,7 @@
 package com.example.serverarchive.service.user
 
 
+import JwtUtil
 import com.example.serverarchive.api.request.user.UserLoginRequest
 import com.example.serverarchive.api.request.user.UserRegisterRequest
 import com.example.serverarchive.api.response.user.UserLoginResponse
@@ -14,7 +15,10 @@ import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
-class UserServiceImpl(private val userRepository: UserRepository) : UserService {
+class UserServiceImpl(
+	private val userRepository: UserRepository,
+	private val jwtUtil: JwtUtil
+) : UserService {
 
 	override fun createUser(req: UserRegisterRequest): UserRegisterResponse? {
 
@@ -46,8 +50,10 @@ class UserServiceImpl(private val userRepository: UserRepository) : UserService 
 			if (!passwordEncoder.matches(req.password, user.password)) {
 				throw IllegalArgumentException(ErrorCodes.getMessage(1006))
 			}
-
-			return user.toUserLoginResponse()
+			// JWT 토큰 발급
+			val token = jwtUtil.generateToken(user.userId)
+			println("Generated Token: $token")
+			return user.toUserLoginResponse(token)
 
 		} else {
 			return null

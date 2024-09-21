@@ -2,14 +2,14 @@ import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.stereotype.Component
+import java.util.*
 import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
-import java.util.*
 
 @Component
 class JwtUtil {
 	private val SECRET_KEY: SecretKey =
-		SecretKeySpec("D4F7A2E3B4C9D5A8E9F7C6B2A3F5E8D9\n".toByteArray(), SignatureAlgorithm.HS256.jcaName)
+		SecretKeySpec("D4F7A2E3B4C9D5A8E9F7C6B2A3F5E8D9".toByteArray(), SignatureAlgorithm.HS256.jcaName)
 
 	fun extractUsername(token: String): String {
 		return extractClaim(token, Claims::getSubject)
@@ -28,9 +28,9 @@ class JwtUtil {
 			.body
 	}
 
-	fun generateToken(username: String): String {
+	fun generateToken(userId: String): String {
 		val claims = HashMap<String, Any>()
-		return createToken(claims, username)
+		return createToken(claims, userId)
 	}
 
 	private fun createToken(claims: Map<String, Any>, subject: String): String {
@@ -38,7 +38,7 @@ class JwtUtil {
 			.setClaims(claims)
 			.setSubject(subject)
 			.setIssuedAt(Date(System.currentTimeMillis()))
-			.setExpiration(Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours validity
+			.setExpiration(Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hours validity
 			.signWith(SECRET_KEY, SignatureAlgorithm.HS256)
 			.compact()
 	}

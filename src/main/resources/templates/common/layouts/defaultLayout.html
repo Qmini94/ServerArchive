@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-<head th:replace="common/fragments/config :: ConfigFragment">
-    <title layout:title-pattern="$LAYOUT_TITLE : $CONTENT_TITLE">공통 타이틀</title>
+<head th:replace="~{common/fragments/config :: ConfigFragment}">
+	<title layout:title-pattern="$LAYOUT_TITLE : $CONTENT_TITLE">공통 타이틀</title>
 </head>
 
 <body>
 <!--Header 영역-->
-<header th:replace="common/fragments/header :: HeaderFragment"></header>
+<header th:replace="~{common/fragments/header :: HeaderFragment}"></header>
 
 <!--Content 내용 영역-->
 <div layout:fragment="Content"></div>
 
 <!--Footer 영역-->
-<footer th:replace="common/fragments/footer :: FooterFragment"></footer>
+<footer th:replace="~{common/fragments/footer :: FooterFragment}"></footer>
 </body>
 </html>
