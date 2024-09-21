@@ -1,12 +1,10 @@
 package com.example.serverarchive.api.response.user
 
-import com.example.serverarchive.api.response.user.UserResponse.Companion.toResponse
 import com.example.serverarchive.domain.user.entity.User
 import io.swagger.v3.oas.annotations.media.Schema
-import java.time.LocalDateTime
 
 @Schema(description = "회원정보")
-data class UserResponse(
+data class UserRegisterResponse(
 	val idx: Int? = null,
 	@Schema(description = "회원명", nullable = false, required = true)
 	val userName: String,
@@ -22,18 +20,10 @@ data class UserResponse(
 	val phone: String? = null,
 	@Schema(description = "회원레벨", nullable = true, required = false)
 	val level: Int? = null,
-	@Schema(description = "OTP 인증 Key 값", nullable = true, required = false)
-	val otp: String? = null,
-	@Schema(description = "회원가입일", nullable = true, required = false)
-	val createdDate: LocalDateTime? = null,
-	@Schema(description = "정보수정일", nullable = true, required = false)
-	val updatedDate: LocalDateTime? = null,
-	val regId: String? = null,
-	val log: String? = null
 ) {
 	companion object {
-		fun User.toResponse(): UserResponse {
-			return UserResponse(
+		fun User.toResponse(): UserRegisterResponse {
+			return UserRegisterResponse(
 				userName = this.userName,
 				userId = this.userId,
 				department = this.department,
@@ -44,8 +34,8 @@ data class UserResponse(
 			)
 		}
 
-		fun registerFrom(user: User): UserResponse {
-			return UserResponse(
+		fun registerFrom(user: User): UserRegisterResponse {
+			return UserRegisterResponse(
 				userName = user.userName,
 				userId = user.userId,
 				department = user.department,

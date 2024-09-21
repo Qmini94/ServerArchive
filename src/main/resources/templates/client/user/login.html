@@ -69,8 +69,6 @@
                     opt: $("#inputOtp").val()
                 };
 
-                console.log(formData)
-
                 if (!checkLoginForm(formData)) {
                     return false;
                 }
@@ -80,8 +78,7 @@
                     url: "/api/user/login",
                     data: JSON.stringify(formData),
                     contentType: 'application/json; charset=utf-8',
-                    success: function (res) {
-                        console.log(res)
+                    success: (res) => {
                         const {result, data: {userName}} = res;
                         let title = '';
                         let message = '';
@@ -91,7 +88,7 @@
                         if (result) {
                             title = 'Success!';
                             message = `${userName}님 반갑습니다.`;
-                            redirectUrl = '/user/list';
+                            redirectUrl = '/server/list';
                         } else {
                             title = 'Error!';
                             message = '로그인 도중 문제가 발생했습니다.';
@@ -103,12 +100,11 @@
                             }
                         });
                     },
-                    error: function (error) {
+                    error: (error) => {
                         showAlert('Error!', '로그인 도중 오류가 발생했습니다.', 'error');
                         console.error(error);
                     }
                 });
-
             })
         })
 	</script>

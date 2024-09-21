@@ -1,12 +1,13 @@
 package com.example.serverarchive.api.controller
 
+
 import com.example.serverarchive.api.request.user.UserLoginRequest
 import com.example.serverarchive.api.request.user.UserRegisterRequest
 import com.example.serverarchive.api.response.ResponseCode
 import com.example.serverarchive.api.response.SingleResponse
-import com.example.serverarchive.api.response.user.UserResponse
+import com.example.serverarchive.api.response.user.UserLoginResponse
+import com.example.serverarchive.api.response.user.UserRegisterResponse
 import com.example.serverarchive.service.user.UserServiceImpl
-import com.example.serverarchive.util.ErrorCodes
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
@@ -20,7 +21,7 @@ class UserController(private val userService: UserServiceImpl) {
 	@PostMapping("/register")
 	@ResponseStatus(HttpStatus.OK)
 	@Operation(summary = "회원가입", description = "신규 회원을 등록합니다.")
-	fun registerUser(@RequestBody req: UserRegisterRequest): SingleResponse<UserResponse?> {
+	fun registerUser(@RequestBody req: UserRegisterRequest): SingleResponse<UserRegisterResponse?> {
 		var result = ResponseCode.ERROR
 		var message = "Request Failed"
 
@@ -40,7 +41,7 @@ class UserController(private val userService: UserServiceImpl) {
 	@PostMapping("/login")
 	@ResponseStatus(HttpStatus.OK)
 	@Operation(summary = "로그인", description = "로그인을 합니다.")
-	fun login(@RequestBody req: UserLoginRequest): SingleResponse<UserResponse?> {
+	fun login(@RequestBody req: UserLoginRequest): SingleResponse<UserLoginResponse?> {
 		var result = ResponseCode.ERROR
 		var message = "Request Failed"
 

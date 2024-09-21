@@ -89,7 +89,7 @@
                 e.preventDefault();
 
                 const formData = {
-                    userId: $("#inputFirstName").val(),
+                    userId: $("#inputUserId").val(),
                     userName: $("#inputLastName").val(),
                     email: $("#inputEmail").val(),
                     department: $("#inputDepartment").val(),
@@ -107,12 +107,12 @@
                     url: "/api/user/register",
                     data: JSON.stringify(formData),
                     contentType: 'application/json; charset=utf-8',
-                    success: function (res) {
+                    success: (res) => {
                         showAlert('Success!', '회원가입 완료', 'success').then(() => {
                             window.location = '/user/login';
                         });
                     },
-                    error: function (error) {
+                    error: (error) => {
                         showAlert('Error!', '회원가입 실패', 'error');
                         console.error(error);
                     }
