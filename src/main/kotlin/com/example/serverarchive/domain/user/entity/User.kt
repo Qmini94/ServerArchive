@@ -28,11 +28,11 @@ data class User(
 	@Column(length = 50)
 	val email: String? = null,
 
-	@Column(length = 11)
+	@Column(length = 20)
 	val phone: String? = null,
 
-	@Column
-	val level: Int? = null,
+	@Column(length = 5)
+	val level: String? = null,
 
 	@Column(length = 50)
 	val otp: String? = null,
@@ -48,4 +48,4 @@ data class User(
 
 	@Column(columnDefinition = "TEXT")
 	val log: String? = null
-) {}
+)

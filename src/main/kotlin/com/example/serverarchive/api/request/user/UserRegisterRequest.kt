@@ -22,7 +22,7 @@ data class UserRegisterRequest(
 	@Schema(description = "연락처", nullable = true, required = false)
 	val phone: String? = null,
 	@Schema(description = "레벨", nullable = true, required = false)
-	val level: Int? = null,
+	val level: String? = null,
 
 	) {
 	fun validate(): Boolean {

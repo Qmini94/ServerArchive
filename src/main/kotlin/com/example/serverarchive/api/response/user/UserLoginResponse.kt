@@ -12,7 +12,7 @@ data class UserLoginResponse(
 	@Schema(description = "회원ID", nullable = false, required = true)
 	val userId: String,
 	@Schema(description = "회원레벨", nullable = true, required = false)
-	val level: Int? = null,
+	val level: String? = null,
 	@Schema(description = "OTP 인증 Key 값", nullable = true, required = false)
 	val otp: String? = null,
 	@Schema(description = "JWT 토큰", nullable = false, required = true)

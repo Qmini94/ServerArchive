@@ -108,7 +108,7 @@ class UserController(
 
 	fun setJwtTokenCookie(response: HttpServletResponse, token: String) {
 		val cookie = ResponseCookie.from("token", token)
-			.httpOnly(true)  // HttpOnly 설정, 클라이언트에서 JS로 접근 불가
+			.httpOnly(false)  // HttpOnly 설정, 클라이언트에서 JS로 접근 불가
 			.secure(false)   // HTTPS에서는 true로 설정 (지금은 HTTP이므로 false)
 			.path("/")       // 모든 경로에서 쿠키가 유효
 			.maxAge(60 * 60) // 쿠키 유효 시간: 1시간 (60 * 60초)

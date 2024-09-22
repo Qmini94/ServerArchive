@@ -19,7 +19,7 @@ data class UserRegisterResponse(
 	@Schema(description = "연락처", nullable = true, required = false)
 	val phone: String? = null,
 	@Schema(description = "회원레벨", nullable = true, required = false)
-	val level: Int? = null,
+	val level: String? = null,
 ) {
 	companion object {
 		fun User.toResponse(): UserRegisterResponse {
