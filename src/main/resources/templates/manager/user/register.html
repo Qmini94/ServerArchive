@@ -82,43 +82,16 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
 			crossorigin="anonymous"></script>
 	<script th:src="@{/js/scripts.js}"></script>
-	<script th:src="@{/js/user/form.js}"></script>
-	<script type="application/javascript">
+	<script type="module">
+        import { handleUserAjax } from '/js/user/ajax.js';
+
         $(function () {
+            const userAjax = handleUserAjax();
             $(".btn-register").on('click', function (e) {
                 e.preventDefault();
-
-                const formData = {
-                    userId: $("#inputUserId").val(),
-                    userName: $("#inputLastName").val(),
-                    email: $("#inputEmail").val(),
-                    department: $("#inputDepartment").val(),
-                    position: $("#inputPosition").val(),
-                    phone: $("#inputPhone").val(),
-                    password: $("#inputPassword").val()
-                };
-
-                if (!checkRegisterForm(formData)) {
-                    return false;
-                }
-
-                $.ajax({
-                    type: "POST",
-                    url: "/api/user/register",
-                    data: JSON.stringify(formData),
-                    contentType: 'application/json; charset=utf-8',
-                    success: (res) => {
-                        showAlert('Success!', '회원가입 완료', 'success').then(() => {
-                            window.location = '/user/login';
-                        });
-                    },
-                    error: (error) => {
-                        showAlert('Error!', '회원가입 실패', 'error');
-                        console.error(error);
-                    }
-                });
-            })
-        })
+                userAjax.createUser();
+            });
+        });
 	</script>
 </th:block>
 </html>

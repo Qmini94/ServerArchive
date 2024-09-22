@@ -56,46 +56,14 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
 			crossorigin="anonymous"></script>
 	<script th:src="@{/js/scripts.js}"></script>
-	<script th:src="@{/js/user/form.js}"></script>
-	<script type="application/javascript">
+	<script type="module">
+        import { handleUserAjax } from '/js/user/ajax.js';
+
         $(function () {
+            const userAjax = handleUserAjax();
             $(".btn-login").on('click', function (e) {
                 e.preventDefault();
-
-                const formData = {
-                    userId: $("#inputUserId").val(),
-                    password: $("#inputPassword").val(),
-                    isRememberPassword: $("#inputRememberPassword").is(":checked"),
-                    opt: $("#inputOtp").val()
-                };
-
-                if (!checkLoginForm(formData)) {
-                    return false;
-                }
-
-                $.ajax({
-                    type: "POST",
-                    url: "/api/user/login",
-                    data: JSON.stringify(formData),
-                    contentType: 'application/json; charset=utf-8',
-                    success: (res) => {
-                        const {result, data: {userName} = {}} = res;
-                        let title = result === 'SUCCESS' ? 'Success!' : 'Error!';
-                        let alertMessage = result === 'SUCCESS' ? `${userName}님 반갑습니다.` : '로그인 도중 문제가 발생했습니다.';
-                        let alertType = result === 'SUCCESS' ? 'success' : 'error';
-                        let redirectUrl = result === 'SUCCESS' ? '/server/list' : '/user/login';
-
-                        showAlert(title, alertMessage, alertType).then(() => {
-                            if (redirectUrl) {
-                                window.location = redirectUrl;
-                            }
-                        });
-                    },
-                    error: (error) => {
-                        showAlert('Error!', '로그인 도중 오류가 발생했습니다.', 'error');
-                        console.error(error);
-                    }
-                });
+                userAjax.loginUser();
             });
         });
 	</script>

@@ -74,3 +74,16 @@ const getCookie = (name) => {
     if (parts.length === 2) return parts.pop().split(';').shift();
     return null;
 };
+
+export const showAlert = async (title, text, icon, focusElement = null) => {
+    await Swal.fire({
+        title: title, text: text, icon: icon, confirmButtonText: 'OK', didClose: () => {
+            $('[aria-hidden="true"]').removeAttr('aria-hidden');
+            if (focusElement) {
+                setTimeout(() => {
+                    $(focusElement).focus();
+                }, 100);
+            }
+        }
+    });
+};
