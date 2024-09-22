@@ -9,16 +9,17 @@
 	<title th:text="${pageTitle}">Default Title</title>
 
 	<!-- 공통 CSS 파일 -->
-	<link th:href="@{/css/styles.css}" rel="stylesheet"/>
-	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet"/>
+	<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+	<link th:href="@{/css/sweetalert2.min.css}" rel="stylesheet"/>
 
 	<!-- 페이지마다 추가되는 CSS 파일 -->
 	<th:block layout:fragment="css"></th:block>
 
 	<!-- 공통 JS 파일 -->
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="/js/util/sweetalert2.js"></script>
 	<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 	<script src="/js/util/jquery-3.7.1.min.js"></script>
+	<script src="/js/util/bootstrap.bundle.min.js"></script>
 	<script src="/js/util/jwt-decode.min.js"></script>
 	<script type="module">
         import { startSessionTimer } from '/js/common.js';

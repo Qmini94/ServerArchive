@@ -10,7 +10,8 @@ export const handleUserAjax = () => {
                 department: $("#inputDepartment").val(),
                 position: $("#inputPosition").val(),
                 phone: $("#inputPhone").val(),
-                password: $("#inputPassword").val()
+                password: $("#inputPassword").val(),
+                level: $("#inputLevel").val()
             };
 
             const isValid = await checkRegisterForm(formData);
@@ -25,7 +26,7 @@ export const handleUserAjax = () => {
                 contentType: 'application/json; charset=utf-8',
                 success: (res) => {
                     showAlert('Success!', '회원가입 완료', 'success').then(() => {
-                        window.location = '/user/login';
+                        window.location = '/user/list';
                     });
                 },
                 error: (error) => {
@@ -63,7 +64,7 @@ export const handleUserAjax = () => {
                     let title = result === 'SUCCESS' ? 'Success!' : 'Error!';
                     let alertMessage = result === 'SUCCESS' ? `${userName}님 반갑습니다.` : '로그인 도중 문제가 발생했습니다.';
                     let alertType = result === 'SUCCESS' ? 'success' : 'error';
-                    let redirectUrl = result === 'SUCCESS' ? '/server/list' : '/user/login';
+                    let redirectUrl = result === 'SUCCESS' ? '/user/list' : '/user/login';
 
                     showAlert(title, alertMessage, alertType).then(() => {
                         if (redirectUrl) {

@@ -24,7 +24,6 @@ class UserRouter(
 	}
 
 	fun viewRegisterPage(req: ServerRequest): ServerResponse {
-		handleTokenRedirection(req, jwtUtil)?.let { return it }
 		val data = mapOf(
 			"message" to "Register New User",
 			"pageTitle" to "회원가입"
@@ -43,7 +42,7 @@ class UserRouter(
 		return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/user/login", data)
 	}
 
-	/*로그인이 된 경우 회원가입, 로그인 페이지로 이동 못하도록*/
+	/*로그인이 된 경우 로그인 페이지로 이동 못하도록*/
 	fun handleTokenRedirection(req: ServerRequest, jwtUtil: JwtUtil): ServerResponse? {
 		val cookies = req.headers().asHttpHeaders().getFirst("Cookie")
 		val token = cookies?.split(";")?.find { it.trim().startsWith("token=") }?.substringAfter("token=")
