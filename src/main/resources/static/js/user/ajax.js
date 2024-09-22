@@ -4,14 +4,14 @@ export const handleUserAjax = () => {
     const createUser = async () => {
         try {
             const formData = {
-                userId: $("#inputUserId").val().replace(/\s+/g, ''),
-                userName: $("#inputLastName").val().replace(/\s+/g, ''),
-                email: $("#inputEmail").val().replace(/\s+/g, ''),
-                department: $("#inputDepartment").val().replace(/\s+/g, ''),
-                position: $("#inputPosition").val().replace(/\s+/g, ''),
-                phone: $("#inputPhone").val().replace(/\s+/g, ''),
-                password: $("#inputPassword").val().replace(/\s+/g, ''),
-                level: $("#inputLevel").val().replace(/\s+/g, '')
+                userId: $("#inputUserId").val(),
+                userName: $("#inputLastName").val(),
+                email: $("#inputEmail").val(),
+                department: $("#inputDepartment").val(),
+                position: $("#inputPosition").val(),
+                phone: $("#inputPhone").val(),
+                password: $("#inputPassword").val(),
+                level: $("#inputLevel").val()
             };
 
             const isValid = await checkRegisterForm(formData);
@@ -43,10 +43,10 @@ export const handleUserAjax = () => {
     const loginUser = async () => {
         try {
             const formData = {
-                userId: $("#inputUserId").val().replace(/\s+/g, ''),
-                password: $("#inputPassword").val().replace(/\s+/g, ''),
+                userId: $("#inputUserId").val(),
+                password: $("#inputPassword").val(),
                 isRememberPassword: $("#inputRememberPassword").is(":checked"),
-                opt: $("#inputOtp").val().replace(/\s+/g, '')
+                opt: $("#inputOtp").val()
             };
 
             const isValid = await checkLoginForm(formData);
@@ -64,7 +64,7 @@ export const handleUserAjax = () => {
                     let title = result === 'SUCCESS' ? 'Success!' : 'Error!';
                     let alertMessage = result === 'SUCCESS' ? `${userName}님 반갑습니다.` : '로그인 도중 문제가 발생했습니다.';
                     let alertType = result === 'SUCCESS' ? 'success' : 'error';
-                    let redirectUrl = result === 'SUCCESS' ? '/user/list' : '/user/login';
+                    let redirectUrl = result === 'SUCCESS' ? '/server/list' : '/user/login';
 
                     showAlert(title, alertMessage, alertType).then(() => {
                         if (redirectUrl) {
@@ -82,64 +82,15 @@ export const handleUserAjax = () => {
             throw e;
         }
     };
-
-    const checkDuplicateUid = async () => {
-        try {
-            const userId = $("#inputUserId").val();
-
-            if (userId === '') {
-                await showAlert('Error!', '아이디를 입력해주세요', 'error', $("#inputUserId"));
-                return false;
-            }
-
-            $.ajax({
-                type: "POST",
-                url: "/api/user/check-uid",
-                data: JSON.stringify(userId),
-                contentType: 'application/json; charset=utf-8',
-                success: (res) => {
-                    const {data: {available, message} = {}} = res;
-                    if (available) {
-                        showAlert('Success!', message, 'success').then(() => {
-                            const checkBtn = $('.check-userId-btn');
-                            checkBtn.removeClass('btn-light').addClass('btn-success');
-                            checkBtn.data('checked', true);
-                            checkBtn.text('확인완료');
-                        });
-                    } else {
-                        showAlert('Error!', message, 'warning', $("#inputUserId"));
-                    }
-                },
-                error: (error) => {
-                    showAlert('Error!', '아이디 조회 오류', 'error');
-                    console.error(error);
-                }
-            });
-
-        } catch (e) {
-            console.error(e.message);
-            throw e;
-
-        }
-    };
-
-    return {createUser, loginUser, checkDuplicateUid};
+    return {createUser, loginUser};
 };
 
 const checkRegisterForm = async (formData) => {
     try {
-        const isCheckDuplicateUid = $(".check-userId-btn").data('checked') === true;
-
         if (!formData.userId) {
             await showAlert('Error!', '아이디를 입력해주세요', 'error', $("#inputUserId"));
             return false;
         }
-
-        if (!isCheckDuplicateUid) {
-            await showAlert('Error!', '아이디 중복 확인을 해주세요', 'error', $("#inputUserId"));
-            return false;
-        }
-
         if (!formData.userName) {
             await showAlert('Error!', '이름을 입력해주세요', 'error', $("#inputLastName"));
             return false;
