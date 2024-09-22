@@ -2,10 +2,12 @@ package com.example.serverarchive.api.controller
 
 
 import JwtUtil
+import com.example.serverarchive.api.request.user.UserCheckDuplicateUidRequest
 import com.example.serverarchive.api.request.user.UserLoginRequest
 import com.example.serverarchive.api.request.user.UserRegisterRequest
 import com.example.serverarchive.api.response.ResponseCode
 import com.example.serverarchive.api.response.SingleResponse
+import com.example.serverarchive.api.response.user.UserCheckDuplicateUidResponse
 import com.example.serverarchive.api.response.user.UserLoginResponse
 import com.example.serverarchive.api.response.user.UserRegisterResponse
 import com.example.serverarchive.service.user.UserServiceImpl
@@ -115,6 +117,26 @@ class UserController(
 			.build()
 
 		response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString())
+	}
+
+	@PostMapping("/check-uid")
+	@ResponseStatus(HttpStatus.OK)
+	@Operation(summary = "아이디 중복 확인", description = "회원 아이디 중복 유무를 확인합니다.")
+	fun checkDuplicateUid(@RequestBody req: UserCheckDuplicateUidRequest): SingleResponse<UserCheckDuplicateUidResponse?> {
+		var result = ResponseCode.ERROR
+		var message = "Request Failed"
+
+		val response = userService.checkDuplicateUid(req)
+		response?.let {
+			result = ResponseCode.SUCCESS
+			message = "ID is available"
+		}
+
+		return SingleResponse(
+			result = result,
+			message = message,
+			data = response
+		)
 	}
 
 }

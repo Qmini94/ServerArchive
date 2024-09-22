@@ -33,17 +33,5 @@ data class UserRegisterResponse(
 				level = this.level,
 			)
 		}
-
-		fun registerFrom(user: User): UserRegisterResponse {
-			return UserRegisterResponse(
-				userName = user.userName,
-				userId = user.userId,
-				department = user.department,
-				position = user.position,
-				email = user.email,
-				phone = user.phone,
-				level = user.level,
-			)
-		}
 	}
 }

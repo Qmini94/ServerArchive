@@ -2,8 +2,10 @@ package com.example.serverarchive.service.user
 
 
 import JwtUtil
+import com.example.serverarchive.api.request.user.UserCheckDuplicateUidRequest
 import com.example.serverarchive.api.request.user.UserLoginRequest
 import com.example.serverarchive.api.request.user.UserRegisterRequest
+import com.example.serverarchive.api.response.user.UserCheckDuplicateUidResponse
 import com.example.serverarchive.api.response.user.UserLoginResponse
 import com.example.serverarchive.api.response.user.UserLoginResponse.Companion.toUserLoginResponse
 import com.example.serverarchive.api.response.user.UserRegisterResponse
@@ -52,12 +54,18 @@ class UserServiceImpl(
 			}
 			// JWT 토큰 발급
 			val token = jwtUtil.generateToken(user.userId)
-			println("Generated Token: $token")
 			return user.toUserLoginResponse(token)
 
 		} else {
 			return null
 		}
+	}
 
+	override fun checkDuplicateUid(req: UserCheckDuplicateUidRequest): UserCheckDuplicateUidResponse? {
+		return if (userRepository.existsByUserId(req.userId)) {
+			UserCheckDuplicateUidResponse.from(false, ErrorCodes.getMessage(1004))
+		} else {
+			UserCheckDuplicateUidResponse.from(true, "사용가능한 아이디입니다.")
+		}
 	}
 }
