@@ -42,13 +42,12 @@ export const startSessionTimer = () => {
     }
 };
 
-
 const renewToken = () => {
     fetch('/api/user/renew-token', {
         method: 'POST',
     })
       .then(response => response.json())
-      .then(({token}) => {
+      .then(({ token }) => {
           if (token) {
               startSessionTimer();  // 타이머 재시작
           } else {
@@ -62,9 +61,8 @@ const renewToken = () => {
       });
 };
 
-
 export const logout = () => {
-    document.cookie = "token=; Max-Age=0; path=/;";
+    document.cookie = 'token=; Max-Age=0; path=/;';
     window.location.href = '/';
 };
 
@@ -88,48 +86,62 @@ export const showAlert = async (title, text, icon, focusElement = null) => {
     });
 };
 
-/**
- * 000-0000-0000 자동 포맷
- * @param input
- */
-export const formatPhoneNumber = (input) => {
-    try {
-        let numbers = input.value.replace(/[^0-9]/g, '');
-        if (numbers.length > 11) {
-            numbers = numbers.slice(0, 11);
-        }
-        if (numbers.length > 8) {
-            input.value = numbers.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
-        } else if (numbers.length > 3) {
-            input.value = numbers.replace(/(\d{3})(\d{4})?/, '$1-$2');
-        } else {
-            input.value = numbers;
-        }
-    } catch (e) {
-        console.error(e.message);
-        throw e;
-    }
-};
+export const handleInputFormat = () => {
 
-/**
- * 000-000-0000 자동 포맷
- * @param input
- */
-export const formatOfficeNumber = (input) => {
-    try {
-        let numbers = input.value.replace(/[^0-9]/g, '');
-        if (numbers.length > 10) {
-            numbers = numbers.slice(0, 10);
+    /**
+     * 000-0000-0000 자동 포맷
+     * @param input
+     */
+    const formatPhoneNumber = (input) => {
+        try {
+            let numbers = input.value.replace(/[^0-9]/g, '');
+            if (numbers.length > 11) {
+                numbers = numbers.slice(0, 11);
+            }
+            if (numbers.length > 8) {
+                input.value = numbers.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+            } else if (numbers.length > 3) {
+                input.value = numbers.replace(/(\d{3})(\d{4})?/, '$1-$2');
+            } else {
+                input.value = numbers;
+            }
+        } catch (e) {
+            console.error(e.message);
+            throw e;
         }
-        if (numbers.length > 6) {
-            input.value = numbers.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
-        } else if (numbers.length > 3) {
-            input.value = numbers.replace(/(\d{3})(\d{3})?/, '$1-$2');
-        } else {
-            input.value = numbers;
+    };
+
+    /**
+     * 000-000-0000 자동 포맷
+     * @param input
+     */
+    const formatOfficeNumber = (input) => {
+        try {
+            let numbers = input.value.replace(/[^0-9]/g, '');
+            if (numbers.length > 10) {
+                numbers = numbers.slice(0, 10);
+            }
+            if (numbers.length > 6) {
+                input.value = numbers.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+            } else if (numbers.length > 3) {
+                input.value = numbers.replace(/(\d{3})(\d{3})?/, '$1-$2');
+            } else {
+                input.value = numbers;
+            }
+        } catch (e) {
+            console.error(e.message);
+            throw e;
         }
-    } catch (e) {
-        console.error(e.message);
-        throw e;
-    }
+    };
+
+    const allowOnlyAlphaAndNumeric = (input) => {
+        try {
+            input.value = input.value.replace(/[^a-zA-Z0-9]/g, '');
+        } catch (e) {
+            console.error(e.message);
+            throw e;
+        }
+    };
+
+    return { formatPhoneNumber, formatOfficeNumber, allowOnlyAlphaAndNumeric };
 };

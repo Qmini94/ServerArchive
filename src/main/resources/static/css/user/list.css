@@ -1,0 +1,15 @@
+th, td {
+    white-space: nowrap;
+    text-align: center;
+    vertical-align: middle;
+}
+
+table {
+    table-layout: auto;
+}
+
+@media (max-width: 768px) {
+    .table-responsive {
+        overflow-x: auto;
+    }
+}

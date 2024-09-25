@@ -1,28 +1,36 @@
-import { formatPhoneNumber } from '/js/common.js';
-import { handleUserAjax } from '/js/user/ajax.js';
+import { checkDuplicateUid, createUser, loginUser } from '/js/user/ajax.js';
+import { handleInputFormat } from '/js/common.js';
 
-const userAjax = handleUserAjax();
+const { formatPhoneNumber, allowOnlyAlphaAndNumeric } = handleInputFormat();
 
 export const handleUserRegisterForm = () => {
     try {
-        $("#inputUserId").on('input', function () {
+        $('#inputUserId').on('input', function (e) {
+            const inputElement = e.target;
+            allowOnlyAlphaAndNumeric(inputElement);
+
             const checkBtn = $('.check-userId-btn');
             checkBtn.removeClass('btn-success').addClass('btn-light');
             checkBtn.data('checked', false);
             checkBtn.text('중복확인');
         });
 
-        $(".check-userId-btn").on('click', function () {
-            userAjax.checkDuplicateUid();
+        $('.check-userId-btn').on('click', function () {
+            checkDuplicateUid();
         });
 
-        $(".btn-register").on('click', function (e) {
+        $('#inputEmailId').on('input', function (e) {
+            const inputElement = e.target;
+            allowOnlyAlphaAndNumeric(inputElement);
+        });
+
+        $('.btn-register').on('click', function (e) {
             e.preventDefault();
             $('#inputEmail').val(getFullEmail());
-            userAjax.createUser();
+            createUser();
         });
 
-        $("#inputPhone").on('input', function (e) {
+        $('#inputPhone').on('input', function (e) {
             formatPhoneNumber(e.target);
         });
 
@@ -35,9 +43,14 @@ export const handleUserRegisterForm = () => {
 
 export const handleUserLoginForm = () => {
     try {
-        $(".btn-login").on('click', function (e) {
+        $('#inputUserId').on('input', function (e) {
+            const inputElement = e.target;
+            allowOnlyAlphaAndNumeric(inputElement);
+        });
+
+        $('.btn-login').on('click', function (e) {
             e.preventDefault();
-            userAjax.loginUser();
+            loginUser();
         });
     } catch (e) {
         console.error(e.message);
