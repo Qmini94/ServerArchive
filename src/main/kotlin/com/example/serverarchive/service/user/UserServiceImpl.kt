@@ -5,6 +5,7 @@ import com.example.serverarchive.api.request.user.UserRegisterRequest
 import com.example.serverarchive.api.response.user.UserResponse
 import com.example.serverarchive.api.response.user.UserResponse.Companion.toResponse
 import com.example.serverarchive.domain.user.repository.UserRepository
+import com.example.serverarchive.util.ErrorCode
 import com.example.serverarchive.util.ErrorCodes
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
@@ -17,7 +18,8 @@ class UserServiceImpl(private val userRepository: UserRepository) : UserService 
 
 		// 중복 아이디 체크
 		if (userRepository.existsByUserId(req.userId)) {
-			throw IllegalArgumentException(ErrorCodes.getMessage(1004))
+			throw IllegalArgumentException(ErrorCode.ALREADY_EXISTS.name)
+//			throw IllegalArgumentException(ErrorCodes.getMessage(1004))
 		}
 		// 필수 값 체크 (아이디, 이름, 패스워드)
 		if (req.validate()) {

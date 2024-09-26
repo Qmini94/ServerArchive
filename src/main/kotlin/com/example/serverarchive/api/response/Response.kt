@@ -34,6 +34,24 @@ data class PageResponse<T>(
     val data: Page<T>? = PageImpl(listOf())
 )
 
+@Schema(description = "에러 응답 객체", title = "ErrorResponse")
+data class ErrorResponse(
+    @Schema(description = "응답 결과", nullable = false, defaultValue = "ERROR")
+    val result: ResponseCode? = ResponseCode.ERROR,
+    @Schema(description = "응답 메시지", nullable = false)
+    val message: String? = null,
+    @Schema(description = "응답 데이터", nullable = false)
+    var error: ErrorData
+)
+
 enum class ResponseCode {
     SUCCESS, ERROR
 }
+
+@Schema(description = "에러 상세 내용", title = "ErrorData")
+data class ErrorData(
+    @Schema(description = "에러 코드값", nullable = false)
+    val code: Int? = null,
+    @Schema(description = "에러 메시지", nullable = false)
+    var message: String? = null
+)
