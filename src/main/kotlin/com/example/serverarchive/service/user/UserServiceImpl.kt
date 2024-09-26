@@ -15,6 +15,7 @@ import com.example.serverarchive.api.response.user.UserRegisterResponse
 import com.example.serverarchive.api.response.user.UserRegisterResponse.Companion.toResponse
 import com.example.serverarchive.domain.user.entity.User
 import com.example.serverarchive.domain.user.repository.UserRepository
+import com.example.serverarchive.util.ErrorCode
 import com.example.serverarchive.util.ErrorCodes
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -32,7 +33,8 @@ class UserServiceImpl(
 
 		// 중복 아이디 체크
 		if (userRepository.existsByUserId(req.userId)) {
-			throw IllegalArgumentException(ErrorCodes.getMessage(1004))
+			throw IllegalArgumentException(ErrorCode.ALREADY_EXISTS.name)
+//			throw IllegalArgumentException(ErrorCodes.getMessage(1004))
 		}
 
 		// 필수 값 체크 (아이디, 이름, 패스워드)

@@ -28,3 +28,8 @@ springdoc:
     path: /api-docs   # API 문서 경로 설정
   swagger-ui:
     path: /swagger-ui   # Swagger UI 접근 경로 설정
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
