@@ -23,7 +23,7 @@
     <input type="password" id="rootPassword" name="rootPassword" required>
 
     <label for="databaseName">데이터베이스 이름</label>
-    <input type="text" id="databaseName" name="databaseName" required>
+    <input type="text" id="databaseName" name="databaseName" placeholder="YB_CSERVER" required>
 
     <input type="submit" class="btn-submit" value="등록">
   </form>
@@ -36,6 +36,15 @@
   <script th:src="@{/js/user/form.js}"></script>
   <script>
     $(function () {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('idx');
+
+      console.log('id->',id)
+
+      if (id) {
+        getServerData(id);
+      }
+
       $(".btn-submit").on('click', async function (e) {
         e.preventDefault();
 
@@ -54,7 +63,7 @@
           contentType: 'application/json; charset=utf-8',
           success: function (res) {
             showAlert('Success!', '서버 등록 완료', 'success').then(() => {
-              window.location = '/server/create';
+              window.location = '/server/list';
             });
           },
           error: function (error) {
@@ -63,6 +72,27 @@
           }
         });
       })
+
+      function getServerData(id) {
+        fetch(`/server/update/${id}`) // 해당 ID로 서버 데이터 요청
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('네트워크 응답이 올바르지 않습니다.');
+                  }
+                  return response.json();
+                })
+                .then(data => {
+                  document.querySelector('#ip').value = data.ip;
+                  document.querySelector('#port').value = data.port;
+                  document.querySelector('#serverUser').value = data.serverUser;
+                  document.querySelector('#rootPassword').value = data.rootPassword;
+                  document.querySelector('#databaseName').value = data.databaseName;
+                })
+                .catch(error => {
+                  console.error('Error:', error);
+                });
+      }
+
     })
   </script>
 </th:block>

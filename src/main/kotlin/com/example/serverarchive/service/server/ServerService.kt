@@ -7,4 +7,6 @@ interface ServerService {
     fun createServer(req: ServerRequest): ServerResponse? {
         TODO("Not yet implemented")
     }
+    fun getAllServers(): List<ServerResponse>
+    fun deleteServer(id: Long): Boolean
 }

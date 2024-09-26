@@ -16,4 +16,20 @@ class ServerServiceImpl(private val serverRepository: ServerRepository) : Server
             return null
         }
     }
+
+    override fun getAllServers(): List<ServerResponse> {
+        val servers = serverRepository.findAll()
+        return servers.map { it.toResponse() }
+    }
+
+    override fun deleteServer(id: Long): Boolean {
+        return try {
+            serverRepository.deleteById(id)
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+
 }

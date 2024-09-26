@@ -34,4 +34,5 @@ class ServerController(private val serverService: ServerServiceImpl) {
             data = response
         )
     }
+
 }

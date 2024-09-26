@@ -27,25 +27,15 @@ class ServerResponse(
     companion object {
         fun Server.toResponse(): ServerResponse {
             return ServerResponse(
-//        idx = server.idx,
+                idx = this.idx,
                 ip = this.ip,
                 port = this.port,
                 serverUser = this.serverUser,
                 rootPassword = this.rootPassword,
                 databaseName = this.databaseName,
-            )
-        }
-        fun createFrom(server: Server): ServerResponse {
-            return ServerResponse(
-//        idx = server.idx,
-                ip = server.ip,
-                port = server.port,
-                serverUser = server.serverUser,
-                rootPassword = server.rootPassword,
-                databaseName = server.databaseName,
-//        createdDate = server.createdDate,
-//        updatedDate = server.updatedDate,
-//        regId = server.regId,
+                createdDate = this.createdDate,
+                updatedDate = this.updatedDate,
+                regId = this.regId,
 //        log = server.log
             )
         }
