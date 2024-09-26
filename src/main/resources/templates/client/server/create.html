@@ -2,35 +2,57 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{common/layouts/defaultLayout}">
-<head>
-	<meta charset="UTF-8">
-	<title>서버 정보 등록</title>
-</head>
-<body>
-<h2>서버 정보 등록</h2>
 <div layout:fragment="Content">
-	<form action="/" method="POST">
-		<label for="ip">IP 주소</label>
-		<input type="text" id="ip" name="ip" placeholder="49.254.140.140" required>
-
-		<label for="port">접속 포트 번호</label>
-		<input type="text" id="port" name="port" placeholder="8080" required>
-
-		<label for="serverUser">사용자 계정</label>
-		<input type="text" id="serverUser" name="serverUser" placeholder="root" required>
-
-		<label for="rootPassword">root 계정 비밀번호</label>
-		<input type="password" id="rootPassword" name="rootPassword" required>
-
-		<label for="databaseName">데이터베이스 이름</label>
-		<input type="text" id="databaseName" name="databaseName" placeholder="YB_CSERVER" required>
-
-		<input type="submit" class="btn-submit" value="등록">
-	</form>
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-lg-7">
+				<div class="card shadow-lg border-0 rounded-lg mt-5">
+					<div class="card-header"><h3 class="text-center font-weight-light my-4">Create Server Info</h3>
+					</div>
+					<div class="card-body">
+						<form>
+							<div class="form-floating mb-3">
+								<label for="ip">IP 주소</label>
+								<input class="form-control" type="text" id="ip" name="ip" placeholder="49.254.140.140"
+									   required>
+							</div>
+							<div class="form-floating mb-3">
+								<label for="port">접속 포트 번호</label>
+								<input class="form-control" type="text" id="port" name="port" placeholder="8080"
+									   required>
+							</div>
+							<div class="form-floating mb-3">
+								<label for="serverUser">사용자 계정</label>
+								<input class="form-control" type="text" id="serverUser" name="serverUser"
+									   placeholder="root" required>
+							</div>
+							<div class="form-floating mb-3">
+								<label for="rootPassword">root 계정 비밀번호</label>
+								<input class="form-control" type="password" id="rootPassword" name="rootPassword"
+									   required>
+							</div>
+							<div class="form-floating mb-3">
+								<label for="databaseName">데이터베이스 이름</label>
+								<input class="form-control" type="text" id="databaseName" name="databaseName"
+									   placeholder="YB_CSERVER"
+									   required>
+							</div>
+							<div class="mt-4 mb-0">
+								<div class="d-grid">
+									<button class="btn btn-primary btn-block btn-submit" type="submit">등록</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-</body>
 <th:block layout:fragment="script">
-	<script>
+	<script type="module">
+        import { showAlert } from '/js/common.js';
+
         $(function () {
             const params = new URLSearchParams(window.location.search);
             const id = params.get('idx');
@@ -78,17 +100,16 @@
                       return response.json();
                   })
                   .then(data => {
-                      document.querySelector('#ip').value = data.ip;
-                      document.querySelector('#port').value = data.port;
-                      document.querySelector('#serverUser').value = data.serverUser;
-                      document.querySelector('#rootPassword').value = data.rootPassword;
-                      document.querySelector('#databaseName').value = data.databaseName;
+                      $('#ip').value = data.ip;
+                      $('#port').value = data.port;
+                      $('#serverUser').value = data.serverUser;
+                      $('#rootPassword').value = data.rootPassword;
+                      $('#databaseName').value = data.databaseName;
                   })
                   .catch(error => {
                       console.error('Error:', error);
                   });
             }
-
         });
 	</script>
 </th:block>
