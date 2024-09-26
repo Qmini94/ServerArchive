@@ -1,6 +1,7 @@
 package com.example.serverarchive.api.controller
 
-import com.example.serverarchive.api.request.customer.CustomerRequest
+import com.example.serverarchive.api.request.customer.CreateCustomerRequest
+import com.example.serverarchive.api.request.customer.UpdateCustomerRequest
 import com.example.serverarchive.api.response.ResponseCode
 import com.example.serverarchive.api.response.SingleResponse
 import com.example.serverarchive.api.response.customer.CustomerResponse
@@ -18,7 +19,7 @@ class CustomerController(private val customerService: CustomerService) {
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "업체생성", description = "새로운 업체를 등록합니다.")
-    fun createCustomer(@RequestBody req: CustomerRequest): SingleResponse<CustomerResponse?> {
+    fun createCustomer(@RequestBody req: CreateCustomerRequest): SingleResponse<CustomerResponse?> {
         return customerService.createCustomer(req)?.let { customerResponse ->
             SingleResponse(
                 result = ResponseCode.SUCCESS,
@@ -29,5 +30,47 @@ class CustomerController(private val customerService: CustomerService) {
             result = ResponseCode.ERROR,
             message = "Failed to create customer"
         )
+    }
+
+    @PutMapping("/update/{idx}")
+    @Operation(summary = "업체수정", description = "선택된 업체의 정보를 수정합니다.")
+    fun updateCustomer(
+        @PathVariable idx: Int,
+        @RequestBody req: UpdateCustomerRequest
+    ): SingleResponse<CustomerResponse?> {
+        val updatedCustomer = customerService.updateCustomer(idx, req)
+
+        return if (updatedCustomer != null) {
+            SingleResponse(
+                result = ResponseCode.SUCCESS,
+                message = "Customer updated successfully",
+                data = updatedCustomer
+            )
+        } else {
+            SingleResponse(
+                result = ResponseCode.ERROR,
+                message = "Failed to update customer"
+            )
+        }
+    }
+
+    @DeleteMapping("/delete/{idx}")
+    @Operation(summary = "업체삭제", description = "선택된 업체를 삭제합니다.")
+    fun deleteCustomer(@PathVariable idx: Int): SingleResponse<CustomerResponse?> {
+        println("Deleting customer with idx: $idx")
+        val deletedCustomer = customerService.deleteCustomerById(idx)
+
+        return if (deletedCustomer != null) {
+            SingleResponse(
+                result = ResponseCode.SUCCESS,
+                message = "Customer deleted successfully",
+                data = deletedCustomer
+            )
+        } else {
+            SingleResponse(
+                result = ResponseCode.ERROR,
+                message = "Failed to delete customer"
+            )
+        }
     }
 }

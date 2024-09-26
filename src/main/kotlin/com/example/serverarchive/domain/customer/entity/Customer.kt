@@ -9,35 +9,35 @@ import java.time.LocalDateTime
 class Customer (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var idx: Int? = null,
+    val idx: Int? = null,
 
     @Column(name = "name", nullable = false, length = 30)
-    val name: String,
+    var name: String,
 
     @Column(name = "server_idx", nullable = false, length = 30)
-    val serverIdx: String,
+    var serverIdx: String,
 
     @Column(name = "service_idx", nullable = false, length = 30)
-    val serviceIdx: String,
+    var serviceIdx: String,
 
     @Column(name = "managers", nullable = false, length = 225)
-    val managers: String,
+    var managers: String,
 
     @Column(name = "code_type", nullable = false, length = 10)
-    val codeType: Int,
+    var codeType: Int,
 
     @Column(name = "memo", columnDefinition = "TEXT")
-    val memo: String? = null,
+    var memo: String? = null,
 
     @Column(name = "created_date", nullable = false)
-    val createdDate: LocalDateTime? = LocalDateTime.now(),
+    var createdDate: LocalDateTime? = LocalDateTime.now(),
 
     @Column(name = "updated_date")
-    val updatedDate: LocalDateTime? = null,
+    var updatedDate: LocalDateTime? = null,
 
     @Column(name = "reg_id", nullable = false, length = 30)
-    val regId: String,
+    var regId: String,
 
     @Column(columnDefinition = "TEXT")
-    val log: String? = null
+    var log: String? = null
 )

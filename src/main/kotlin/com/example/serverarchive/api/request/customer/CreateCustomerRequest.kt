@@ -3,7 +3,7 @@ package com.example.serverarchive.api.request.customer
 import com.example.serverarchive.domain.customer.entity.Customer
 import java.time.LocalDateTime
 
-class CustomerRequest(
+data class CreateCustomerRequest(
     private val companyName: String,
     private val serverIdx: String,
     private var serviceIdx: String,
