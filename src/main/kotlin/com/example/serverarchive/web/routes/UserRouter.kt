@@ -21,18 +21,18 @@ class UserRouter(
 	@Bean
 	fun userRoutes() = router {
 		("/user").nest {
-			GET("/register", ::viewRegisterPage)
+			GET("/create", ::viewCreatePage)
 			GET("/list", ::viewUserListPage)
 			GET("/login", ::viewLoginPage)
 		}
 	}
 
-	fun viewRegisterPage(req: ServerRequest): ServerResponse {
+	fun viewCreatePage(req: ServerRequest): ServerResponse {
 		val data = mapOf(
 			"message" to "Register New User",
 			"pageTitle" to "회원가입"
 		)
-		return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("manager/user/register", data)
+		return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("manager/user/create", data)
 	}
 
 	fun viewUserListPage(req: ServerRequest): ServerResponse {
