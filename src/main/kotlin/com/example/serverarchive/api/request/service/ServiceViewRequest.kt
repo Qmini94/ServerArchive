@@ -4,8 +4,7 @@ import com.example.serverarchive.domain.service.entity.Service
 import com.example.serverarchive.util.ErrorCodes
 import io.swagger.v3.oas.annotations.media.Schema
 
-@Schema(description = "서비스 정보")
-data class ServiceRequest(
+data class ServiceViewRequest (
     @Schema(description = "도메인 URL", nullable = false, required = true)
     val domainUrl: String,
     @Schema(description = "도메인 등록일", nullable = false, required = true)
@@ -38,5 +37,6 @@ data class ServiceRequest(
             webmailAccount = this.webmailAccount,
             memo = this.memo,
         )
+
     }
 }

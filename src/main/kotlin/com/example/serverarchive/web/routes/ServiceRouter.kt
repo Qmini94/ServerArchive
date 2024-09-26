@@ -17,6 +17,7 @@ class ServiceRouter (private val serviceService: ServiceService){
         ("/service").nest {
             GET("/create", ::showCreatePage)
             GET("/list", ::showListPage)
+            GET("/view", ::showViewPage)
         }
     }
 
@@ -28,11 +29,19 @@ class ServiceRouter (private val serviceService: ServiceService){
     }
 
     fun showListPage(req: ServerRequest): ServerResponse {
-//        val service = serviceService.getAllService()
         val data = mapOf(
             "message" to "Service List",
             "service" to null
         )
-        return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/customer/list", data)
+        return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/service/list", data)
     }
+
+    fun showViewPage(req: ServerRequest): ServerResponse {
+        val data = mapOf(
+            "message" to "Service View",
+            "service" to null
+        )
+        return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/service/view", data)
+    }
+
 }
