@@ -3,6 +3,7 @@ package com.example.serverarchive.api.request.server
 import com.example.serverarchive.domain.server.entity.Server
 import com.example.serverarchive.util.ErrorCodes
 import io.swagger.v3.oas.annotations.media.Schema
+import java.time.LocalDateTime
 
 @Schema(description = "서버 정보")
 class ServerRequest(
@@ -34,6 +35,9 @@ class ServerRequest(
             serverUser = this.serverUser,
             databaseName = this.databaseName,
             rootPassword = this.rootPassword,
+            regId = "hjiwon98",
+            createdDate = LocalDateTime.now(),
+            updatedDate = LocalDateTime.now()
         )
     }
 }
