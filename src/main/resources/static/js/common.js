@@ -48,7 +48,7 @@ const renewToken = () => {
           if (token) {
               startSessionTimer();  // 타이머 재시작
           } else {
-              alert('로그인 연장에 오류가 발생했습니다. 다시 로그인해주세요.');
+              alert('세션이 만료되었습니다. 다시 로그인해주세요.');
               logout();
           }
       })

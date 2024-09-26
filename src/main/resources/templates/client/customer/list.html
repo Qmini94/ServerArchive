@@ -32,33 +32,32 @@
 </div>
 </body>
 <th:block layout:fragment="script">
-	<script th:src="@{/js/user/form.js}"></script>
 	<script>
-		$(function () {
-			$('.customer-row').on('click', function() {
-				const idx = $(this).find('td').first().text();
-				window.location.href = `/customer/update/${idx}`;
-			});
-			$(".customer-delete").on('click', async function (e) {
-				e.preventDefault();
-				e.stopPropagation();
-				const idx = $(this).data('idx');
+        $(function () {
+            $('.customer-row').on('click', function () {
+                const idx = $(this).find('td').first().text();
+                window.location.href = `/customer/update/${idx}`;
+            });
+            $('.customer-delete').on('click', async function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const idx = $(this).data('idx');
 
-				$.ajax({
-					type: "DELETE",
-					url: `/api/customer/delete/${idx}`,
-					contentType: 'application/json; charset=utf-8',
-					success: function (res) {
-						alert(res.message);
-						window.location = '/customer/list';
-					},
-					error: function (error) {
-						alert(error);
-						console.error(error);
-					}
-				});
-			})
-		})
+                $.ajax({
+                    type: 'DELETE',
+                    url: `/api/customer/delete/${idx}`,
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (res) {
+                        alert(res.message);
+                        window.location = '/customer/list';
+                    },
+                    error: function (error) {
+                        alert(error);
+                        console.error(error);
+                    }
+                });
+            });
+        });
 	</script>
 </th:block>
 </html>
