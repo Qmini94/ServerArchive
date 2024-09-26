@@ -1,43 +1,74 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layouts/defaultLayout}">
-<body>
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{common/layouts/defaultLayout}">
 <div layout:fragment="Content">
-    <h1 th:text="${message}"></h1>
+	<div class="container mt-5">
+		<h2 class="mb-4">서버 목록</h2>
 
-    <table>
-        <thead>
-        <tr>
-            <th>IP Address</th>
-            <th>User</th>
-            <th>Password</th>
-            <th>Updated Date</th>
-            <th>Upt/Del</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="server : ${servers}" th:attr="data-idx=${server.idx}">
-            <td th:text="${server.ip} + ':' + ${server.port}"></td>
-            <td th:text="${server.serverUser}"></td>
-            <td th:text="${server.rootPassword}"></td>
-            <td th:text="${server.updatedDate}"></td>
-            <td>
-                <a th:href="@{http://localhost:8080/server/create(id=${server.idx})}">수정</a>
-                <button th:onclick="'deleteServer(' + ${server.idx} + ')'">삭제</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+		<!-- 검색창 및 필터 -->
+		<div class="row mb-4 justify-content-end align-items-center">
+			<div class="col-auto">
+				<label for="filterSelect" class="visually-hidden">검색 필터 선택</label>
+				<select id="filterSelect" class="form-select form-select-sm" aria-label="검색 필터 선택">
+					<option value="ip">IP</option>
+				</select>
+			</div>
+			<div class="col-auto">
+				<label for="searchInput" class="visually-hidden">검색어 입력</label>
+				<input type="text" id="searchInput" class="form-control form-control-sm" placeholder="검색어를 입력하세요"
+					   aria-label="검색어 입력">
+			</div>
+			<div class="col-auto">
+				<button class="btn btn-primary btn-sm" id="searchBtn">검색</button>
+			</div>
+		</div>
+
+		<div class="table-responsive">
+			<table class="table table-bordered table-hover">
+				<thead class="table-light">
+				<tr>
+					<th scope="col">IP Address</th>
+					<th scope="col">User</th>
+					<th scope="col">Password</th>
+					<th scope="col">Updated Date</th>
+					<th scope="col">Upt/Del</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr th:each="server : ${servers}" th:attr="data-idx=${server.idx}">
+					<td th:text="${server.ip} + ':' + ${server.port}"></td>
+					<td th:text="${server.serverUser}"></td>
+					<td th:text="${server.rootPassword}"></td>
+					<td th:text="${server.updatedDate}"></td>
+					<td>
+						<a th:href="@{http://localhost:8080/server/create(id=${server.idx})}">수정</a>
+						<button th:onclick="'deleteServer(' + ${server.idx} + ')'">삭제</button>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- 페이징 네비게이션 -->
+		<nav aria-label="회원 목록 페이지">
+			<ul class="pagination justify-content-center">
+				<li class="page-item disabled">
+					<a class="page-link" href="#" tabindex="-1">이전</a>
+				</li>
+				<li class="page-item active"><a class="page-link" href="#">1</a></li>
+				<li class="page-item"><a class="page-link" href="#">2</a></li>
+				<li class="page-item"><a class="page-link" href="#">3</a></li>
+				<li class="page-item">
+					<a class="page-link" href="#">다음</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
 </div>
-</body>
 <th:block layout:fragment="script">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-            crossorigin="anonymous"></script>
-    <script th:src="@{/js/scripts.js}"></script>
-    <script>
-        function deleteServer(id) {
-            const confirmed = confirm("Are you sure delete it?");
+	<script>
+        function deleteServer (id) {
+            const confirmed = confirm('Are you sure delete it?');
             if (!confirmed) {
                 return;
             }
@@ -45,22 +76,21 @@
             fetch(`/server/delete/${id}`, {
                 method: 'DELETE'
             })
-                .then(response => {
-                    if (response.ok) {
-                        alert(`Server Info Deleted Complete.`);
-                        const row = document.querySelector(`tr[data-idx='${id}']`);
-                        if (row) {
-                            row.remove();
-                        }
-                    } else {
-                        alert(`Failed to Delete Server Info.`);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+              .then(response => {
+                  if (response.ok) {
+                      alert(`Server Info Deleted Complete.`);
+                      const row = document.querySelector(`tr[data-idx='${id}']`);
+                      if (row) {
+                          row.remove();
+                      }
+                  } else {
+                      alert(`Failed to Delete Server Info.`);
+                  }
+              })
+              .catch(error => {
+                  console.error('Error:', error);
+              });
         }
-    </script>
+	</script>
 </th:block>
 </html>
-
