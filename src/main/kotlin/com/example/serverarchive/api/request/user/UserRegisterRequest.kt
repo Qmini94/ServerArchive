@@ -22,7 +22,7 @@ data class UserRegisterRequest(
 	@Schema(description = "연락처", nullable = true, required = false)
 	val phone: String? = null,
 	@Schema(description = "레벨", nullable = true, required = false)
-	val level: Int? = null,
+	val level: String? = null,
 
 	) {
 	fun validate(): Boolean {
@@ -45,22 +45,5 @@ data class UserRegisterRequest(
 			phone = this.phone,
 			level = this.level
 		)
-	}
-}
-
-@Schema(description = "로그인 정보")
-data class UserLoginRequest(
-	@Schema(description = "회원ID", nullable = false, required = true)
-	val userId: String,
-	@Schema(description = "회원비밀번호", nullable = false, required = true)
-	var password: String,
-	@Schema(description = "opt", nullable = true, required = false)
-	val otp: String? = null,
-) {
-
-	fun validate(): Boolean {
-		requireNotNull(this.userId) { ErrorCodes.getMessage(1001) }
-		requireNotNull(this.password) { ErrorCodes.getMessage(1003) }
-		return true
 	}
 }
