@@ -1,7 +1,5 @@
 import { checkDuplicateUid, createUser, loginUser } from '/js/user/ajax.js';
-import { handleInputFormat } from '/js/common.js';
-
-const { formatPhoneNumber, allowOnlyAlphaAndNumeric } = handleInputFormat();
+import { allowOnlyAlphaAndNumeric, formatPhoneNumber } from '/js/validate_form.js';
 
 export const handleUserRegisterForm = () => {
     try {
