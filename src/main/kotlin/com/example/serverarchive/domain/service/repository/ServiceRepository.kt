@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface ServiceRepository: JpaRepository<Service, Int> {
     fun existsServiceByDomainUrl(domainUrl: String): Boolean
+    fun existsServiceByIdx(idx: Int): Boolean
+    fun deleteServiceByIdx(idx: Int): Boolean
 }

@@ -41,4 +41,4 @@ class Service(
     @Column(columnDefinition = "TEXT")
     var log: String? = null,
 
-){}
+    ){}

@@ -4,8 +4,9 @@ import com.example.serverarchive.domain.service.entity.Service
 import com.example.serverarchive.util.ErrorCodes
 import io.swagger.v3.oas.annotations.media.Schema
 
-@Schema(description = "서비스 정보")
-data class ServiceRequest(
+data class ServiceDeleteRequest(
+    @Schema(description = "고유값", nullable = false, required = true)
+    val idx: Int,
     @Schema(description = "도메인 URL", nullable = false, required = true)
     val domainUrl: String,
     @Schema(description = "도메인 등록일", nullable = false, required = true)
@@ -30,6 +31,7 @@ data class ServiceRequest(
     fun toEntity(): Service {
 
         return Service(
+            idx = this.idx,
             domainUrl = this.domainUrl,
             domainResister = this.domainResister,
             certificateIssuer = this.certificateIssuer,
@@ -38,5 +40,6 @@ data class ServiceRequest(
             webmailAccount = this.webmailAccount,
             memo = this.memo,
         )
+
     }
 }

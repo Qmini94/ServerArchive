@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/defaultLayout}">
+<div layout:fragment="Content">
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -54,15 +53,6 @@
         background-color: #45a049;
     }
 </style>
-<body>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>데이터 입력 폼</title>
-</head>
-<body>
 <h2>데이터 입력 폼</h2>
 <form action="/submit" method="POST">
   <table>
@@ -78,7 +68,7 @@
         <label for="domainResister">도메인 등록일</label>
       </td>
       <td>
-        <input type="text" id="domainResister" name="domainResister" required>
+        <input type="date" id="domainResister" name="domainResister" required>
       </td>
     </tr>
     <tr>
@@ -88,7 +78,7 @@
           <option value="hosting">선택해주세요</option>
           <option value="hosting">카페24 호스팅</option>
           <option value="reseller">카페24 리셀러</option>
-          <option value="reseller">웹메일</option>
+          <option value="webmail">웹메일</option>
         </select>
       </td>
     </tr>
@@ -110,23 +100,9 @@
         <label for="webmailAccount">웹메일 계정</label>
       </td>
       <td>
-        <input type="text" id="webmailAccount" name="webmailAccount" required>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label for="createdDate">생성일</label>
-      </td>
-      <td>
-        <input type="text" id="createdDate" name="createdDate" required>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label for="updatedDate">업데이트</label>
-      </td>
-      <td>
-        <input type="text" id="updatedDate" name="updatedDate" required>
+        <input class="hidden" type="text" id="webmailAccount" name="webmailAccount" required>
+        <input type="text" id="webmailAccountId1" name="webmailAccountId1" required>
+        <input type="text" id="webmailAccountPw1" name="webmailAccountPw1" required>
       </td>
     </tr>
     <tr>
@@ -138,10 +114,14 @@
       </td>
     </tr>
     <tr>
-      <input type="submit" id="save" value="제출">
+      <td colspan="2">
+        <input type="submit" id="save" value="제출">
+      </td>
+    </tr>
   </table>
 </form>
-</body>
+</div>
+<th:block layout:fragment="script">
 <script>
   $(function () {
     $("#save").on('click', async function (e) {
@@ -175,6 +155,7 @@
     })
   })
 </script>
+</th:block>
 </html>
 
 
