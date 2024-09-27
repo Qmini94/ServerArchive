@@ -31,31 +31,12 @@
 	</table>
 </div>
 <th:block layout:fragment="script">
-	<script>
-        $(function () {
-            $('.customer-row').on('click', function () {
-                const idx = $(this).find('td').first().text();
-                window.location.href = `/customer/update/${idx}`;
-            });
-            $('.customer-delete').on('click', async function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                const idx = $(this).data('idx');
+	<script type="module">
+		import { viewCustomer } from '/js/customer/ajax.js';
 
-                $.ajax({
-                    type: 'DELETE',
-                    url: `/api/customer/delete/${idx}`,
-                    success: function (res) {
-                        alert(res.message);
-                        window.location = '/customer/list';
-                    },
-                    error: function (error) {
-                        alert(error);
-                        console.error(error);
-                    }
-                });
-            });
-        });
+		$(function () {
+			viewCustomer();
+		});
 	</script>
 </th:block>
 </html>
