@@ -16,10 +16,11 @@ export const viewCustomer = async () => {
                 type: 'DELETE',
                 url: `/api/customer/delete/${idx}`
             });
-
-            alert(res.message);
-            window.location = '/customer/list';
+            showAlert('Success!', res.message, 'success').then(() => {
+                window.location = '/customer/list';
+            });
         } catch (error) {
+            showAlert('Error!', error, 'error');
             console.error(error);
         }
     });
@@ -49,11 +50,11 @@ export const createCustomer = async () => {
                 data: JSON.stringify(params),
                 contentType: 'application/json; charset=utf-8'
             });
-
-            alert(res.message);
-            window.location = '/customer/list';
-
+            showAlert('Success!', res.message, 'success').then(() => {
+                window.location = '/customer/list';
+            });
         } catch (error) {
+            showAlert('Error!', error, 'error');
             console.error(error);
         }
     });
