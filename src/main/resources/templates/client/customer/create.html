@@ -57,38 +57,10 @@
 	</div>
 </div>
 <th:block layout:fragment="script">
-	<script>
+	<script type="module">
+		import { handleCustomerCreateForm } from '/js/customer/create.js';
         $(function () {
-            $('#save').on('click', async function (e) {
-                e.preventDefault();
-                const idx = $('input[name=\'idx\']').val();
-                const mode = $('input[name=\'mode\']').val();
-                const url = mode === 'create' ? '/api/customer/create' : `/api/customer/update/${idx}`;
-                const params = {
-                    companyName: $('#companyName').val(),
-                    serverIdx: $('#serverIdx').val(),
-                    serviceIdx: $('#serviceIdx').val(),
-                    managers: $('#managers').val(),
-                    codeType: $('#codeType').val(),
-                    memo: $('#memo').val(),
-                    registrantId: $('#registrantId').val()
-                };
-
-                $.ajax({
-                    type: mode === 'create' ? 'POST' : 'PUT',
-                    url: url,
-                    data: JSON.stringify(params),
-                    contentType: 'application/json; charset=utf-8',
-                    success: function (res) {
-                        alert(res.message);
-                        window.location = '/customer/list';
-                    },
-                    error: function (error) {
-                        alert(error);
-                        console.error(error);
-                    }
-                });
-            });
+			handleCustomerCreateForm()
         });
 	</script>
 </th:block>
