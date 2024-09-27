@@ -1,82 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{common/layouts/defaultLayout}">
-<div layout:fragment="Content">
-	<style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
-        .form-container {
-            max-width: 600px;
-            margin: auto;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-        }
-
-        .form-group input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-        }
-
-        .form-group input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-	</style>
+<div layout:fragment="Content" class="container mt-4">
 	<div class="form-container">
-		<h1>업체 업데이트</h1>
+		<h1 class="mb-4">업체 업데이트</h1>
 		<form method="post">
 			<input type="hidden" id="idx" name="idx" th:value="${customer.idx}">
 			<input type="hidden" id="mode" name="mode" th:value="${mode}">
-			<div class="form-group">
-				<label for="companyName">업체명</label>
-				<input type="text" id="companyName" name="companyName" th:value="${customer.name}" required
-					   maxlength="30">
+
+			<div class="mb-3">
+				<label for="companyName" class="form-label">업체명</label>
+				<input type="text" id="companyName" name="companyName" class="form-control" th:value="${customer.name}" required maxlength="30">
 			</div>
 
-			<div class="form-group">
-				<label for="serverIdx">서버 고유번호</label>
-				<input type="text" id="serverIdx" name="serverIdx" th:value="${customer.serverIdx}" required
-					   maxlength="30">
+			<div class="mb-3">
+				<label for="serverIdx" class="form-label">서버 고유번호</label>
+				<input type="text" id="serverIdx" name="serverIdx" class="form-control" th:value="${customer.serverIdx}" required maxlength="30">
 			</div>
 
-			<div class="form-group">
-				<label for="serviceIdx">서비스 고유번호</label>
-				<input type="text" id="serviceIdx" name="serviceIdx" th:value="${customer.serviceIdx}" required
-					   maxlength="30">
+			<div class="mb-3">
+				<label for="serviceIdx" class="form-label">서비스 고유번호</label>
+				<input type="text" id="serviceIdx" name="serviceIdx" class="form-control" th:value="${customer.serviceIdx}" required maxlength="30">
 			</div>
 
-			<div class="form-group">
-				<label for="managers">담당자</label>
-				<input type="text" id="managers" name="managers" th:value="${customer.managers}" required
-					   maxlength="255">
+			<div class="mb-3">
+				<label for="managers" class="form-label">담당자</label>
+				<input type="text" id="managers" name="managers" class="form-control" th:value="${customer.managers}" required maxlength="255">
 			</div>
 
-			<div class="form-group">
-				<label for="codeType">업체 유형</label>
-				<select id="codeType" name="codeType" required>
+			<div class="mb-3">
+				<label for="codeType" class="form-label">업체 유형</label>
+				<select id="codeType" name="codeType" class="form-select" required>
 					<option value="">선택하세요</option>
 					<option th:value="1" th:text="'관공서'" th:selected="${customer.codeType == 1}"></option>
 					<option th:value="2" th:text="'학교'" th:selected="${customer.codeType == 2}"></option>
@@ -85,20 +39,19 @@
 				</select>
 			</div>
 
-			<div class="form-group">
-				<label for="memo">추가사항</label>
-				<textarea id="memo" name="memo" rows="4" placeholder="추가사항을 입력하세요."
-						  th:text="${customer.memo}"></textarea>
+			<div class="mb-3">
+				<label for="memo" class="form-label">추가사항</label>
+				<textarea id="memo" name="memo" class="form-control" rows="4" placeholder="추가사항을 입력하세요." th:text="${customer.memo}"></textarea>
 			</div>
 
-			<div class="form-group">
-				<label for="registrantId">게시물 등록자 아이디</label>
-				<input type="text" id="registrantId" name="registrantId" th:value="${customer.regId}" required
-					   maxlength="30">
+			<div class="mb-3">
+				<label for="registrantId" class="form-label">게시물 등록자 아이디</label>
+				<input type="text" id="registrantId" name="registrantId" class="form-control" th:value="${customer.regId}" required maxlength="30">
 			</div>
 
-			<div class="form-group">
-				<input type="submit" id="save" value="확인">
+			<div class="d-flex justify-content-between">
+				<button type="submit" id="save" class="btn btn-primary">확인</button>
+				<button type="button" class="btn btn-secondary" onclick="location.href='/customer/list'">목록</button>
 			</div>
 		</form>
 	</div>
@@ -120,8 +73,7 @@
                     memo: $('#memo').val(),
                     registrantId: $('#registrantId').val()
                 };
-                console.log(url);
-                console.log(params);
+
                 $.ajax({
                     type: mode === 'create' ? 'POST' : 'PUT',
                     url: url,
