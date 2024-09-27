@@ -58,9 +58,9 @@
 </div>
 <th:block layout:fragment="script">
 	<script type="module">
-		import { handleCustomerCreateForm } from '/js/customer/create.js';
+		import { createCustomer } from '/js/customer/ajax.js';
         $(function () {
-			handleCustomerCreateForm()
+			createCustomer();
         });
 	</script>
 </th:block>
