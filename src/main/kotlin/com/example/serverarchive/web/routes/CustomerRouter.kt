@@ -1,6 +1,6 @@
 package com.example.serverarchive.web.routes
 
-import com.example.serverarchive.api.response.customer.CreateCustomerResponse
+import com.example.serverarchive.api.response.customer.CustomerCreateResponse
 import com.example.serverarchive.service.customer.CustomerService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -25,7 +25,7 @@ class CustomerRouter(private val customerService: CustomerService) {
         val data = mapOf(
             "message" to "Create customer",
             "mode" to "create",
-            "customer" to CreateCustomerResponse()
+            "customer" to CustomerCreateResponse()
         )
         return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/customer/create", data)
     }

@@ -1,7 +1,7 @@
 package com.example.serverarchive.service.customer
 
-import com.example.serverarchive.api.request.customer.CreateCustomerRequest
-import com.example.serverarchive.api.request.customer.UpdateCustomerRequest
+import com.example.serverarchive.api.request.customer.CustomerCreateRequest
+import com.example.serverarchive.api.request.customer.CustomerUpdateRequest
 import com.example.serverarchive.api.response.customer.CustomerResponse
 import com.example.serverarchive.api.response.customer.CustomerResponse.Companion.toResponse
 import com.example.serverarchive.domain.customer.repository.CustomerRepository
@@ -20,7 +20,7 @@ class CustomerServiceImpl(private val customerRepository: CustomerRepository) : 
             .orElseThrow {throw IllegalArgumentException(ErrorCode.INVALID_PARAMETER.name)}
     }
 
-    override fun createCustomer(req: CreateCustomerRequest): CustomerResponse {
+    override fun createCustomer(req: CustomerCreateRequest): CustomerResponse {
         return try {
             customerRepository.save(req.toEntity()).toResponse()
         } catch (e: Exception) {
@@ -28,7 +28,7 @@ class CustomerServiceImpl(private val customerRepository: CustomerRepository) : 
         }
     }
 
-    override fun updateCustomer(idx: Int, req: UpdateCustomerRequest): CustomerResponse? {
+    override fun updateCustomer(idx: Int, req: CustomerUpdateRequest): CustomerResponse? {
         return try {
             val existingCustomer = customerRepository.findById(idx).orElseThrow {
                 throw IllegalArgumentException(ErrorCode.INVALID_PARAMETER.name)
