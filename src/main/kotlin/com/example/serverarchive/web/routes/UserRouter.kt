@@ -11,7 +11,6 @@ import org.springframework.web.servlet.function.ServerResponse
 import org.springframework.web.servlet.function.router
 import java.net.URI
 
-
 @Configuration
 class UserRouter(
 	private val jwtUtil: JwtUtil,
@@ -52,9 +51,18 @@ class UserRouter(
 		)
 
 		val users = userService.getUserList(userListRequest)
+
+		// TODO :: 유지보수 차원에서 적합할까?
+		val searchOptions = listOf(
+			mapOf("value" to "userId", "label" to "아이디"),
+			mapOf("value" to "userName", "label" to "회원 이름"),
+			mapOf("value" to "role", "label" to "권한")
+		)
+
 		val data = mapOf(
 			"pageTitle" to "회원목록",
-			"users" to users
+			"users" to users,
+			"options" to searchOptions,
 		)
 
 		return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("manager/user/list", data)

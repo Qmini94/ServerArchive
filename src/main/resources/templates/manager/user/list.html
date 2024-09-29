@@ -11,24 +11,7 @@
 		<h2 class="mb-4">회원 목록</h2>
 
 		<!-- 검색창 및 필터 -->
-		<div class="row mb-4 justify-content-end align-items-center">
-			<div class="col-auto">
-				<label for="filterSelect" class="visually-hidden">검색 필터 선택</label>
-				<select id="filterSelect" class="form-select form-select-sm" aria-label="검색 필터 선택">
-					<option value="userId">아이디</option>
-					<option value="userName">회원 이름</option>
-					<option value="role">권한</option>
-				</select>
-			</div>
-			<div class="col-auto">
-				<label for="searchInput" class="visually-hidden">검색어 입력</label>
-				<input type="text" id="searchInput" class="form-control form-control-sm" placeholder="검색어를 입력하세요"
-					   aria-label="검색어 입력">
-			</div>
-			<div class="col-auto">
-				<button class="btn btn-primary btn-sm" id="searchBtn">검색</button>
-			</div>
-		</div>
+		<div th:insert="~{common/fragments/search :: search(${options})}"></div>
 
 		<!-- 반응형 테이블 -->
 		<div class="table-responsive">
@@ -63,20 +46,11 @@
 		</div>
 	</div>
 
-	<!-- 페이징 네비게이션 -->
-	<nav aria-label="회원 목록 페이지">
-		<ul class="pagination justify-content-center">
-			<li class="page-item disabled">
-				<a class="page-link" href="#" tabindex="-1">이전</a>
-			</li>
-			<li class="page-item active"><a class="page-link" href="#">1</a></li>
-			<li class="page-item"><a class="page-link" href="#">2</a></li>
-			<li class="page-item"><a class="page-link" href="#">3</a></li>
-			<li class="page-item">
-				<a class="page-link" href="#">다음</a>
-			</li>
-		</ul>
-	</nav>
+	<!-- 페이징 네비게이션
+	TODO : 하드코딩 되어 있음. api 페이징 처리 후 변수 가져와야함 (currentPage, totalPages, baseUrl)
+	-->
+	<div th:insert="~{common/fragments/pagination :: pagination(1, 10, '/user/list')}"></div>
+
 </div>
 <th:block layout:fragment="script">
 	<script type="module"></script>
