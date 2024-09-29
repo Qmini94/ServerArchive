@@ -86,4 +86,10 @@ class UserServiceImpl(
 			)
 		}
 	}
+
+	override fun getUserByIdx(idx: Int): UserRegisterResponse {
+		val user =
+			userRepository.findByIdx(idx)
+		return user.toResponse()
+	}
 }

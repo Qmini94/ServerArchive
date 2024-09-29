@@ -30,7 +30,7 @@
 				</tr>
 				</thead>
 				<tbody id="memberTableBody">
-				<tr th:each="user, iterStat : ${users}">
+				<tr th:each="user, iterStat : ${users}" th:data-idx="${user.idx}" class="user-info">
 					<th scope="row" th:text="${iterStat.index + 1}">1</th>
 					<td th:text="${user.userId}">work</td>
 					<td th:text="${user.userName}">관리자</td>
@@ -53,6 +53,12 @@
 
 </div>
 <th:block layout:fragment="script">
-	<script type="module"></script>
+	<script type="module">
+        import { handleUserList } from '/js/user/list.js';
+
+        $(function () {
+            handleUserList();
+        });
+	</script>
 </th:block>
 </html>

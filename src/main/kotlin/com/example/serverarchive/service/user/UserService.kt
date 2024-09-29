@@ -16,4 +16,5 @@ interface UserService {
 	fun loginUser(req: UserLoginRequest): UserLoginResponse?
 	fun checkDuplicateUid(req: UserCheckDuplicateUidRequest): UserCheckDuplicateUidResponse?
 	fun getUserList(req: UserListRequest): List<UserListResponse>?
+	fun getUserByIdx(idx: Int): UserRegisterResponse
 }

@@ -23,15 +23,31 @@ class UserRouter(
 			GET("/create", ::viewCreatePage)
 			GET("/list", ::viewUserListPage)
 			GET("/login", ::viewLoginPage)
+			GET("/update/{idx}", ::viewUpdatePage)
 		}
 	}
 
 	fun viewCreatePage(req: ServerRequest): ServerResponse {
 		val data = mapOf(
-			"message" to "Register New User",
+			"message" to "Create Account",
 			"pageTitle" to "회원가입"
 		)
 		return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("manager/user/create", data)
+	}
+
+	fun viewUpdatePage(req: ServerRequest): ServerResponse {
+		val idx = req.pathVariable("idx").toInt()
+		val users = userService.getUserByIdx(idx)
+
+		println(users)
+
+		val data = mapOf(
+			"message" to "Modify User Info",
+			"pageTitle" to "회원정보"
+		)
+
+		return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("manager/user/create", data)
+
 	}
 
 	fun viewUserListPage(req: ServerRequest): ServerResponse {

@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository
 interface UserRepository : JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 	fun existsByUserId(userId: String): Boolean
 	fun findByUserId(userId: String): User?
+	fun findByIdx(idx: Int): User
 }
