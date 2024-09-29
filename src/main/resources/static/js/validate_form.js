@@ -44,9 +44,84 @@ export const formatOfficeNumber = (input) => {
     }
 };
 
+/**
+ * YYYY-mm-dd 자동 포맷
+ * @param input
+ */
+export const formatDate = (input) => {
+    try {
+        let value = input.value.replace(/\D/g, '');
+
+        let year = value.substring(0, 4);
+        let month = value.substring(4, 6);
+        let day = value.substring(6, 8);
+
+        let formattedDate = year;
+        if (month) formattedDate += `-${month}`;
+        if (day) formattedDate += `-${day}`;
+
+        input.value = formattedDate;
+    } catch (e) {
+        console.error(e.message);
+        throw e;
+    }
+};
+
+/**
+ * 세자리수 마다 , 자동 포맷
+ * @param input
+ * @returns {string}
+ */
+export const formatNumberWithCommas = (input) => {
+    try {
+        let numberString = input.toString();
+        return numberString.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    } catch (e) {
+        console.error(e.message);
+        throw e;
+    }
+};
+
 export const allowOnlyAlphaAndNumeric = (input) => {
     try {
         input.value = input.value.replace(/[^a-zA-Z0-9]/g, '');
+    } catch (e) {
+        console.error(e.message);
+        throw e;
+    }
+};
+
+export const allowOnlyAlpha = (input) => {
+    try {
+        input.value = input.value.replace(/[^a-zA-Z]/g, '');
+    } catch (e) {
+        console.error(e.message);
+        throw e;
+    }
+};
+
+export const allowOnlyNumeric = (input) => {
+    try {
+        input.value = input.value.replace(/[^0-9]/g, '');
+    } catch (e) {
+        console.error(e.message);
+        throw e;
+    }
+};
+
+export const allowOnlyKorean = (input) => {
+    try {
+        input.value = input.value.replace(/[^가-힣ㄱ-ㅎㅏ-ㅣ]/g, '');
+    } catch (e) {
+        console.error(e.message);
+        throw e;
+    }
+};
+
+export const validateURL = (input) => {
+    try {
+        const urlPattern = /^(http:\/\/|https:\/\/)([a-z0-9-]+\.)+[a-z]{2,}(\/[^\s]*)?$/i;
+        return urlPattern.test(input.value.trim());
     } catch (e) {
         console.error(e.message);
         throw e;
