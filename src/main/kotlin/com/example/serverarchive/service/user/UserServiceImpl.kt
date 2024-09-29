@@ -16,7 +16,6 @@ import com.example.serverarchive.api.response.user.UserRegisterResponse.Companio
 import com.example.serverarchive.domain.user.entity.User
 import com.example.serverarchive.domain.user.repository.UserRepository
 import com.example.serverarchive.util.ErrorCode
-import com.example.serverarchive.util.ErrorCodes
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -34,7 +33,6 @@ class UserServiceImpl(
 		// 중복 아이디 체크
 		if (userRepository.existsByUserId(req.userId)) {
 			throw IllegalArgumentException(ErrorCode.ALREADY_EXISTS.name)
-//			throw IllegalArgumentException(ErrorCodes.getMessage(1004))
 		}
 
 		// 필수 값 체크 (아이디, 이름, 패스워드)
@@ -53,11 +51,11 @@ class UserServiceImpl(
 	override fun loginUser(req: UserLoginRequest): UserLoginResponse? {
 		// 아이디 유무 체크
 		val user =
-			userRepository.findByUserId(req.userId) ?: throw IllegalArgumentException(ErrorCodes.getMessage(1005))
+			userRepository.findByUserId(req.userId) ?: throw IllegalArgumentException(ErrorCode.NO_DATA.name)
 		if (req.validate()) {
 			val passwordEncoder = BCryptPasswordEncoder()
 			if (!passwordEncoder.matches(req.password, user.password)) {
-				throw IllegalArgumentException(ErrorCodes.getMessage(1006))
+				throw IllegalArgumentException(ErrorCode.INVALID_PARAMETER.name)
 			}
 			// JWT 토큰 발급
 			val token = jwtUtil.generateToken(user.userId)
@@ -70,7 +68,7 @@ class UserServiceImpl(
 
 	override fun checkDuplicateUid(req: UserCheckDuplicateUidRequest): UserCheckDuplicateUidResponse? {
 		return if (userRepository.existsByUserId(req.userId)) {
-			UserCheckDuplicateUidResponse.from(false, ErrorCodes.getMessage(1004))
+			UserCheckDuplicateUidResponse.from(false, ErrorCode.ALREADY_EXISTS.name)
 		} else {
 			UserCheckDuplicateUidResponse.from(true, "사용가능한 아이디입니다.")
 		}
