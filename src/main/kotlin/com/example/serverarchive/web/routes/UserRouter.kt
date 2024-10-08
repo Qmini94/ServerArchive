@@ -3,6 +3,7 @@ package com.example.serverarchive.web.routes
 import JwtUtil
 import com.example.serverarchive.api.request.user.UserListRequest
 import com.example.serverarchive.service.user.UserService
+import com.example.serverarchive.util.Logger
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.MediaType
@@ -16,6 +17,7 @@ class UserRouter(
 	private val jwtUtil: JwtUtil,
 	private val userService: UserService
 ) {
+	private val logger by Logger()
 
 	@Bean
 	fun userRoutes() = router {
@@ -67,6 +69,7 @@ class UserRouter(
 		)
 
 		val users = userService.getUserList(userListRequest)
+		logger.info("result: ${users?.content}")
 
 		// TODO :: 유지보수 차원에서 적합할까?
 		val searchOptions = listOf(

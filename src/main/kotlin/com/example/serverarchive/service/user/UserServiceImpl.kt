@@ -13,10 +13,10 @@ import com.example.serverarchive.api.response.user.UserLoginResponse
 import com.example.serverarchive.api.response.user.UserLoginResponse.Companion.toUserLoginResponse
 import com.example.serverarchive.api.response.user.UserRegisterResponse
 import com.example.serverarchive.api.response.user.UserRegisterResponse.Companion.toResponse
-import com.example.serverarchive.domain.user.entity.User
 import com.example.serverarchive.domain.user.repository.UserRepository
 import com.example.serverarchive.util.ErrorCode
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -74,17 +74,15 @@ class UserServiceImpl(
 		}
 	}
 
-	override fun getUserList(req: UserListRequest): List<UserListResponse>? {
+	override fun getUserList(req: UserListRequest): Page<UserListResponse>? {
 		val pageable: Pageable = PageRequest.of(req.page - 1, req.size)
-		val users: Page<User> = userRepository.findAll(pageable)
-
-		return users.content.map { user ->
-			user.toListResponse(
-				currentPage = users.number + 1,
-				totalPages = users.totalPages,
-				nextPage = if (users.number + 1 < users.totalPages) users.number + 2 else null
-			)
+		val users: List<UserListResponse> = userRepository.findAll().map { user ->
+			user.toListResponse()
 		}
+
+		val count = userRepository.count()
+
+		return PageImpl(users, pageable, count)
 	}
 
 	override fun getUserByIdx(idx: Int): UserRegisterResponse {
