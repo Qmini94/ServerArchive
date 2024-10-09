@@ -1,6 +1,8 @@
 package com.example.serverarchive.domain.user.repository
 
 import com.example.serverarchive.domain.user.entity.User
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.stereotype.Repository
@@ -10,4 +12,5 @@ interface UserRepository : JpaRepository<User, Long>, JpaSpecificationExecutor<U
 	fun existsByUserId(userId: String): Boolean
 	fun findByUserId(userId: String): User?
 	fun findByIdx(idx: Int): User
+	override fun findAll(pageable: Pageable): Page<User>
 }

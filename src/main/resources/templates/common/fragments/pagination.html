@@ -1,14 +1,22 @@
-<nav th:fragment="pagination (currentPage, totalPages, baseUrl)">
+<nav th:fragment="pagination (currentPage, totalElements, size, baseUrl)">
 	<ul class="pagination justify-content-center">
 		<li th:classappend="${currentPage == 1} ? 'disabled'">
-			<a class="page-link" th:href="@{${baseUrl}(page=${currentPage - 1})}" tabindex="-1">이전</a>
+			<a class="page-link"
+			   th:href="@{${baseUrl}(page=${currentPage - 1})}"
+			   tabindex="-1">Prev</a>
 		</li>
-		<li th:each="i : ${#numbers.sequence(1, totalPages)}"
+
+		<!-- 전체 페이지 수 계산 -->
+		<li th:each="i : ${#numbers.sequence(1, (totalElements + size - 1) / size)}"
 			th:classappend="${i == currentPage} ? 'active'">
-			<a class="page-link" th:href="@{${baseUrl}(page=${i})}" th:text="${i}"></a>
+			<a class="page-link"
+			   th:href="@{${baseUrl}(page=${i})}"
+			   th:text="${i}"></a>
 		</li>
-		<li th:classappend="${currentPage == totalPages} ? 'disabled'">
-			<a class="page-link" th:href="@{${baseUrl}(page=${currentPage + 1})}">다음</a>
+
+		<li th:classappend="${currentPage == (totalElements + size - 1) / size} ? 'disabled'">
+			<a class="page-link"
+			   th:href="@{${baseUrl}(page=${currentPage + 1})}">Next</a>
 		</li>
 	</ul>
 </nav>

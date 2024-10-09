@@ -13,12 +13,10 @@ import com.example.serverarchive.api.response.user.UserLoginResponse
 import com.example.serverarchive.api.response.user.UserLoginResponse.Companion.toUserLoginResponse
 import com.example.serverarchive.api.response.user.UserRegisterResponse
 import com.example.serverarchive.api.response.user.UserRegisterResponse.Companion.toResponse
+import com.example.serverarchive.domain.user.entity.User
 import com.example.serverarchive.domain.user.repository.UserRepository
 import com.example.serverarchive.util.ErrorCode
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageImpl
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.*
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
@@ -75,8 +73,9 @@ class UserServiceImpl(
 	}
 
 	override fun getUserList(req: UserListRequest): Page<UserListResponse>? {
-		val pageable: Pageable = PageRequest.of(req.page - 1, req.size)
-		val users: List<UserListResponse> = userRepository.findAll().map { user ->
+		val pageable: Pageable = PageRequest.of(req.page - 1, req.size, Sort.by(Sort.Direction.DESC, "idx"))
+		val usersPage: Page<User> = userRepository.findAll(pageable)
+		val users: List<UserListResponse> = usersPage.content.map { user ->
 			user.toListResponse()
 		}
 

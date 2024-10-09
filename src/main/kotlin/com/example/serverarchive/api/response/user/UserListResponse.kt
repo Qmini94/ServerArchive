@@ -30,33 +30,8 @@ data class UserListResponse(
 
 	@Schema(description = "마지막 로그인", nullable = true, required = false)
 	val lastLogin: String? = null,
-
-	@Schema(description = "현재 페이지", nullable = true, required = false)
-	val currentPage: Int? = 0,
-
-	@Schema(description = "다음 페이지 번호", nullable = true, required = false)
-	val nextPage: Int? = 0,
-
-	@Schema(description = "총 페이지 수", nullable = true, required = false)
-	val totalPages: Int? = 0,
 ) {
 	companion object {
-		fun User.toListResponse(currentPage: Int, nextPage: Int?, totalPages: Int): UserListResponse {
-			return UserListResponse(
-				idx = this.idx,
-				userName = this.userName,
-				userId = this.userId,
-				department = this.department,
-				position = this.position,
-				email = this.email,
-				phone = this.phone,
-				level = this.level,
-				currentPage = currentPage,
-				nextPage = nextPage,
-				totalPages = totalPages,
-			)
-		}
-
 		fun User.toListResponse(): UserListResponse {
 			return UserListResponse(
 				idx = this.idx,

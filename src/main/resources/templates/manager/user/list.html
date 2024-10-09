@@ -31,7 +31,7 @@
 				</thead>
 				<tbody id="memberTableBody">
 				<tr th:each="user, iterStat : ${users}" th:data-idx="${user.idx}" class="user-info">
-					<th scope="row" th:text="${iterStat.index + 1}">1</th>
+					<th scope="row" th:text="${startIndex - iterStat.index}">1</th>
 					<td th:text="${user.userId}">work</td>
 					<td th:text="${user.userName}">관리자</td>
 					<td th:text="${user.department}">웹개발팀</td>
@@ -46,19 +46,16 @@
 		</div>
 	</div>
 
-	<!-- 페이징 네비게이션
-	TODO : 하드코딩 되어 있음. api 페이징 처리 후 변수 가져와야함 (currentPage, totalPages, baseUrl)
-	-->
-	<div th:insert="~{common/fragments/pagination :: pagination(1, 10, '/user/list')}"></div>
+	<div th:insert="~{common/fragments/pagination :: pagination(currentPage=${currentPage}, totalElements=${totalElements}, size=${size}, baseUrl='/user/list')}"></div>
 
 </div>
 <th:block layout:fragment="script">
 	<script type="module">
-        import { handleUserList } from '/js/user/list.js';
+      import { handleUserList } from '/js/user/list.js';
 
-        $(function () {
-            handleUserList();
-        });
+      $(function () {
+        handleUserList();
+      });
 	</script>
 </th:block>
 </html>

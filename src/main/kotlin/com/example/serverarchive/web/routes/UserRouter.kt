@@ -69,7 +69,7 @@ class UserRouter(
 		)
 
 		val users = userService.getUserList(userListRequest)
-		logger.info("result: ${users?.content}")
+		val startIndex = (users?.totalElements?.toInt() ?: 0) - ((page - 1) * size)
 
 		// TODO :: 유지보수 차원에서 적합할까?
 		val searchOptions = listOf(
@@ -82,6 +82,10 @@ class UserRouter(
 			"pageTitle" to "회원목록",
 			"users" to users,
 			"options" to searchOptions,
+			"currentPage" to page,
+			"totalElements" to users?.totalElements,
+			"size" to size,
+			"startIndex" to startIndex,
 		)
 
 		return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("manager/user/list", data)
