@@ -42,7 +42,7 @@
 					<td th:text="${server.rootPassword}"></td>
 					<td th:text="${server.updatedDate}"></td>
 					<td>
-						<a th:href="@{http://localhost:8080/server/create(id=${server.idx})}">수정</a>
+						<button th:onclick="'updateServer(' + ${server.idx} + ')'">수정</button>
 						<button th:onclick="'deleteServer(' + ${server.idx} + ')'">삭제</button>
 					</td>
 				</tr>
@@ -67,7 +67,11 @@
 </div>
 <th:block layout:fragment="script">
 	<script>
-        function deleteServer (id) {
+		function updateServer(id) {
+			window.location.href = `/server/update/${id}`;
+		}
+
+		function deleteServer (id) {
             const confirmed = confirm('Are you sure delete it?');
             if (!confirmed) {
                 return;

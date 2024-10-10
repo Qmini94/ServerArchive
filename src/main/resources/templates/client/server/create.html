@@ -13,28 +13,28 @@
 						<form>
 							<div class="form-floating mb-3">
 								<label for="ip">IP 주소</label>
-								<input class="form-control" type="text" id="ip" name="ip" placeholder="49.254.140.140"
+								<input class="form-control" type="text" id="ip" name="ip" th:value="${server.ip}"
 									   required>
 							</div>
 							<div class="form-floating mb-3">
 								<label for="port">접속 포트 번호</label>
-								<input class="form-control" type="text" id="port" name="port" placeholder="8080"
+								<input class="form-control" type="text" id="port" name="port" th:value="${server.port}"
 									   required>
 							</div>
 							<div class="form-floating mb-3">
 								<label for="serverUser">사용자 계정</label>
 								<input class="form-control" type="text" id="serverUser" name="serverUser"
-									   placeholder="root" required>
+									   th:value="${server.serverUser}" required>
 							</div>
 							<div class="form-floating mb-3">
 								<label for="rootPassword">root 계정 비밀번호</label>
-								<input class="form-control" type="password" id="rootPassword" name="rootPassword"
+								<input class="form-control" type="password" id="rootPassword" name="rootPassword" th:value="${server.rootPassword}"
 									   required>
 							</div>
 							<div class="form-floating mb-3">
 								<label for="databaseName">데이터베이스 이름</label>
 								<input class="form-control" type="text" id="databaseName" name="databaseName"
-									   placeholder="YB_CSERVER"
+									   th:value="${server.databaseName}"
 									   required>
 							</div>
 							<div class="mt-4 mb-0">

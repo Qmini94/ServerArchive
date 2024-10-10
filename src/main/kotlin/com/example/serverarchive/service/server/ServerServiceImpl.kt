@@ -1,10 +1,14 @@
 package com.example.serverarchive.service.server
 
 import com.example.serverarchive.api.request.server.ServerRequest
+import com.example.serverarchive.api.request.server.UpdateServerRequest
 import com.example.serverarchive.api.response.server.ServerResponse
 import com.example.serverarchive.api.response.server.ServerResponse.Companion.toResponse
+import com.example.serverarchive.api.response.server.UpdateServerResponse
+import com.example.serverarchive.domain.server.entity.toUpdateResponse
 import com.example.serverarchive.domain.server.repository.ServerRepository
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class ServerServiceImpl(private val serverRepository: ServerRepository) : ServerService {
@@ -31,5 +35,26 @@ class ServerServiceImpl(private val serverRepository: ServerRepository) : Server
         }
     }
 
+    override fun findById(id: Long): ServerResponse? {
+        val serverEntity = serverRepository.findById(id).orElse(null)
+        return serverEntity?.toResponse()
+    }
+
+    override fun updateServer(id: Long, req: UpdateServerRequest): UpdateServerResponse? {
+        val existingServer = serverRepository.findById(id).orElse(null) ?: return null
+
+        existingServer.apply {
+//            ip = req.ip
+            port = req.port
+//            serverUser = req.serverUser
+//            rootPassword = req.rootPassword
+//            databaseName = req.databaseName
+            updatedDate = LocalDateTime.now()
+        }
+
+        return serverRepository.save(existingServer).toUpdateResponse()
+    }
+
 
 }
+

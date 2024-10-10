@@ -16,21 +16,21 @@ class ServerRouter(private val serverService: ServerServiceImpl) {
     @Bean
     fun serverRoutes() = router {
         ("/server").nest {
-            GET("/create", ::showCreateServerPage)
-            GET("/list", ::showListServerPage)
+            GET("/create", ::viewCreateServerPage)
+            GET("/list", ::viewListServerPage)
             DELETE("/delete/{id}", ::deleteServer)
-            //PUT("/update/{id}", ::updateServer)
+            GET("/update/{id}", ::updateServer)
         }
     }
 
-    fun showCreateServerPage(req: ServerRequest): ServerResponse {
+    fun viewCreateServerPage(req: ServerRequest): ServerResponse {
         val data = mapOf(
             "message" to "create Server info"
         )
         return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/server/create", data)
     }
 
-    fun showListServerPage(req: ServerRequest): ServerResponse {
+    fun viewListServerPage(req: ServerRequest): ServerResponse {
         val servers = serverService.getAllServers()
         val data = mapOf(
             "message" to "list Server info",
@@ -42,8 +42,8 @@ class ServerRouter(private val serverService: ServerServiceImpl) {
 
     fun deleteServer(req: ServerRequest): ServerResponse {
         val id = req.pathVariable("id").toLong()
-
         val isDeleted = serverService.deleteServer(id)
+
         return if (isDeleted) {
             ServerResponse.ok().body("Server $id Info Deleted Complete.")
         } else {
@@ -51,16 +51,21 @@ class ServerRouter(private val serverService: ServerServiceImpl) {
         }
     }
 
-    /*fun updateServer(req: ServerRequest): ServerResponse {
+    fun updateServer(req: ServerRequest): ServerResponse {
         val id = req.pathVariable("id").toLong()
+        val server = serverService.findById(id)
 
-        val isUpdated = serverService.updateServer(id)
-        return if (isUpdated) {
-            ServerResponse.ok().body("Server $id Info Updated Complete.")
+        return if (server != null) {
+            val data = mapOf(
+                "message" to "update Server info",
+                "server" to server
+            )
+            ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/server/create", data)
         } else {
-            ServerResponse.status(HttpStatus.NOT_FOUND).body("Server with ID $id not Found.")
+            ServerResponse.status(HttpStatus.NOT_FOUND).body("Server with ID $id not found.")
         }
-    }*/
+    }
+
 
 
 

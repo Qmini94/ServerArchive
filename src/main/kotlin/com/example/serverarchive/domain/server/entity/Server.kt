@@ -1,5 +1,6 @@
 package com.example.serverarchive.domain.server.entity
 
+import com.example.serverarchive.api.response.server.UpdateServerResponse
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
@@ -37,3 +38,13 @@ class Server(
     @Column(columnDefinition = "TEXT")
     val log: String? = null
 )
+
+fun Server.toUpdateResponse(): UpdateServerResponse {
+    return UpdateServerResponse(
+        ip = this.ip,
+        port = this.port,
+        serverUser = this.serverUser,
+        rootPassword = this.rootPassword,
+        databaseName = this.databaseName
+    )
+}
