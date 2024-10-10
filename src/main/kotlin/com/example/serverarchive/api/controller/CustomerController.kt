@@ -1,7 +1,7 @@
 package com.example.serverarchive.api.controller
 
-import com.example.serverarchive.api.request.customer.CreateCustomerRequest
-import com.example.serverarchive.api.request.customer.UpdateCustomerRequest
+import com.example.serverarchive.api.request.customer.CustomerCreateRequest
+import com.example.serverarchive.api.request.customer.CustomerUpdateRequest
 import com.example.serverarchive.api.response.ResponseCode
 import com.example.serverarchive.api.response.SingleResponse
 import com.example.serverarchive.api.response.customer.CustomerResponse
@@ -19,7 +19,7 @@ class CustomerController(private val customerService: CustomerService) {
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "업체생성", description = "새로운 업체를 등록합니다.")
-    fun createCustomer(@RequestBody req: CreateCustomerRequest): SingleResponse<CustomerResponse?> {
+    fun createCustomer(@RequestBody req: CustomerCreateRequest): SingleResponse<CustomerResponse?> {
         return customerService.createCustomer(req)?.let { customerResponse ->
             SingleResponse(
                 result = ResponseCode.SUCCESS,
@@ -36,7 +36,7 @@ class CustomerController(private val customerService: CustomerService) {
     @Operation(summary = "업체수정", description = "선택된 업체의 정보를 수정합니다.")
     fun updateCustomer(
         @PathVariable idx: Int,
-        @RequestBody req: UpdateCustomerRequest
+        @RequestBody req: CustomerUpdateRequest
     ): SingleResponse<CustomerResponse?> {
         val updatedCustomer = customerService.updateCustomer(idx, req)
 

@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
 @Schema(description = "업체 생성 정보")
-class CreateCustomerResponse(
+class CustomerCreateResponse(
     @Schema(description = "업체 고유번호", nullable = true, required = false)
     val idx: Int? = null,
 

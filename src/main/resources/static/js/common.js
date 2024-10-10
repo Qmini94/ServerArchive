@@ -60,7 +60,7 @@ const renewToken = () => {
 
 export const logout = () => {
     document.cookie = 'token=; Max-Age=0; path=/;';
-    window.location.href = '/';
+    window.location.href = '/user/login';
 };
 
 const getCookie = (name) => {

@@ -1,6 +1,6 @@
 package com.example.serverarchive.web.routes
 
-import com.example.serverarchive.api.response.customer.CreateCustomerResponse
+import com.example.serverarchive.api.response.customer.CustomerCreateResponse
 import com.example.serverarchive.service.customer.CustomerService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -15,22 +15,22 @@ class CustomerRouter(private val customerService: CustomerService) {
     @Bean
     fun customerRoutes() = router {
         ("/customer").nest {
-            GET("/create", ::showCreatePage)
-            GET("/update/{idx}", ::showUpdatePage)
-            GET("/list", ::showListPage)
+            GET("/create", ::viewCreatePage)
+            GET("/update/{idx}", ::viewUpdatePage)
+            GET("/list", ::viewListPage)
         }
     }
 
-    fun showCreatePage(req: ServerRequest): ServerResponse {
+    fun viewCreatePage(req: ServerRequest): ServerResponse {
         val data = mapOf(
             "message" to "Create customer",
             "mode" to "create",
-            "customer" to CreateCustomerResponse()
+            "customer" to CustomerCreateResponse()
         )
         return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/customer/create", data)
     }
 
-    fun showUpdatePage(req: ServerRequest): ServerResponse {
+    fun viewUpdatePage(req: ServerRequest): ServerResponse {
         val idx = req.pathVariable("idx").toInt()
         val customer = customerService.getCustomerById(idx)
         val data = mapOf(
@@ -41,7 +41,7 @@ class CustomerRouter(private val customerService: CustomerService) {
         return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/customer/create", data)
     }
 
-    fun showListPage(req: ServerRequest): ServerResponse  {
+    fun viewListPage(req: ServerRequest): ServerResponse  {
         val customers = customerService.getAllCustomers()
         val data = mapOf(
             "message" to "Customer List",

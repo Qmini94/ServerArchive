@@ -2,7 +2,7 @@ package com.example.serverarchive.api.request.customer
 
 import com.example.serverarchive.domain.customer.entity.Customer
 
-data class UpdateCustomerRequest(
+data class CustomerUpdateRequest(
     val companyName: String,
     val serverIdx: String,
     val serviceIdx: String,
@@ -13,13 +13,13 @@ data class UpdateCustomerRequest(
 ) {
     fun updateEntity(existingCustomer: Customer): Customer {
         return existingCustomer.apply {
-            this.name = this@UpdateCustomerRequest.companyName
-            this.serverIdx = this@UpdateCustomerRequest.serverIdx
-            this.serviceIdx = this@UpdateCustomerRequest.serviceIdx
-            this.managers = this@UpdateCustomerRequest.managers
-            this.codeType = this@UpdateCustomerRequest.codeType
-            this.memo = this@UpdateCustomerRequest.memo
-            this.regId = this@UpdateCustomerRequest.registrantId
+            this.name = this@CustomerUpdateRequest.companyName
+            this.serverIdx = this@CustomerUpdateRequest.serverIdx
+            this.serviceIdx = this@CustomerUpdateRequest.serviceIdx
+            this.managers = this@CustomerUpdateRequest.managers
+            this.codeType = this@CustomerUpdateRequest.codeType
+            this.memo = this@CustomerUpdateRequest.memo
+            this.regId = this@CustomerUpdateRequest.registrantId
             this.updatedDate = java.time.LocalDateTime.now()
         }
     }

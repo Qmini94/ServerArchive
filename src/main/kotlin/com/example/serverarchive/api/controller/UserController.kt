@@ -3,15 +3,20 @@ package com.example.serverarchive.api.controller
 
 import JwtUtil
 import com.example.serverarchive.api.request.user.UserCheckDuplicateUidRequest
+import com.example.serverarchive.api.request.user.UserListRequest
 import com.example.serverarchive.api.request.user.UserLoginRequest
 import com.example.serverarchive.api.request.user.UserRegisterRequest
+import com.example.serverarchive.api.response.PageResponse
 import com.example.serverarchive.api.response.ResponseCode
 import com.example.serverarchive.api.response.SingleResponse
 import com.example.serverarchive.api.response.user.UserCheckDuplicateUidResponse
+import com.example.serverarchive.api.response.user.UserListResponse
 import com.example.serverarchive.api.response.user.UserLoginResponse
 import com.example.serverarchive.api.response.user.UserRegisterResponse
 import com.example.serverarchive.service.user.UserServiceImpl
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.enums.ParameterIn
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -28,6 +33,34 @@ class UserController(
 	private val userService: UserServiceImpl,
 	private val jwtUtil: JwtUtil
 ) {
+	@GetMapping("/list")
+	@ResponseStatus(HttpStatus.OK)
+	@Operation(summary = "회원목록", description = "회원 목록을 조회합니다.")
+	fun getUsers(
+		@Parameter(name = "page", description = "시작 페이지", `in` = ParameterIn.QUERY)
+		page: Int? = 1,
+		@Parameter(name = "size", description = "페이지 출력 수", `in` = ParameterIn.QUERY)
+		size: Int? = 10,
+		@Parameter(name = "searchKey", description = "검색키", `in` = ParameterIn.QUERY)
+		searchKey: String? = null,
+		@Parameter(name = "keyword", description = "검색어", `in` = ParameterIn.QUERY)
+		keyword: String? = null,
+	): PageResponse<UserListResponse>? {
+		var result = ResponseCode.ERROR
+		var message = "Request Failed"
+
+		val response = userService.getUserList(UserListRequest(page ?: 1, size ?: 10, searchKey ?: "", keyword))
+		response?.let {
+			result = ResponseCode.SUCCESS
+			message = "Successfully search user"
+		}
+
+		return PageResponse(
+			result = result,
+			message = message,
+			data = response
+		)
+	}
 
 	@PostMapping("/register")
 	@ResponseStatus(HttpStatus.OK)
