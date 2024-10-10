@@ -2,18 +2,18 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{common/layouts/defaultLayout}">
-<body>
-<div layout:fragment="Content">
-	<h1 th:text="${message}"></h1>
-
-	<table>
-		<thead>
+<div layout:fragment="Content" class="container mt-4">
+	<h1 th:text="${message}" class="mb-4"></h1>
+	<button type="button" class="btn btn-primary mb-3" onclick="location.href='/customer/create'">생성</button>
+	<table class="table table-striped">
+		<thead class="table-light">
 		<tr>
 			<th>ID</th>
 			<th>Name</th>
 			<th>Memo</th>
 			<th>RegId</th>
 			<th>CreateDate</th>
+			<th>Action</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -24,40 +24,19 @@
 			<td th:text="${customer.regId}"></td>
 			<td th:text="${customer.createdDate}"></td>
 			<td>
-				<button type="button" class="customer-delete" th:attr="data-idx=${customer.idx}">삭제</button>
+				<button type="button" class="btn btn-danger customer-delete" th:attr="data-idx=${customer.idx}">삭제</button>
 			</td>
 		</tr>
 		</tbody>
 	</table>
 </div>
-</body>
 <th:block layout:fragment="script">
-	<script>
-        $(function () {
-            $('.customer-row').on('click', function () {
-                const idx = $(this).find('td').first().text();
-                window.location.href = `/customer/update/${idx}`;
-            });
-            $('.customer-delete').on('click', async function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                const idx = $(this).data('idx');
+	<script type="module">
+		import { viewCustomer } from '/js/customer/ajax.js';
 
-                $.ajax({
-                    type: 'DELETE',
-                    url: `/api/customer/delete/${idx}`,
-                    contentType: 'application/json; charset=utf-8',
-                    success: function (res) {
-                        alert(res.message);
-                        window.location = '/customer/list';
-                    },
-                    error: function (error) {
-                        alert(error);
-                        console.error(error);
-                    }
-                });
-            });
-        });
+		$(function () {
+			viewCustomer();
+		});
 	</script>
 </th:block>
 </html>
