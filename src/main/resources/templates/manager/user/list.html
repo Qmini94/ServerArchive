@@ -11,7 +11,7 @@
 		<h2 class="mb-4">회원 목록</h2>
 
 		<!-- 검색창 및 필터 -->
-		<div th:insert="~{common/fragments/search :: search(${options})}"></div>
+		<div id="search-container"></div>
 
 		<!-- 반응형 테이블 -->
 		<div class="table-responsive">
@@ -30,32 +30,24 @@
 				</tr>
 				</thead>
 				<tbody id="memberTableBody">
-				<tr th:each="user, iterStat : ${users}" th:data-idx="${user.idx}" class="user-info">
-					<th scope="row" th:text="${startIndex - iterStat.index}">1</th>
-					<td th:text="${user.userId}">work</td>
-					<td th:text="${user.userName}">관리자</td>
-					<td th:text="${user.department}">웹개발팀</td>
-					<td th:text="${user.position}">연구원</td>
-					<td th:text="${user.email}">work@itid.co.kr</td>
-					<td th:text="${user.phone}">010-1234-5678</td>
-					<td th:text="${user.level}">1</td>
-					<td th:text="${user.lastLogin}">2024-09-01</td>
-				</tr>
+				<tr class="user-info"><!--renderListHtml--></tr>
 				</tbody>
 			</table>
 		</div>
+		<div>
+			<nav id="pagination-container"></nav>
+			<div></div>
+		</div>
+
 	</div>
-
-	<div th:insert="~{common/fragments/pagination :: pagination(currentPage=${currentPage}, totalElements=${totalElements}, size=${size}, baseUrl='/user/list')}"></div>
-
 </div>
 <th:block layout:fragment="script">
 	<script type="module">
-      import { handleUserList } from '/js/user/list.js';
+        import { handleUserList } from '/js/user/list.js';
 
-      $(function () {
-        handleUserList();
-      });
+        $(function () {
+            handleUserList();
+        });
 	</script>
 </th:block>
 </html>
