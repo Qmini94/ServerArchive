@@ -1,9 +1,9 @@
 package com.example.serverarchive.util
 
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
-import org.springframework.web.servlet.function.ServerRequest
 
 object PaginationUtil {
     private const val DEFAULT_PAGE = 1
@@ -22,13 +22,13 @@ object PaginationUtil {
         return PageRequest.of(pageNum - 1, pageSize, Sort.by(direction, sortField))
     }
 
-    fun parseParams(req: ServerRequest): Pageable {
-        val page = req.param("page").map { it.toIntOrNull() }.orElse(DEFAULT_PAGE)
-        val size = req.param("size").map { it.toIntOrNull() }.orElse(DEFAULT_SIZE)
-        val sortField = req.param("sortField").orElse(DEFAULT_SORT_FIELD)
-        val direction = req.param("direction").map {
+    fun parseParams(req: HttpServletRequest): Pageable {
+        val page = req.getParameter("page")?.toIntOrNull() ?: DEFAULT_PAGE
+        val size = req.getParameter("size")?.toIntOrNull() ?: DEFAULT_SIZE
+        val sortField = req.getParameter("sortField") ?: DEFAULT_SORT_FIELD
+        val direction = req.getParameter("direction")?.let {
             Sort.Direction.valueOf(it.uppercase())
-        }.orElse(Sort.Direction.valueOf(DEFAULT_SORT_DIRECTION))
+        } ?: Sort.Direction.valueOf(DEFAULT_SORT_DIRECTION)
 
         return createPageable(page, size, sortField, direction)
     }

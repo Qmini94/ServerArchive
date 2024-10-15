@@ -6,9 +6,13 @@ import com.example.serverarchive.api.response.ResponseCode
 import com.example.serverarchive.api.response.SingleResponse
 import com.example.serverarchive.api.response.customer.CustomerResponse
 import com.example.serverarchive.service.customer.CustomerService
+import com.example.serverarchive.util.PaginationUtil
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpStatus
+import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -72,5 +76,27 @@ class CustomerController(private val customerService: CustomerService) {
                 message = "Failed to delete customer"
             )
         }
+    }
+}
+
+//HTML 뷰 렌더링 메서드
+@Controller
+@RequestMapping("/customer")
+class CustomerViewController(private val customerService: CustomerService) {
+
+    @GetMapping("/list")
+    fun viewListPage(req: HttpServletRequest, model: Model): String {
+        val pageable = PaginationUtil.parseParams(req)
+        val customers = customerService.getCustomerList(pageable)
+        val startIndex = (customers.number * customers.size) + 1
+
+        model.addAttribute("pageTitle", "업체 목록")
+        model.addAttribute("customers", customers.content)
+        model.addAttribute("currentPage", customers.number + 1)
+        model.addAttribute("totalElements", customers.totalElements)
+        model.addAttribute("size", customers.size)
+        model.addAttribute("startIndex", startIndex)
+
+        return "client/customer/list"
     }
 }
