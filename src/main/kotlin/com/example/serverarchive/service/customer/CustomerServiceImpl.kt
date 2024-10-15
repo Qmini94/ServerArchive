@@ -6,13 +6,20 @@ import com.example.serverarchive.api.response.customer.CustomerResponse
 import com.example.serverarchive.api.response.customer.CustomerResponse.Companion.toResponse
 import com.example.serverarchive.domain.customer.repository.CustomerRepository
 import com.example.serverarchive.util.ErrorCode
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
 @Service
 class CustomerServiceImpl(private val customerRepository: CustomerRepository) : CustomerService {
 
-    override fun getAllCustomers(): List<CustomerResponse> {
-        return customerRepository.findAll().map { it.toResponse() }
+    override fun getCustomerList(pageable: Pageable): Page<CustomerResponse> {
+        return try {
+            customerRepository.findAll(pageable)
+                .map { customer -> customer.toResponse() }
+        } catch (e: Exception) {
+            throw IllegalArgumentException(ErrorCode.UNKNOWN_ERROR.name, e)
+        }
     }
 
     override fun getCustomerById(idx: Int): CustomerResponse {
@@ -44,8 +51,8 @@ class CustomerServiceImpl(private val customerRepository: CustomerRepository) : 
     override fun deleteCustomerById(idx: Int): CustomerResponse {
         val customer = customerRepository.findById(idx)
             .orElseThrow {throw IllegalArgumentException(ErrorCode.INVALID_PARAMETER.name)}
-
         customerRepository.deleteById(idx)
+
         return customer.toResponse()
     }
 }

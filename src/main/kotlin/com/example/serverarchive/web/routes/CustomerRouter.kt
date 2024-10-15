@@ -2,6 +2,7 @@ package com.example.serverarchive.web.routes
 
 import com.example.serverarchive.api.response.customer.CustomerCreateResponse
 import com.example.serverarchive.service.customer.CustomerService
+import com.example.serverarchive.util.PaginationUtil
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.MediaType
@@ -42,11 +43,19 @@ class CustomerRouter(private val customerService: CustomerService) {
     }
 
     fun viewListPage(req: ServerRequest): ServerResponse  {
-        val customers = customerService.getAllCustomers()
+        val pageable = PaginationUtil.parseParams(req)
+        val customers = customerService.getCustomerList(pageable)
+        val startIndex = (customers.number * customers.size) + 1
+
         val data = mapOf(
-            "message" to "Customer List",
-            "customers" to customers
+            "pageTitle" to "업체 목록",
+            "customers" to customers.content,
+            "currentPage" to (customers.number + 1),
+            "totalElements" to customers.totalElements,
+            "size" to customers.size,
+            "startIndex" to startIndex
         )
+
         return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/customer/list", data)
     }
 }

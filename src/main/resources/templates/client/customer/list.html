@@ -29,6 +29,7 @@
 		</tr>
 		</tbody>
 	</table>
+	<div th:insert="~{common/fragments/pagination :: pagination(currentPage=${currentPage}, totalElements=${totalElements}, size=${size}, baseUrl='/customer/list')}"></div>
 </div>
 <th:block layout:fragment="script">
 	<script type="module">
