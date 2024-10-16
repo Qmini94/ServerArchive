@@ -12,13 +12,19 @@ import org.springframework.web.servlet.function.router
 
 @Configuration
 class CustomerRouter(private val customerService: CustomerService) {
+    companion object {
+        const val BASE_PATH = "/customer"
+        const val LIST_PATH = "/list"
+        const val CREATE_PATH = "/create"
+        const val UPDATE_PATH = "/update/{idx}"
+    }
 
     @Bean
     fun customerRoutes() = router {
-        ("/customer").nest {
-            GET("/list", ::viewListPage)
-            GET("/create", ::viewCreatePage)
-            GET("/update/{idx}", ::viewUpdatePage)
+        (BASE_PATH).nest {
+            GET(LIST_PATH, ::viewListPage)
+            GET(CREATE_PATH, ::viewCreatePage)
+            GET(UPDATE_PATH, ::viewUpdatePage)
         }
     }
 
@@ -30,7 +36,7 @@ class CustomerRouter(private val customerService: CustomerService) {
         val customers = customerService.getCustomerList(pageable, selectedOption, searchKey)
 
         val startIndex = (customers.number * customers.size) + 1
-        val baseUrl = PaginationUtil.buildBaseUrl("/customer/list", selectedOption, searchKey)
+        val baseUrl = PaginationUtil.buildBaseUrl("$BASE_PATH$LIST_PATH", selectedOption, searchKey)
         val searchOptions = listOf(
             mapOf("value" to "name", "label" to "업체명"),
             mapOf("value" to "memo", "label" to "메모")
