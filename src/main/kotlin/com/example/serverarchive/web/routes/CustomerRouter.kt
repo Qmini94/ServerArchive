@@ -37,7 +37,7 @@ class CustomerRouter(private val customerService: CustomerService) {
         )
 
         val data = mapOf(
-            "pageTitle" to "업체 목록",
+            "message" to "업체 목록",
             "customers" to customers.content,
             "currentPage" to (customers.number + 1),
             "totalElements" to customers.totalElements,
