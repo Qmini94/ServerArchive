@@ -13,10 +13,19 @@ import org.springframework.stereotype.Service
 @Service
 class CustomerServiceImpl(private val customerRepository: CustomerRepository) : CustomerService {
 
-    override fun getCustomerList(pageable: Pageable): Page<CustomerResponse> {
+    override fun getCustomerList(pageable: Pageable, selectedOption: String?, searchKey: String?): Page<CustomerResponse> {
         return try {
-            customerRepository.findAll(pageable)
-                .map { customer -> customer.toResponse() }
+            val customers = when {
+                selectedOption != null && searchKey != null && searchKey.isNotBlank() -> {
+                    when (selectedOption) {
+                        "name" -> customerRepository.findByNameContainingIgnoreCase(searchKey, pageable)
+                        "memo" -> customerRepository.findByMemoContainingIgnoreCase(searchKey, pageable)
+                        else -> customerRepository.findAll(pageable)
+                    }
+                }
+                else -> customerRepository.findAll(pageable)
+            }
+            customers.map { customer -> customer.toResponse() }
         } catch (e: Exception) {
             throw IllegalArgumentException(ErrorCode.UNKNOWN_ERROR.name, e)
         }
