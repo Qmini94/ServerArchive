@@ -5,15 +5,19 @@
 <div layout:fragment="Content" class="container mt-4">
 	<h1 th:text="${message}" class="mb-4"></h1>
 	<button type="button" class="btn btn-primary mb-3" onclick="location.href='/customer/create'">생성</button>
+
+	<!-- 검색창 및 필터 -->
+	<div th:insert="~{common/fragments/search :: search(${options}, ${selectedOption}, ${baseUrl})}"></div>
+
 	<table class="table table-striped">
 		<thead class="table-light">
 		<tr>
-			<th>ID</th>
-			<th>Name</th>
-			<th>Memo</th>
-			<th>RegId</th>
-			<th>CreateDate</th>
-			<th>Action</th>
+			<th>인덱스</th>
+			<th>업체명</th>
+			<th>메모</th>
+			<th>등록자아이디</th>
+			<th>등록날자</th>
+			<th>삭제</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -29,7 +33,7 @@
 		</tr>
 		</tbody>
 	</table>
-	<div th:insert="~{common/fragments/pagination :: pagination(currentPage=${currentPage}, totalElements=${totalElements}, size=${size}, baseUrl='/customer/list')}"></div>
+	<div th:insert="~{common/fragments/pagination :: pagination(${currentPage}, ${totalElements}, ${size}, ${baseUrl})}"></div>
 </div>
 <th:block layout:fragment="script">
 	<script type="module">

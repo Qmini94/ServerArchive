@@ -16,10 +16,40 @@ class CustomerRouter(private val customerService: CustomerService) {
     @Bean
     fun customerRoutes() = router {
         ("/customer").nest {
+            GET("/list", ::viewListPage)
             GET("/create", ::viewCreatePage)
             GET("/update/{idx}", ::viewUpdatePage)
-            GET("/list", ::viewListPage)
         }
+    }
+
+    fun viewListPage(req: ServerRequest): ServerResponse  {
+        val pageable = PaginationUtil.parseParams(req)
+        val selectedOption = req.param("selectedOption").orElse(null)
+        val searchKey = req.param("searchKey").orElse(null)
+
+        val customers = customerService.getCustomerList(pageable, selectedOption, searchKey)
+
+        val startIndex = (customers.number * customers.size) + 1
+        val baseUrl = PaginationUtil.buildBaseUrl("/customer/list", selectedOption, searchKey)
+        val searchOptions = listOf(
+            mapOf("value" to "name", "label" to "업체명"),
+            mapOf("value" to "memo", "label" to "메모")
+        )
+
+        val data = mapOf(
+            "message" to "업체 목록",
+            "customers" to customers.content,
+            "currentPage" to (customers.number + 1),
+            "totalElements" to customers.totalElements,
+            "size" to customers.size,
+            "startIndex" to startIndex,
+            "options" to searchOptions,
+            "selectedOption" to selectedOption,
+            "searchKey" to searchKey,
+            "baseUrl" to baseUrl
+        )
+
+        return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/customer/list", data)
     }
 
     fun viewCreatePage(req: ServerRequest): ServerResponse {
@@ -40,22 +70,5 @@ class CustomerRouter(private val customerService: CustomerService) {
             "customer" to customer
         )
         return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/customer/create", data)
-    }
-
-    fun viewListPage(req: ServerRequest): ServerResponse  {
-        val pageable = PaginationUtil.parseParams(req)
-        val customers = customerService.getCustomerList(pageable)
-        val startIndex = (customers.number * customers.size) + 1
-
-        val data = mapOf(
-            "pageTitle" to "업체 목록",
-            "customers" to customers.content,
-            "currentPage" to (customers.number + 1),
-            "totalElements" to customers.totalElements,
-            "size" to customers.size,
-            "startIndex" to startIndex
-        )
-
-        return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/customer/list", data)
     }
 }
