@@ -2,67 +2,6 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/layouts/defaultLayout}">
-<style>
-  /* 테이블 스타일 */
-  table {
-    width: 100%; /* 테이블이 화면 너비를 꽉 채우도록 설정 */
-    border-collapse: collapse; /* 테두리 겹침을 제거 */
-    margin: 20px 0; /* 상하 여백 추가 */
-    font-size: 16px; /* 폰트 크기 */
-    text-align: left; /* 텍스트 왼쪽 정렬 */
-  }
-
-  /* 테이블 헤더 스타일 */
-  thead th {
-    background-color: #4CAF50; /* 헤더 배경색 */
-    color: white; /* 헤더 텍스트 색상 */
-    padding: 12px; /* 패딩 */
-    border-bottom: 2px solid #ddd; /* 아래쪽 테두리 */
-  }
-
-  /* 테이블 바디 스타일 */
-  tbody td {
-    padding: 12px; /* 데이터 셀 패딩 */
-    border-bottom: 1px solid #ddd; /* 셀 아래쪽 테두리 */
-  }
-
-  /* 짝수 행 배경색 */
-  tbody tr:nth-child(even) {
-    background-color: #f2f2f2; /* 짝수 행의 배경색 */
-  }
-
-  /* 마우스 오버 시 행 강조 */
-  tbody tr:hover {
-    background-color: #e2e2e2; /* 마우스 오버 시 배경색 */
-  }
-
-  /* 삭제 버튼 스타일 */
-  .delete-btn {
-    background-color: #ff4d4d; /* 버튼 배경색 */
-    color: white; /* 버튼 텍스트 색상 */
-    border: none; /* 테두리 제거 */
-    padding: 8px 16px; /* 버튼 패딩 */
-    cursor: pointer; /* 마우스 커서 변경 */
-    border-radius: 4px; /* 둥근 모서리 */
-    font-size: 14px; /* 버튼 폰트 크기 */
-  }
-
-  .delete-btn:hover {
-    background-color: #ff1a1a; /* 마우스 오버 시 버튼 색상 변경 */
-  }
-
-  /* 테이블 내 링크 스타일 (링크가 있다면) */
-  a {
-    color: #4CAF50; /* 링크 색상 */
-    text-decoration: none; /* 밑줄 제거 */
-  }
-
-  a:hover {
-    text-decoration: underline; /* 마우스 오버 시 밑줄 */
-  }
-
-</style>
-<body>
 <div layout:fragment="Content">
   <h1 th:text="${message}"></h1>
   <table>
@@ -79,18 +18,42 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="service : ${service}">
-      <td th:text="${service.domainUrl}"></td>
+    <tr th:each="service : ${services}">
+      <td th:href="@{/service/update/(${service.idx})}" th:text="${service.domainUrl}"></td>
       <td th:text="${service.domainResister}"></td>
       <td th:text="${service.certificateIssuer}"></td>
       <td th:text="${service.certificateRenewalDate}"></td>
       <td th:text="${service.webmailCnt}"></td>
       <td th:text="${service.webmailAccount}"></td>
       <td th:text="${service.memo}"></td>
-      <td><button class="delete-btn">삭제</button></td>
+      <td>
+        <button type="button" class="service-delete" th:attr="data-idx=${service.idx}">삭제</button>
+      </td>
     </tr>
     </tbody>
   </table>
 </div>
-</body>
+</html>
+<th:block layout:fragment="script">
+  <script>
+    $(function () {
+      $('.service-delete').on('click', async function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const idx = $(this).data('idx');
+
+        try {
+          const res = await $.ajax({
+            type: 'DELETE',
+            url: `/api/service/delete/${idx}`
+          });
+          alert("데이터 삭제 성공");
+        } catch (error) {
+          showAlert('Error!', error, 'error');
+          console.error(error);
+        }
+      });
+    })
+  </script>
+</th:block>
 </html>

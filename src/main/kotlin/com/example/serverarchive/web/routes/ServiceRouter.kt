@@ -15,13 +15,13 @@ class ServiceRouter (private val serviceService: ServiceService){
     @Bean
     fun serviceRoutes() = router {
         ("/service").nest {
-            GET("/create", ::showCreatePage)
+            GET("/create", ::viewCreatePage)
             GET("/list", ::showListPage)
-            GET("/view", ::showViewPage)
+            GET("/update/{idx}", ::viewUpdatePage)
         }
     }
 
-    fun showCreatePage(req: ServerRequest): ServerResponse {
+    fun viewCreatePage(req: ServerRequest): ServerResponse {
         val data = mapOf(
             "message" to "Create service"
         )
@@ -29,19 +29,23 @@ class ServiceRouter (private val serviceService: ServiceService){
     }
 
     fun showListPage(req: ServerRequest): ServerResponse {
+        val services = serviceService.getAllServices()
         val data = mapOf(
             "message" to "Service List",
-            "service" to null
+            "services" to services
         )
         return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/service/list", data)
     }
 
-    fun showViewPage(req: ServerRequest): ServerResponse {
+    fun viewUpdatePage(req: ServerRequest): ServerResponse {
+        val idx = req.pathVariable("idx").toInt()
+        val service = serviceService.getServiceById(idx)
         val data = mapOf(
-            "message" to "Service View",
-            "service" to null
+                "message" to "Update service",
+                "mode" to "update",
+                "service" to service
         )
-        return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/service/view", data)
+        return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/service/create", data)
     }
 
 }

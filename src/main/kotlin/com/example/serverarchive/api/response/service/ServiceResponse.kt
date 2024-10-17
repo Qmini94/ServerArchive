@@ -12,7 +12,7 @@ class ServiceResponse(
     @Schema(description = "도메인 등록일", nullable = false, required = true)
     val domainResister: String,
     @Schema(description = "도메인 구매처", nullable = true, required = false)
-    val certificateIssuer: String? = null,
+    val certificateIssuer : String,
     @Schema(description = "인증서 갱신일", nullable = true, required = false)
     val certificateRenewalDate: String? = null,
     @Schema(description = "웹메일 총 갯수", nullable = true, required = false)
@@ -29,22 +29,14 @@ class ServiceResponse(
     companion object {
         fun Service.toResponse(): ServiceResponse {
             return ServiceResponse(
+                    idx = this.idx,
                 domainUrl = this.domainUrl,
                 domainResister = this.domainResister,
                 certificateIssuer = this.certificateIssuer,
                 certificateRenewalDate = this.certificateRenewalDate,
                 webmailCnt = this.webmailCnt,
                 webmailAccount = this.webmailAccount,
-            )
-        }
-        fun CreatedFrom(service: Service): ServiceResponse {
-            return ServiceResponse(
-                domainUrl = service.domainUrl,
-                domainResister = service.domainResister,
-                certificateIssuer = service.certificateIssuer,
-                certificateRenewalDate = service.certificateRenewalDate,
-                webmailCnt = service.webmailCnt,
-                webmailAccount = service.webmailAccount,
+                memo = this.memo,
             )
         }
     }

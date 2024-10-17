@@ -2,159 +2,182 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/layouts/defaultLayout}">
 <div layout:fragment="Content">
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-    }
+  <style>
+      body {
+          font-family: Arial, sans-serif;
+          margin: 20px;
+      }
 
-    h2 {
-        text-align: center;
-    }
+      h2 {
+          text-align: center;
+      }
 
-    table {
-        width: 100%;
-        max-width: 600px;
-        margin: 0 auto;
-        border-collapse: collapse;
-    }
+      table {
+          width: 100%;
+          max-width: 600px;
+          margin: 0 auto;
+          border-collapse: collapse;
+      }
 
-    table, th, td {
-        border: 1px solid #dddddd;
-    }
+      table, th, td {
+          border: 1px solid #dddddd;
+      }
 
-    th, td {
-        padding: 10px;
-        text-align: left;
-    }
+      th, td {
+          padding: 10px;
+          text-align: left;
+      }
 
-    th {
-        background-color: #f2f2f2;
-    }
+      th {
+          background-color: #f2f2f2;
+      }
 
-    input[type="text"] {
-        width: 50%;
-        padding: 8px;
-        box-sizing: border-box;
-    }
+      input[type="text"] {
+          width: 50%;
+          padding: 8px;
+          box-sizing: border-box;
+      }
 
-    input[type="submit"] {
-        display: block;
-        width: 100%;
-        padding: 10px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        cursor: pointer;
-        font-size: 16px;
-    }
+      input[type="submit"] {
+          display: block;
+          width: 100%;
+          padding: 10px;
+          background-color: #4CAF50;
+          color: white;
+          border: none;
+          cursor: pointer;
+          font-size: 16px;
+      }
 
-    input[type="submit"]:hover {
-        background-color: #45a049;
-    }
-</style>
-<h2>데이터 입력 폼</h2>
-<form action="/submit" method="POST">
-  <table>
-    <tr>
-      <td>
-        <label for="domainUrl">도메인 URL</label>
-      </td>
-      <td>
-        <input type="text" id="domainUrl" name="domainUrl" required></td>
-    </tr>
-    <tr>
-      <td>
-        <label for="domainResister">도메인 등록일</label>
-      </td>
-      <td>
-        <input type="date" id="domainResister" name="domainResister" required>
-      </td>
-    </tr>
-    <tr>
-      <td><label for="certificateIssuer">도메인 구매처</label></td>
-      <td>
-        <select id="certificateIssuer" name="certificateIssuer">
-          <option value="hosting">선택해주세요</option>
-          <option value="hosting">카페24 호스팅</option>
-          <option value="reseller">카페24 리셀러</option>
-          <option value="webmail">웹메일</option>
-        </select>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label for="certificateRenewalDate">인증서 갱신일</label>
-      </td>
-      <td>
-        <input type="text" id="certificateRenewalDate" name="certificateRenewalDate" required>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label for="webmailCnt">웹메일 계정 총갯수</label></td>
-      <td><input type="text" id="webmailCnt" name="webmailCnt" required></td>
-    </tr>
-    <tr>
-      <td>
-        <label for="webmailAccount">웹메일 계정</label>
-      </td>
-      <td>
-        <input class="hidden" type="text" id="webmailAccount" name="webmailAccount" required>
-        <input type="text" id="webmailAccountId1" name="webmailAccountId1" required>
-        <input type="text" id="webmailAccountPw1" name="webmailAccountPw1" required>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label for="memo">서비스 히스토리</label>
-      </td>
-      <td>
-        <input type="text" id="memo" name="memo" required>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <input type="submit" id="save" value="제출">
-      </td>
-    </tr>
-  </table>
-</form>
+      input[type="submit"]:hover {
+          background-color: #45a049;
+      }
+  </style>
+  <h2>데이터 입력 폼</h2>
+  <form method="POST">
+    <input type="hidden" id="idx" name="idx" th:value="${service.idx}">
+    <input type="hidden" id="mode" name="mode" th:value="${mode}">
+    <table>
+      <tr>
+        <td>
+          <label for="domainUrl">도메인 URL</label>
+        </td>
+        <td>
+          <input type="text" id="domainUrl" name="domainUrl"  th:value="${service.domainUrl}" required></td>
+      </tr>
+      <tr>
+        <td>
+          <label for="domainResister">도메인 등록일</label>
+        </td>
+        <td>
+          <input type="date" id="domainResister" name="domainResister" th:value="${service.domainResister}" required>
+        </td>
+      </tr>
+      <tr>
+        <td><label for="certificateIssuer">도메인 구매처</label></td>
+        <td>
+          <select id="certificateIssuer" name="certificateIssuer">
+            <option value="all">선택해주세요</option>
+            <option value="hosting"  th:selected="${service.certificateIssuer == 'hosting'}">카페24 호스팅</option>
+            <option value="reseller"  th:selected="${service.certificateIssuer == 'reseller'}">카페24 리셀러</option>
+            <option value="webmail"  th:selected="${service.certificateIssuer == 'webmail'}" >웹메일</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="certificateRenewalDate">인증서 갱신일</label>
+        </td>
+        <td>
+          <input type="date" id="certificateRenewalDate" name="certificateRenewalDate"  th:value="${service.certificateRenewalDate}" required>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="webmailCnt">웹메일 계정 총갯수</label></td>
+        <td><input type="number" id="webmailCnt" name="webmailCnt" th:value="${service.webmailCnt}" required>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="webmailAccount">웹메일 계정</label>
+        </td>
+        <td>
+          <input type="text" id="webmailAccount" name="webmailAccount" th:value="${service.webmailAccount}" required>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="memo">서비스 히스토리</label>
+        </td>
+        <td>
+          <textarea type="text" id="memo" name="memo"  th:value="${service.memo}" required></textarea>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <input type="submit" id="save" value="제출/수정">
+          <button type="button" class="service-delete" th:attr="data-idx=${service.idx}">삭제</button>
+        </td>
+      </tr>
+    </table>
+  </form>
 </div>
 <th:block layout:fragment="script">
-<script>
-  $(function () {
-    $("#save").on('click', async function (e) {
-      e.preventDefault();
+  <script>
+    $(function () {
+      $("#save").on('click', async function (e) {
+        e.preventDefault();
+        const idx = $('input[name=\'idx\']').val();
+        const mode = $('input[name=\'mode\']').val();
+        const url = mode === 'create' ? '/api/service/create' : `/api/service/update/${idx}`;
+        const params = {
+          domainUrl: $("#domainUrl").val(),
+          domainResister: $("#domainResister").val(),
+          certificateIssuer: $("#certificateIssuer").val(),
+          certificateRenewalDate: $("#certificateRenewalDate").val(),
+          webmailCnt: $("#webmailCnt").val(),
+          webmailAccount: $("#webmailAccount").val(),
+          memo: $("#memo").val(),
+          registrantId: $("#registrantId").val()
+        };
 
-      const params = {
-        domainUrl: $("#domainUrl").val(),
-        domainResister: $("#domainResister").val(),
-        certificateIssuer: $("#certificateIssuer").val(),
-        certificateRenewalDate: $("#certificateRenewalDate").val(),
-        webmailCnt: $("#webmailCnt").val(),
-        webmailAccount: $("#webmailAccount").val(),
-        memo: $("#memo").val(),
-        registrantId: $("#registrantId").val()
-      };
+        $.ajax({
+          type: mode === 'create' ? 'POST' : 'PUT',
+          url: url,
+          data: JSON.stringify(params),
+          contentType: 'application/json; charset=utf-8',
+          success: function (res) {
+            alert(res.message);
+            window.location = '/service/list';
+          },
+          error: function (error) {
+            alert(error);
+            console.error(error);
+          }
+        });
+      });
 
-      $.ajax({
-        type: "POST",
-        url: "/api/service/create",
-        data: JSON.stringify(params),
-        contentType: 'application/json; charset=utf-8',
-        success: function (res) {
-          alert(res.message);
-          window.location = '/service/list';
-        },
-        error: function (error) {
-          alert(error);
+      $('.service-delete').on('click', async function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const idx = $(this).data('idx');
+
+        try {
+          const res = await $.ajax({
+            type: 'DELETE',
+            url: `/api/service/delete/${idx}`
+          });
+          alert("데이터 삭제 성공");
+        } catch (error) {
+          showAlert('Error!', error, 'error');
           console.error(error);
         }
       });
-    })
-  })
-</script>
+
+
+    });
+  </script>
 </th:block>
 </html>
 
