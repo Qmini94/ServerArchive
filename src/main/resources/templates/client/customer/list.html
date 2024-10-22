@@ -17,6 +17,7 @@
 			<th>메모</th>
 			<th>등록자아이디</th>
 			<th>등록날자</th>
+			<th>수정날자</th>
 			<th>삭제</th>
 		</tr>
 		</thead>
@@ -27,7 +28,9 @@
 			<td th:text="${customer.memo}"></td>
 			<td th:text="${customer.regId}"></td>
 			<td th:text="${customer.createdDate}"></td>
+			<td th:text="${customer.updatedDate}"></td>
 			<td>
+				<button type="button" class="btn btn-info customer-update" th:attr="data-idx=${customer.idx}">수정</button>
 				<button type="button" class="btn btn-danger customer-delete" th:attr="data-idx=${customer.idx}">삭제</button>
 			</td>
 		</tr>

@@ -2,7 +2,7 @@ package com.example.serverarchive.api.response.customer
 
 import com.example.serverarchive.domain.customer.entity.Customer
 import io.swagger.v3.oas.annotations.media.Schema
-import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @Schema(description = "업체 정보")
 class CustomerResponse(
@@ -31,13 +31,15 @@ class CustomerResponse(
     val regId: String,
 
     @Schema(description = "업체등록일", nullable = true, required = false)
-    val createdDate: LocalDateTime? = null,
+    val createdDate: String? = null,
 
     @Schema(description = "업체정보수정일", nullable = true, required = false)
-    val updatedDate: LocalDateTime? = null
+    val updatedDate: String? = null
 
     ){
     companion object{
+        private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+
         fun Customer.toResponse(): CustomerResponse {
             return CustomerResponse(
                 idx =  this.idx,
@@ -48,8 +50,8 @@ class CustomerResponse(
                 codeType = this.codeType,
                 memo = this.memo,
                 regId = this.regId,
-                createdDate = this.createdDate,
-                updatedDate = this.updatedDate
+                createdDate = this.createdDate?.format(formatter),
+                updatedDate = this.updatedDate?.format(formatter)
             )
         }
     }
