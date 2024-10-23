@@ -1,6 +1,5 @@
 package com.example.serverarchive.web.routes
 
-import com.example.serverarchive.api.response.customer.CustomerCreateResponse
 import com.example.serverarchive.service.customer.CustomerService
 import com.example.serverarchive.util.PaginationUtil
 import org.springframework.context.annotation.Bean
@@ -61,8 +60,7 @@ class CustomerRouter(private val customerService: CustomerService) {
     fun viewCreatePage(req: ServerRequest): ServerResponse {
         val data = mapOf(
             "message" to "Create customer",
-            "mode" to "create",
-            "customer" to CustomerCreateResponse()
+            "mode" to "create"
         )
         return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/customer/create", data)
     }
