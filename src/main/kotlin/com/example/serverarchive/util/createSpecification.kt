@@ -19,7 +19,7 @@ object SpecificationUtils {
             searchParams.forEach { (key, value) ->
                 if (!value.isNullOrBlank()) {
                     predicates.add(criteriaBuilder.like(
-                        criteriaBuilder.lower(root.get<String>(key)),
+                        criteriaBuilder.lower(root.get(key)),
                         "%${value.lowercase()}%"
                     ))
                 }
@@ -27,7 +27,7 @@ object SpecificationUtils {
 
             if (startDate != null && endDate != null) {
                 predicates.add(criteriaBuilder.between(
-                    root.get<LocalDateTime>("createdDate"),
+                    root.get("createdDate"),
                     startDate,
                     endDate
                 ))
