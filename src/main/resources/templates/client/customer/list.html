@@ -4,10 +4,8 @@
 	  layout:decorate="~{common/layouts/defaultLayout}">
 <div layout:fragment="Content" class="container mt-4">
 	<h1 th:text="${message}" class="mb-4"></h1>
-	<button type="button" class="btn btn-primary mb-3" onclick="location.href='/customer/create'">생성</button>
 
-	<!-- 검색창 및 필터 -->
-	<div th:insert="~{common/fragments/search :: search(${options}, ${selectedOption}, ${baseUrl})}"></div>
+	<div th:insert="~{common/fragments/search}"></div>
 
 	<table class="table table-striped">
 		<thead class="table-light">
@@ -36,7 +34,8 @@
 		</tr>
 		</tbody>
 	</table>
-	<div th:insert="~{common/fragments/pagination :: pagination(${currentPage}, ${totalElements}, ${size}, ${baseUrl})}"></div>
+	<button type="button" class="btn btn-primary mb-3" onclick="location.href='/customer/create'">생성</button>
+	<div th:insert="~{common/fragments/pagination}"></div>
 </div>
 <th:block layout:fragment="script">
 	<script type="module">

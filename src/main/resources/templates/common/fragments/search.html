@@ -1,23 +1,32 @@
-<div th:fragment="search(options, selectedOption, baseUrl)">
+<div>
 	<form action="#" method="get" id="searchForm" th:action="${baseUrl}">
-		<div class="row mb-4 justify-content-end align-items-center">
-			<div class="col-auto">
-				<label for="selectedOption" class="visually-hidden">검색 필터 선택</label>
+		<div class="row mb-4 align-items-center gx-2">
+			<div class="col-lg-2 col-md-4 col-sm-6 mb-2">
+				<label for="startDate" class="form-label">시작 날짜</label>
+				<input type="datetime-local" id="startDate" name="startDate" class="form-control form-control-sm"
+					   aria-label="시작 날짜" th:value="${searchParams.startDate}">
+			</div>
+			<div class="col-lg-2 col-md-4 col-sm-6 mb-2">
+				<label for="endDate" class="form-label">종료 날짜</label>
+				<input type="datetime-local" id="endDate" name="endDate" class="form-control form-control-sm"
+					   aria-label="종료 날짜" th:value="${searchParams.endDate}">
+			</div>
+			<div class="col-lg-2 col-md-4 col-sm-6 mb-2">
+				<label for="selectedOption" class="form-label">검색 필터 선택</label>
 				<select id="selectedOption" name="selectedOption" class="form-select form-select-sm" aria-label="검색 필터 선택">
 					<option th:each="option : ${options}"
 							th:value="${option.value}"
 							th:text="${option.label}"
-							th:selected="${option.value == selectedOption}">
-					</option>
+							th:selected="${option.value == searchParams.selectedOption}"></option>
 				</select>
 			</div>
-			<div class="col-auto">
-				<label for="searchKey" class="visually-hidden">검색어 입력</label>
-				<input type="text" id="searchKey" name="searchKey" class="form-control form-control-sm" placeholder="검색어를 입력하세요"
-					   aria-label="검색어 입력" th:value="${searchKey}">
-			</div>
-			<div class="col-auto">
-				<button type="submit" class="btn btn-primary btn-sm" id="searchBtn">검색</button>
+			<div class="col-lg-3 col-md-4 col-sm-6 mb-2">
+				<label for="searchKey" class="form-label">검색어 입력</label>
+				<div class="input-group">
+					<input type="text" id="searchKey" name="searchKey" class="form-control form-control-sm" placeholder="검색어를 입력하세요"
+						   aria-label="검색어 입력" th:value="${searchParams.searchKey}">
+					<button type="submit" class="btn btn-primary">검색</button>
+				</div>
 			</div>
 		</div>
 	</form>

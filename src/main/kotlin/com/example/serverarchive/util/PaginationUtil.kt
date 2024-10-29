@@ -33,11 +33,12 @@ object PaginationUtil {
         return createPageable(page, size, sortField, direction)
     }
 
-    fun buildBaseUrl(base: String, selectedOption: String?, searchKey: String?): String {
+    fun buildBaseUrl(base: String, searchParams: Map<String, String?>): String {
         val params = mutableListOf<String>()
 
-        selectedOption?.let { params.add("selectedOption=$it") }
-        searchKey?.let { params.add("searchKey=$it") }
+        for ((key, value) in searchParams) {
+            value?.let { params.add("$key=$it") }
+        }
 
         return if (params.isNotEmpty()) {
             "$base?${params.joinToString("&")}"

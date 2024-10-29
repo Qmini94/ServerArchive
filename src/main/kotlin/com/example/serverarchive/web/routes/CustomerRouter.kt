@@ -1,5 +1,6 @@
 package com.example.serverarchive.web.routes
 
+import com.example.serverarchive.domain.customer.entity.CustomerSearchOption
 import com.example.serverarchive.service.customer.CustomerService
 import com.example.serverarchive.util.PaginationUtil
 import org.springframework.context.annotation.Bean
@@ -29,17 +30,20 @@ class CustomerRouter(private val customerService: CustomerService) {
 
     fun viewListPage(req: ServerRequest): ServerResponse  {
         val pageable = PaginationUtil.parseParams(req)
-        val selectedOption = req.param("selectedOption").orElse(null)
-        val searchKey = req.param("searchKey").orElse(null)
+        val searchParams = mapOf(
+            "selectedOption" to req.param("selectedOption").orElse(null),
+            "searchKey" to req.param("searchKey").orElse(null),
+            "startDate" to req.param("startDate").orElse(null),
+            "endDate" to req.param("endDate").orElse(null)
+        )
 
-        val customers = customerService.getCustomerList(pageable, selectedOption, searchKey)
+        val customers = customerService.getCustomerList(pageable, searchParams)
 
         val startIndex = (customers.number * customers.size) + 1
-        val baseUrl = PaginationUtil.buildBaseUrl("$BASE_PATH$LIST_PATH", selectedOption, searchKey)
-        val searchOptions = listOf(
-            mapOf("value" to "name", "label" to "업체명"),
-            mapOf("value" to "memo", "label" to "메모")
-        )
+        val baseUrl = PaginationUtil.buildBaseUrl("$BASE_PATH$LIST_PATH", searchParams)
+        val searchOptions = CustomerSearchOption.values().map {
+            mapOf("value" to it.fieldName, "label" to it.label)
+        }
 
         val data = mapOf(
             "message" to "업체 목록",
@@ -48,10 +52,9 @@ class CustomerRouter(private val customerService: CustomerService) {
             "totalElements" to customers.totalElements,
             "size" to customers.size,
             "startIndex" to startIndex,
+            "baseUrl" to baseUrl,
             "options" to searchOptions,
-            "selectedOption" to selectedOption,
-            "searchKey" to searchKey,
-            "baseUrl" to baseUrl
+            "searchParams" to searchParams
         )
 
         return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/customer/list", data)
