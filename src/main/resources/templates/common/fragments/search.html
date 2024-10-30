@@ -31,3 +31,12 @@
 		</div>
 	</form>
 </div>
+<th:block layout:fragment="script">
+	<script type="module">
+		import { submit } from '/js/customer/list.js';
+
+		$(function () {
+			submit();
+		});
+	</script>
+</th:block>
