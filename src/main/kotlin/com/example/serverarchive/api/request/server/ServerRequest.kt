@@ -10,13 +10,15 @@ class ServerRequest(
     @Schema(description = "IP 주소", nullable = false, required = true)
     val ip: String,
     @Schema(description = "접속 포트 번호", nullable = false, required = true)
-    val port: String,
+    var port: String,
     @Schema(description = "사용자 계정", nullable = false, required = true)
     var serverUser: String,
     @Schema(description = "데이터베이스 이름", nullable = false, required = true)
     var databaseName: String,
     @Schema(description = "root 계정 비밀번호", nullable = false, required = true)
-    val rootPassword: String,
+    var rootPassword: String,
+    @Schema(description = "메모", nullable = true, required = false)
+    var memo: String? = null
 ) {
     fun validate(): Boolean {
         requireNotNull(this.ip) { ErrorCodes.getMessage(1006) }
@@ -35,6 +37,7 @@ class ServerRequest(
             serverUser = this.serverUser,
             databaseName = this.databaseName,
             rootPassword = this.rootPassword,
+            memo = this.memo ?: "",
             regId = "hjiwon98",
             createdDate = LocalDateTime.now(),
             updatedDate = LocalDateTime.now()

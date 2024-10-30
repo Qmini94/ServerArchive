@@ -1,11 +1,11 @@
 package com.example.serverarchive.api.controller
 
 import com.example.serverarchive.api.request.server.ServerRequest
-import com.example.serverarchive.api.request.server.UpdateServerRequest
+import com.example.serverarchive.api.request.server.ServerUpdateRequest
 import com.example.serverarchive.api.response.ResponseCode
 import com.example.serverarchive.api.response.SingleResponse
 import com.example.serverarchive.api.response.server.ServerResponse
-import com.example.serverarchive.api.response.server.UpdateServerResponse
+import com.example.serverarchive.api.response.server.ServerUpdateResponse
 import com.example.serverarchive.service.server.ServerServiceImpl
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -42,8 +42,8 @@ class ServerController(private val serverService: ServerServiceImpl) {
     @Operation(summary = "서버 정보 수정", description = "서버 정보를 수정합니다.")
     fun updateServer(
         @PathVariable idx: Long,
-        @RequestBody req: UpdateServerRequest
-    ): SingleResponse<UpdateServerResponse?> {
+        @RequestBody req: ServerUpdateRequest
+    ): SingleResponse<ServerUpdateResponse?> {
         var result = ResponseCode.ERROR
         var message = "Request Failed"
 

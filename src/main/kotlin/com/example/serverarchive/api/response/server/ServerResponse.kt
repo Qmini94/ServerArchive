@@ -17,6 +17,8 @@ class ServerResponse(
     val rootPassword: String,
     @Schema(description = "데이터베이스 이름", nullable = true, required = false)
     val databaseName: String,
+    @Schema(description = "메모", nullable = true, required = false)
+    var memo: String? = null,
     @Schema(description = "서버 신규 등록일자", nullable = true, required = false)
     val createdDate: LocalDateTime? = null,
     @Schema(description = "서버정보 수정일자", nullable = true, required = false)
@@ -33,6 +35,7 @@ class ServerResponse(
                 serverUser = this.serverUser,
                 rootPassword = this.rootPassword,
                 databaseName = this.databaseName,
+                memo = this.memo ?: "",
                 createdDate = this.createdDate,
                 updatedDate = this.updatedDate,
                 regId = this.regId,

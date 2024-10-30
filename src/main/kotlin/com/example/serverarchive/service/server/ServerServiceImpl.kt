@@ -1,10 +1,10 @@
 package com.example.serverarchive.service.server
 
 import com.example.serverarchive.api.request.server.ServerRequest
-import com.example.serverarchive.api.request.server.UpdateServerRequest
+import com.example.serverarchive.api.request.server.ServerUpdateRequest
 import com.example.serverarchive.api.response.server.ServerResponse
 import com.example.serverarchive.api.response.server.ServerResponse.Companion.toResponse
-import com.example.serverarchive.api.response.server.UpdateServerResponse
+import com.example.serverarchive.api.response.server.ServerUpdateResponse
 import com.example.serverarchive.domain.server.entity.toUpdateResponse
 import com.example.serverarchive.domain.server.repository.ServerRepository
 import org.springframework.stereotype.Service
@@ -23,6 +23,7 @@ class ServerServiceImpl(private val serverRepository: ServerRepository) : Server
 
     override fun getAllServers(): List<ServerResponse> {
         val servers = serverRepository.findAll()
+            .sortedByDescending { it.updatedDate }  // 최근 업데이트 날짜 순으로 내림차순  // .sortedBy:오름차순
         return servers.map { it.toResponse() }
     }
 
@@ -40,7 +41,7 @@ class ServerServiceImpl(private val serverRepository: ServerRepository) : Server
         return serverEntity?.toResponse()
     }
 
-    override fun updateServer(idx: Long, req: UpdateServerRequest): UpdateServerResponse? {
+    override fun updateServer(idx: Long, req: ServerUpdateRequest): ServerUpdateResponse? {
         val existingServer = serverRepository.findById(idx).orElse(null) ?: return null
 
         existingServer.apply {
@@ -49,6 +50,7 @@ class ServerServiceImpl(private val serverRepository: ServerRepository) : Server
             serverUser = req.serverUser
             rootPassword = req.rootPassword
             databaseName = req.databaseName
+            memo = req.memo
             updatedDate = LocalDateTime.now()
         }
 

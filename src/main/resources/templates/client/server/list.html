@@ -31,17 +31,17 @@
 					<th scope="col">IP Address</th>
 					<th scope="col">User</th>
 					<th scope="col">Updated Date</th>
-					<th scope="col">Upt/Del</th>
+					<th scope="col">Update / Delete</th>
 				</tr>
 				</thead>
 				<tbody>
 				<tr th:each="server : ${servers}" th:attr="data-idx=${server.idx}">
 					<td th:text="${server.ip} + ':' + ${server.port}"></td>
 					<td th:text="${server.serverUser}"></td>
-					<td th:text="${server.updatedDate}"></td>
+					<td th:text="${#temporals.format(server.updatedDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
 					<td>
-						<button th:onclick="'updateServer(' + ${server.idx} + ')'">수정</button>
-						<button th:onclick="'deleteServer(' + ${server.idx} + ')'">삭제</button>
+						<button class="btn btn-light" th:onclick="'updateServer(' + ${server.idx} + ')'">수정</button>
+						<button class="btn btn-dark" th:onclick="'deleteServer(' + ${server.idx} + ')'">삭제</button>
 					</td>
 				</tr>
 				</tbody>
