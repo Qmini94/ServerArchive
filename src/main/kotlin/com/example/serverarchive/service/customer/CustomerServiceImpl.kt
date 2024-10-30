@@ -8,7 +8,7 @@ import com.example.serverarchive.domain.customer.entity.Customer
 import com.example.serverarchive.domain.customer.entity.CustomerSearchOption
 import com.example.serverarchive.domain.customer.repository.CustomerRepository
 import com.example.serverarchive.util.ErrorCode
-import com.example.serverarchive.util.SpecificationUtils
+import com.example.serverarchive.util.SearchUtils
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
@@ -23,24 +23,26 @@ class CustomerServiceImpl(private val customerRepository: CustomerRepository) : 
         searchParams: Map<String, String?>
     ): Page<CustomerResponse> {
         return try {
-            val searchKey = searchParams["searchKey"]
+            val searchKey = searchParams["searchKey"]?.takeIf { it.isNotBlank() }
             val searchOptions = searchParams["selectedOption"]?.split(",") ?: emptyList()
 
-            val searchCriteria = if (!searchKey.isNullOrBlank()) {
-                SpecificationUtils.mapSearchParams(
-                    searchKey = searchKey,
+            if (searchKey != null && !SearchUtils.isValidSearchKey(searchKey)) {
+                throw IllegalArgumentException("Invalid search key")
+            }
+
+            val searchCriteria = searchKey?.let {
+                SearchUtils.mapSearchParams(
+                    searchKey = it,
                     searchOptions = searchOptions,
                     options = CustomerSearchOption.values(),
                     fieldNameSelector = { it.fieldName }
                 )
-            } else {
-                emptyMap()
-            }
+            } ?: emptyMap()
 
             val startDate = searchParams["startDate"]?.takeIf { it.isNotBlank() }?.let { LocalDateTime.parse(it) }
             val endDate = searchParams["endDate"]?.takeIf { it.isNotBlank() }?.let { LocalDateTime.parse(it) }
 
-            val specification: Specification<Customer> = SpecificationUtils.createSpecification(
+            val specification: Specification<Customer> = SearchUtils.createSpecification(
                 searchParams = searchCriteria,
                 startDate = startDate,
                 endDate = endDate

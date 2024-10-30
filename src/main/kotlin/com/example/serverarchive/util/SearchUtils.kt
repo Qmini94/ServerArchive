@@ -6,14 +6,13 @@ import jakarta.persistence.criteria.CriteriaBuilder
 import jakarta.persistence.criteria.Predicate
 import jakarta.persistence.criteria.Root
 
-object SpecificationUtils {
-
+object SearchUtils {
     fun <T> createSpecification(
         searchParams: Map<String, String?>,
         startDate: LocalDateTime?,
         endDate: LocalDateTime?
     ): Specification<T> {
-        return Specification { root: Root<T>, query, criteriaBuilder: CriteriaBuilder ->
+        return Specification { root: Root<T>, _, criteriaBuilder: CriteriaBuilder ->
             val predicates = mutableListOf<Predicate>()
 
             searchParams.forEach { (key, value) ->
@@ -43,15 +42,15 @@ object SpecificationUtils {
         options: Array<T>,
         fieldNameSelector: (T) -> String
     ): Map<String, String> {
-        val searchCriteria = mutableMapOf<String, String>()
-
-        searchOptions.forEach { selectedOption ->
-            val option = options.find { fieldNameSelector(it).equals(selectedOption, ignoreCase = true) }
-            option?.let {
-                searchCriteria[fieldNameSelector(it)] = searchKey
+        return searchOptions
+            .filter { selectedOption ->
+                options.any { fieldNameSelector(it).equals(selectedOption, ignoreCase = true) }
             }
-        }
+            .associateWith { searchKey }
+    }
 
-        return searchCriteria
+    fun isValidSearchKey(searchKey: String): Boolean {
+        val regex = Regex("^[a-zA-Z0-9가-힣]{1,100}$")
+        return regex.matches(searchKey)
     }
 }
