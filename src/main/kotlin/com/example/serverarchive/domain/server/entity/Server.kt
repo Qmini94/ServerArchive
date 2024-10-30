@@ -17,14 +17,17 @@ class Server(
     @Column(name = "port", nullable = false, length = 30)
     var port: String,
 
-    @Column(name = "server_user", nullable = false, length = 100)
-    var serverUser: String,
-
     @Column(name = "root_password", nullable = false, length = 255)
     var rootPassword: String,
 
-    @Column(name = "database_name", nullable = false, length = 30)
-    var databaseName: String,
+    @Column(name = "server_user", nullable = true, length = 100)
+    var serverUser: String? = null,
+
+    @Column(name = "password", nullable = true, length = 255)
+    var password: String? = null,
+
+    @Column(name = "database_name", nullable = true, length = 30)
+    var databaseName: String? = null,
 
     @Column(name = "memo", nullable = true, columnDefinition = "TEXT")
     var memo: String? = null,
@@ -32,13 +35,13 @@ class Server(
     @Column(name = "created_date", updatable = false)
     val createdDate: LocalDateTime? = null,
 
-    @Column(name = "updated_date")
+    @Column(name = "updated_date", nullable = true)
     var updatedDate: LocalDateTime? = null,
 
-    @Column(name = "reg_id", nullable = false, length = 30)
+    @Column(name = "reg_id", nullable = true, length = 30)
     val regId: String? = null,
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = true)
     val log: String? = null
 )
 
@@ -46,9 +49,11 @@ fun Server.toUpdateResponse(): ServerUpdateResponse {
     return ServerUpdateResponse(
         ip = this.ip,
         port = this.port,
-        serverUser = this.serverUser,
         rootPassword = this.rootPassword,
-        databaseName = this.databaseName,
+        serverUser = this.serverUser ?: "",
+        password = this.password ?: "",
+        databaseName = this.databaseName ?: "",
         memo = this.memo ?: ""
     )
 }
+

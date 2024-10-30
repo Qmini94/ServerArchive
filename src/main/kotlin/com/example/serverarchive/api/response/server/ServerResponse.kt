@@ -11,12 +11,14 @@ class ServerResponse(
     val ip: String,
     @Schema(description = "접속 포트 번호", nullable = false, required = true)
     val port: String,
-    @Schema(description = "사용자 계정", nullable = true, required = false)
-    val serverUser: String,
     @Schema(description = "root 계정 비밀번호", nullable = true, required = false)
     val rootPassword: String,
+    @Schema(description = "사용자 계정", nullable = true, required = false)
+    val serverUser: String?,
+    @Schema(description = "사용자 계정 비밀번호", nullable = true, required = false)
+    val password: String?,
     @Schema(description = "데이터베이스 이름", nullable = true, required = false)
-    val databaseName: String,
+    val databaseName: String?,
     @Schema(description = "메모", nullable = true, required = false)
     var memo: String? = null,
     @Schema(description = "서버 신규 등록일자", nullable = true, required = false)
@@ -32,14 +34,15 @@ class ServerResponse(
                 idx = this.idx,
                 ip = this.ip,
                 port = this.port,
-                serverUser = this.serverUser,
                 rootPassword = this.rootPassword,
-                databaseName = this.databaseName,
+                serverUser = this.serverUser ?: "",
+                password = this.password ?: "",
+                databaseName = this.databaseName ?: "",
                 memo = this.memo ?: "",
                 createdDate = this.createdDate,
                 updatedDate = this.updatedDate,
                 regId = this.regId,
-//        log = server.log
+                log = this.log ?: ""
             )
         }
     }

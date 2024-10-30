@@ -13,17 +13,13 @@ import java.time.LocalDateTime
 @Service
 class ServerServiceImpl(private val serverRepository: ServerRepository) : ServerService {
     override fun createServer(req: ServerRequest): ServerResponse? {
-        if (req.validate()) {
-            val serverToSave = req.toEntity()
-            return serverRepository.save(serverToSave).toResponse()
-        } else {
-            return null
-        }
+        val serverToSave = req.toEntity()
+        return serverRepository.save(serverToSave).toResponse()
     }
 
     override fun getAllServers(): List<ServerResponse> {
         val servers = serverRepository.findAll()
-            .sortedByDescending { it.updatedDate }  // 최근 업데이트 날짜 순으로 내림차순  // .sortedBy:오름차순
+            .sortedByDescending { it.idx }  // 등록순으로 내림차순  // .sortedBy:오름차순
         return servers.map { it.toResponse() }
     }
 
@@ -47,8 +43,9 @@ class ServerServiceImpl(private val serverRepository: ServerRepository) : Server
         existingServer.apply {
             ip = req.ip
             port = req.port
-            serverUser = req.serverUser
             rootPassword = req.rootPassword
+            serverUser = req.serverUser
+            password = req.password
             databaseName = req.databaseName
             memo = req.memo
             updatedDate = LocalDateTime.now()

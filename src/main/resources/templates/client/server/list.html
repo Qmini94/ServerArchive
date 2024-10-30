@@ -28,6 +28,7 @@
 			<table class="table table-bordered table-hover">
 				<thead class="table-light">
 				<tr>
+					<th scope="col">No</th>
 					<th scope="col">IP Address</th>
 					<th scope="col">User</th>
 					<th scope="col">Updated Date</th>
@@ -35,13 +36,14 @@
 				</tr>
 				</thead>
 				<tbody>
-				<tr th:each="server : ${servers}" th:attr="data-idx=${server.idx}">
+				<tr th:each="server, stat : ${servers}" th:attr="data-idx=${server.idx}">
+					<td th:text="${stat.size - stat.index}"></td>
 					<td th:text="${server.ip} + ':' + ${server.port}"></td>
-					<td th:text="${server.serverUser}"></td>
+					<td th:text="${server.serverUser ?: 'root'}"></td>
 					<td th:text="${#temporals.format(server.updatedDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
 					<td>
-						<button class="btn btn-light" th:onclick="'updateServer(' + ${server.idx} + ')'">수정</button>
-						<button class="btn btn-dark" th:onclick="'deleteServer(' + ${server.idx} + ')'">삭제</button>
+						<button class="btn btn-light btn-sm" th:onclick="'updateServer(' + ${server.idx} + ')'">수정</button>
+						<button class="btn btn-outline-danger btn-sm" th:onclick="'deleteServer(' + ${server.idx} + ')'">삭제</button>
 					</td>
 				</tr>
 				</tbody>
