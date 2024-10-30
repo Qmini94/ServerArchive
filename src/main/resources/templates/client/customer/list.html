@@ -40,9 +40,11 @@
 <th:block layout:fragment="script">
 	<script type="module">
 		import { viewCustomer } from '/js/customer/ajax.js';
+		import { submit } from '/js/search.js';
 
 		$(function () {
 			viewCustomer();
+			submit();
 		});
 	</script>
 </th:block>

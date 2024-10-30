@@ -131,7 +131,7 @@ export const validateURL = (input) => {
 export const validateSearchKey = (input) => {
     try {
         const searchKeyPattern = /^[a-zA-Z0-9가-힣\s]+$/;
-        return searchKeyPattern.test(input.value.trim());
+        return searchKeyPattern.test(input.trim());
     } catch (e) {
         console.error(e.message);
         throw e;
