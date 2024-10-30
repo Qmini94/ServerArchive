@@ -1,7 +1,6 @@
 package com.example.serverarchive.api.request.customer
 
 import com.example.serverarchive.domain.customer.entity.Customer
-import java.time.LocalDateTime
 
 data class CustomerCreateRequest(
     private val companyName: String,
@@ -20,7 +19,6 @@ data class CustomerCreateRequest(
             managers = this.managers,
             codeType = this.codeType,
             memo = this.memo,
-            updatedDate = LocalDateTime.now(),
             regId = this.registrantId,
             log = "생성되었습니다."
         )

@@ -1,14 +1,12 @@
 import { showAlert } from '/js/common.js';
 
 export const viewCustomer = async () => {
-    $('.customer-row').on('click', function () {
-        const idx = $(this).find('td').first().text();
+    $('.customer-update').on('click', function () {
+        const idx = $(this).data('idx');
         window.location.href = `/customer/update/${idx}`;
     });
 
-    $('.customer-delete').on('click', async function (e) {
-        e.preventDefault();
-        e.stopPropagation();
+    $('.customer-delete').on('click', async function () {
         const idx = $(this).data('idx');
 
         try {

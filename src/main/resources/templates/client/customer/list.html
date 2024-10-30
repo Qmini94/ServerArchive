@@ -4,10 +4,8 @@
 	  layout:decorate="~{common/layouts/defaultLayout}">
 <div layout:fragment="Content" class="container mt-4">
 	<h1 th:text="${message}" class="mb-4"></h1>
-	<button type="button" class="btn btn-primary mb-3" onclick="location.href='/customer/create'">생성</button>
 
-	<!-- 검색창 및 필터 -->
-	<div th:insert="~{common/fragments/search :: search(${options}, ${selectedOption}, ${baseUrl})}"></div>
+	<div th:insert="~{common/fragments/search}"></div>
 
 	<table class="table table-striped">
 		<thead class="table-light">
@@ -17,6 +15,7 @@
 			<th>메모</th>
 			<th>등록자아이디</th>
 			<th>등록날자</th>
+			<th>수정날자</th>
 			<th>삭제</th>
 		</tr>
 		</thead>
@@ -27,20 +26,25 @@
 			<td th:text="${customer.memo}"></td>
 			<td th:text="${customer.regId}"></td>
 			<td th:text="${customer.createdDate}"></td>
+			<td th:text="${customer.updatedDate}"></td>
 			<td>
+				<button type="button" class="btn btn-info customer-update" th:attr="data-idx=${customer.idx}">수정</button>
 				<button type="button" class="btn btn-danger customer-delete" th:attr="data-idx=${customer.idx}">삭제</button>
 			</td>
 		</tr>
 		</tbody>
 	</table>
-	<div th:insert="~{common/fragments/pagination :: pagination(${currentPage}, ${totalElements}, ${size}, ${baseUrl})}"></div>
+	<button type="button" class="btn btn-primary mb-3" onclick="location.href='/customer/create'">생성</button>
+	<div th:insert="~{common/fragments/pagination}"></div>
 </div>
 <th:block layout:fragment="script">
 	<script type="module">
 		import { viewCustomer } from '/js/customer/ajax.js';
+		import { submit } from '/js/search.js';
 
 		$(function () {
 			viewCustomer();
+			submit();
 		});
 	</script>
 </th:block>
