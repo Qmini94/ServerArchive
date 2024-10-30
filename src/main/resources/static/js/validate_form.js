@@ -130,8 +130,11 @@ export const validateURL = (input) => {
 
 export const validateSearchKey = (input) => {
     try {
+        if (input === null || input.trim() === '') {
+            return true;
+        }
         const searchKeyPattern = /^[a-zA-Z0-9가-힣\s]+$/;
-        return searchKeyPattern.test(input.trim());
+        return searchKeyPattern.test(input);
     } catch (e) {
         console.error(e.message);
         throw e;
