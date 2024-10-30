@@ -13,7 +13,7 @@ object SearchUtils {
      * @param searchParams 검색 기준을 포함하는 맵. 키는 필드 이름, 값은 검색 값입니다.
      * @param startDate 결과 필터링을 위한 시작 날짜. null일 수 있습니다.
      * @param endDate 결과 필터링을 위한 종료 날짜. null일 수 있습니다.
-     * @return 주어진 기준에 따라 결과를 필터링하는 데 사용할 수 있는 Specification<T>입니다.
+     * @return 주어진 기준에 따라 결과를 필터링하는 데 사용할 수 있는 Specification<T>입니다.(반환되는 엔티티 객체는 도메인마다 다르기 때문에 제너릭 타입으로 선언)
      */
     fun <T> createSpecification(
         searchParams: Map<String, String?>,
@@ -61,8 +61,8 @@ object SearchUtils {
      *
      * @param searchKey 필터링에 사용되는 검색 키워드입니다.
      * @param searchOptions 사용자가 선택한 검색 옵션의 리스트입니다.
-     * @param options 유효성을 검증할 수 있는 열거형 옵션 배열입니다.
-     * @param fieldNameSelector 열거형에서 필드 이름을 추출하는 람다 함수입니다.
+     * @param options 유효성을 검증할 수 있는 enum 배열입니다.(각각의 도메인마다 검색 옵션 enum을 정의하여 가져오기 때문에 제너릭 선언)
+     * @param fieldNameSelector enum에서 필드 이름을 추출하는 람다 함수입니다.(각각의 도메인마다 검색 옵션 enum을 정의하여 가져오기 때문에 제너릭 선언)
      * @return 필드 이름을 키로 하고 검색 키워드를 값으로 하는 맵입니다.
      */
     fun <T : Enum<T>> mapSearchParams(

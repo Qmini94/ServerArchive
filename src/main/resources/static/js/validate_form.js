@@ -130,7 +130,7 @@ export const validateURL = (input) => {
 
 export const validateSearchKey = (input) => {
     try {
-        if (input === null || input.trim() === '') {
+        if (input === null || input === '') {
             return true;
         }
         const searchKeyPattern = /^[a-zA-Z0-9가-힣\s]+$/;
