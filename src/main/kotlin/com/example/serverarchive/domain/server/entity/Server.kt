@@ -9,22 +9,22 @@ import java.time.LocalDateTime
 class Server(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var idx: Int? = null,
+    val idx: Int? = null,
 
     @Column(name = "ip", nullable = false, length = 30)
-    val ip: String,
+    var ip: String,
 
     @Column(name = "port", nullable = false, length = 30)
     var port: String,
 
     @Column(name = "server_user", nullable = false, length = 100)
-    val serverUser: String,
+    var serverUser: String,
 
     @Column(name = "root_password", nullable = false, length = 255)
-    val rootPassword: String,
+    var rootPassword: String,
 
     @Column(name = "database_name", nullable = false, length = 30)
-    val databaseName: String,
+    var databaseName: String,
 
     @Column(name = "created_date", updatable = false)
     val createdDate: LocalDateTime? = null,

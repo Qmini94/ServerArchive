@@ -18,14 +18,14 @@ class ServerRouter(private val serverService: ServerServiceImpl) {
         ("/server").nest {
             GET("/create", ::viewCreateServerPage)
             GET("/list", ::viewListServerPage)
-            DELETE("/delete/{id}", ::deleteServer)
-            GET("/update/{id}", ::updateServer)
+            GET("/update/{idx}", ::updateServer)
         }
     }
 
     fun viewCreateServerPage(req: ServerRequest): ServerResponse {
         val data = mapOf(
-            "message" to "create Server info"
+            "message" to "create Server info",
+            "mode" to "create"
         )
         return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/server/create", data)
     }
@@ -40,33 +40,20 @@ class ServerRouter(private val serverService: ServerServiceImpl) {
         return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/server/list", data)
     }
 
-    fun deleteServer(req: ServerRequest): ServerResponse {
-        val id = req.pathVariable("id").toLong()
-        val isDeleted = serverService.deleteServer(id)
-
-        return if (isDeleted) {
-            ServerResponse.ok().body("Server $id Info Deleted Complete.")
-        } else {
-            ServerResponse.status(HttpStatus.NOT_FOUND).body("Server with ID $id not Found.")
-        }
-    }
-
     fun updateServer(req: ServerRequest): ServerResponse {
-        val id = req.pathVariable("id").toLong()
-        val server = serverService.findById(id)
+        val idx = req.pathVariable("idx").toLong()
+        val server = serverService.findById(idx)
 
         return if (server != null) {
             val data = mapOf(
                 "message" to "update Server info",
+                "mode" to "update",
                 "server" to server
             )
             ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/server/create", data)
         } else {
-            ServerResponse.status(HttpStatus.NOT_FOUND).body("Server with ID $id not found.")
+            ServerResponse.status(HttpStatus.NOT_FOUND).body("Server with ID $idx not found.")
         }
     }
-
-
-
 
 }

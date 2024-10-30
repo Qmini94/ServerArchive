@@ -37,17 +37,17 @@ class ServerController(private val serverService: ServerServiceImpl) {
         )
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/update/{idx}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "서버 정보 수정", description = "서버 정보를 수정합니다.")
     fun updateServer(
-        @PathVariable id: Long,
+        @PathVariable idx: Long,
         @RequestBody req: UpdateServerRequest
     ): SingleResponse<UpdateServerResponse?> {
         var result = ResponseCode.ERROR
         var message = "Request Failed"
 
-        val updatedServer = serverService.updateServer(id, req)
+        val updatedServer = serverService.updateServer(idx, req)
         updatedServer?.let {
             result = ResponseCode.SUCCESS
             message = "Successfully updated server info"
@@ -57,6 +57,30 @@ class ServerController(private val serverService: ServerServiceImpl) {
             result = result,
             message = message,
             data = updatedServer
+        )
+    }
+
+    @DeleteMapping("/delete/{idx}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "서버 정보 삭제", description = "서버 정보를 삭제합니다.")
+    fun deleteServer(@PathVariable idx: Long): SingleResponse<String> {
+        val isDeleted = serverService.deleteServer(idx)
+        val result = if (isDeleted) {
+            ResponseCode.SUCCESS
+        } else {
+            ResponseCode.ERROR
+        }
+
+        val message = if (isDeleted) {
+            "Server Info Deleted Complete."
+        } else {
+            "error."
+        }
+
+        return SingleResponse(
+            result = result,
+            message = message,
+            data = message
         )
     }
 

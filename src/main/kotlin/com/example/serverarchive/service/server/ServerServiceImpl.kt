@@ -26,29 +26,29 @@ class ServerServiceImpl(private val serverRepository: ServerRepository) : Server
         return servers.map { it.toResponse() }
     }
 
-    override fun deleteServer(id: Long): Boolean {
+    override fun deleteServer(idx: Long): Boolean {
         return try {
-            serverRepository.deleteById(id)
+            serverRepository.deleteById(idx)
             true
         } catch (e: Exception) {
             false
         }
     }
 
-    override fun findById(id: Long): ServerResponse? {
-        val serverEntity = serverRepository.findById(id).orElse(null)
+    override fun findById(idx: Long): ServerResponse? {
+        val serverEntity = serverRepository.findById(idx).orElse(null)
         return serverEntity?.toResponse()
     }
 
-    override fun updateServer(id: Long, req: UpdateServerRequest): UpdateServerResponse? {
-        val existingServer = serverRepository.findById(id).orElse(null) ?: return null
+    override fun updateServer(idx: Long, req: UpdateServerRequest): UpdateServerResponse? {
+        val existingServer = serverRepository.findById(idx).orElse(null) ?: return null
 
         existingServer.apply {
-//            ip = req.ip
+            ip = req.ip
             port = req.port
-//            serverUser = req.serverUser
-//            rootPassword = req.rootPassword
-//            databaseName = req.databaseName
+            serverUser = req.serverUser
+            rootPassword = req.rootPassword
+            databaseName = req.databaseName
             updatedDate = LocalDateTime.now()
         }
 
