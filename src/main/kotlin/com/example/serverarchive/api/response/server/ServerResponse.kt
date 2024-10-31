@@ -23,7 +23,7 @@ class ServerResponse(
     var memo: String? = null,
     @Schema(description = "서버 신규 등록일자", nullable = true, required = false)
     val createdDate: LocalDateTime? = null,
-    @Schema(description = "서버정보 수정일자", nullable = true, required = false)
+    @Schema(description = "서버 정보 수정일자", nullable = true, required = false)
     val updatedDate: LocalDateTime? = null,
     val regId: String? = null,
     val log: String? = null
@@ -35,14 +35,14 @@ class ServerResponse(
                 ip = this.ip,
                 port = this.port,
                 rootPassword = this.rootPassword,
-                serverUser = this.serverUser ?: "",
-                password = this.password ?: "",
-                databaseName = this.databaseName ?: "",
-                memo = this.memo ?: "",
+                serverUser = this.serverUser,
+                password = this.password,
+                databaseName = this.databaseName,
+                memo = this.memo,
                 createdDate = this.createdDate,
                 updatedDate = this.updatedDate,
                 regId = this.regId,
-                log = this.log ?: ""
+                log = this.log
             )
         }
     }

@@ -5,8 +5,7 @@ import com.example.serverarchive.api.request.server.ServerUpdateRequest
 import com.example.serverarchive.api.response.ResponseCode
 import com.example.serverarchive.api.response.SingleResponse
 import com.example.serverarchive.api.response.server.ServerResponse
-import com.example.serverarchive.api.response.server.ServerUpdateResponse
-import com.example.serverarchive.service.server.ServerServiceImpl
+import com.example.serverarchive.service.server.ServerService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/server")
 @Tag(name = "Server", description = "서버 정보 등록 API")
-class ServerController(private val serverService: ServerServiceImpl) {
+class ServerController(private val serverService: ServerService) {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.OK)
@@ -43,7 +42,7 @@ class ServerController(private val serverService: ServerServiceImpl) {
     fun updateServer(
         @PathVariable idx: Long,
         @RequestBody req: ServerUpdateRequest
-    ): SingleResponse<ServerUpdateResponse?> {
+    ): SingleResponse<ServerResponse?> {
         var result = ResponseCode.ERROR
         var message = "Request Failed"
 
