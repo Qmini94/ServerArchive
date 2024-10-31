@@ -18,7 +18,7 @@ class ServerRouter(private val serverService: ServerServiceImpl) {
         ("/server").nest {
             GET("/create", ::viewCreateServerPage)
             GET("/list", ::viewListServerPage)
-            GET("/update/{idx}", ::updateServer)
+            GET("/update/{idx}", ::viewUpdateServerPage)
         }
     }
 
@@ -40,7 +40,7 @@ class ServerRouter(private val serverService: ServerServiceImpl) {
         return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/server/list", data)
     }
 
-    fun updateServer(req: ServerRequest): ServerResponse {
+    fun viewUpdateServerPage(req: ServerRequest): ServerResponse {
         val idx = req.pathVariable("idx").toLong()
         val server = serverService.findById(idx)
 
