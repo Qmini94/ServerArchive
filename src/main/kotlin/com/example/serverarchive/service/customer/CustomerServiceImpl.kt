@@ -55,7 +55,6 @@ class CustomerServiceImpl(private val customerRepository: CustomerRepository) : 
         }
     }
 
-
     override fun getCustomerById(idx: Int): CustomerResponse {
         return customerRepository.findById(idx).map { it.toResponse() }
             .orElseThrow {throw IllegalArgumentException(ErrorCode.INVALID_PARAMETER.name)}

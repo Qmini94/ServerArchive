@@ -38,18 +38,22 @@ class CustomerController(private val customerService: CustomerService) {
         @PathVariable idx: Int,
         @RequestBody req: CustomerUpdateRequest
     ): SingleResponse<CustomerResponse?> {
-        val updatedCustomer = customerService.updateCustomer(idx, req)
-
-        return if (updatedCustomer != null) {
+        return try {
+            val updatedCustomer = customerService.updateCustomer(idx, req)
             SingleResponse(
                 result = ResponseCode.SUCCESS,
                 message = "Customer updated successfully",
                 data = updatedCustomer
             )
-        } else {
+        } catch (e: IllegalArgumentException) {
             SingleResponse(
                 result = ResponseCode.ERROR,
-                message = "Failed to update customer"
+                message = e.message ?: "Failed to update customer"
+            )
+        } catch (e: Exception) {
+            SingleResponse(
+                result = ResponseCode.ERROR,
+                message = "An unknown error occurred"
             )
         }
     }
@@ -58,18 +62,23 @@ class CustomerController(private val customerService: CustomerService) {
     @Operation(summary = "업체삭제", description = "선택된 업체를 삭제합니다.")
     fun deleteCustomer(@PathVariable idx: Int): SingleResponse<CustomerResponse?> {
         println("Deleting customer with idx: $idx")
-        val deletedCustomer = customerService.deleteCustomerById(idx)
+        return try {
+            val deletedCustomer = customerService.deleteCustomerById(idx)
 
-        return if (deletedCustomer != null) {
             SingleResponse(
                 result = ResponseCode.SUCCESS,
                 message = "Customer deleted successfully",
                 data = deletedCustomer
             )
-        } else {
+        } catch (e: IllegalArgumentException) {
             SingleResponse(
                 result = ResponseCode.ERROR,
-                message = "Failed to delete customer"
+                message = e.message ?: "Invalid request for deleting customer"
+            )
+        } catch (e: Exception) {
+            SingleResponse(
+                result = ResponseCode.ERROR,
+                message = "An unknown error occurred during customer deletion"
             )
         }
     }
