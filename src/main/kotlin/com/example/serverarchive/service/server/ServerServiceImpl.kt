@@ -6,8 +6,9 @@ import com.example.serverarchive.api.response.server.ServerResponse
 import com.example.serverarchive.api.response.server.ServerResponse.Companion.toResponse
 import com.example.serverarchive.domain.server.repository.ServerRepository
 import com.example.serverarchive.util.ErrorCode
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
 
 @Service
 class ServerServiceImpl(private val serverRepository: ServerRepository) : ServerService {
@@ -16,9 +17,8 @@ class ServerServiceImpl(private val serverRepository: ServerRepository) : Server
         return serverEntity?.toResponse()
     }
 
-    override fun getAllServers(): List<ServerResponse> {
-        val servers = serverRepository.findAll()
-            .sortedByDescending { it.idx }  // 등록순으로 내림차순  // .sortedBy:오름차순
+    override fun getAllServers(pageable: Pageable): Page<ServerResponse> {
+        val servers = serverRepository.findAll(pageable)
         return servers.map { it.toResponse() }
     }
 

@@ -1,6 +1,7 @@
 package com.example.serverarchive.web.routes
 
-import com.example.serverarchive.service.server.ServerServiceImpl
+import com.example.serverarchive.service.server.ServerService
+import com.example.serverarchive.util.PaginationUtil
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
@@ -11,15 +12,34 @@ import org.springframework.web.servlet.function.router
 
 
 @Configuration
-class ServerRouter(private val serverService: ServerServiceImpl) {
+class ServerRouter(private val serverService: ServerService) {
 
     @Bean
     fun serverRoutes() = router {
         ("/server").nest {
-            GET("/create", ::viewCreateServerPage)
             GET("/list", ::viewListServerPage)
+            GET("/create", ::viewCreateServerPage)
             GET("/update/{idx}", ::viewUpdateServerPage)
         }
+    }
+
+    fun viewListServerPage(req: ServerRequest): ServerResponse {
+        val pageable = PaginationUtil.parseParams(req)
+        val servers = serverService.getAllServers(pageable)
+        val startIndex = (servers.number * servers.size) + 1
+        val baseUrl = PaginationUtil.buildBaseUrl("/server/list", emptyMap()) //TODO:selectedOption 확장시 buildBaseUrl 수정필요
+
+        val data = mapOf(
+            "message" to "list Server info",
+            "servers" to servers.content,
+            "currentPage" to (servers.number + 1),
+            "totalElements" to servers.totalElements,
+            "size" to servers.size,
+            "startIndex" to startIndex,
+            "baseUrl" to baseUrl
+        )
+
+        return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/server/list", data)
     }
 
     fun viewCreateServerPage(req: ServerRequest): ServerResponse {
@@ -28,16 +48,6 @@ class ServerRouter(private val serverService: ServerServiceImpl) {
             "mode" to "create"
         )
         return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/server/create", data)
-    }
-
-    fun viewListServerPage(req: ServerRequest): ServerResponse {
-        val servers = serverService.getAllServers()
-        val data = mapOf(
-            "message" to "list Server info",
-            "servers" to servers
-        )
-
-        return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("client/server/list", data)
     }
 
     fun viewUpdateServerPage(req: ServerRequest): ServerResponse {
