@@ -7,39 +7,49 @@
 		<div class="row justify-content-center">
 			<div class="col-lg-7">
 				<div class="card shadow-lg border-0 rounded-lg mt-5">
-					<div class="card-header"><h3 class="text-center font-weight-light my-4">Create Server Info</h3>
+					<div class="card-header"><h3 class="text-center font-weight-light my-4">Server Info</h3>
 					</div>
 					<div class="card-body">
-						<form>
-							<div class="form-floating mb-3">
+						<form id="submitForm">
+							<input type="hidden" id="idx" name="idx" th:value="${server?.idx ?: ''}">
+							<input type="hidden" id="mode" name="mode" th:value="${mode}">
+							<div class="mb-3">
 								<label for="ip">IP 주소</label>
-								<input class="form-control" type="text" id="ip" name="ip" th:value="${server.ip}"
-									   required>
+								<input class="form-control" type="text" id="ip" name="ip" th:value="${server?.ip ?: ''}" required>
 							</div>
-							<div class="form-floating mb-3">
+							<div class="mb-3">
 								<label for="port">접속 포트 번호</label>
-								<input class="form-control" type="text" id="port" name="port" th:value="${server.port}"
-									   required>
+								<input class="form-control" type="text" id="port" name="port" th:value="${server?.port ?: ''}" required>
 							</div>
-							<div class="form-floating mb-3">
-								<label for="serverUser">사용자 계정</label>
-								<input class="form-control" type="text" id="serverUser" name="serverUser"
-									   th:value="${server.serverUser}" required>
-							</div>
-							<div class="form-floating mb-3">
+							<div class="mb-3">
 								<label for="rootPassword">root 계정 비밀번호</label>
-								<input class="form-control" type="password" id="rootPassword" name="rootPassword" th:value="${server.rootPassword}"
-									   required>
+								<div class="input-group">
+									<input class="form-control" type="password" id="rootPassword" name="rootPassword" th:value="${server?.rootPassword ?: ''}" required>
+									<button type="button" class="btn btn-outline-secondary toggleViewPassword">보기</button>
+								</div>
 							</div>
-							<div class="form-floating mb-3">
+							<div class="mb-3">
+								<label for="serverUser">사용자 계정</label>
+								<input class="form-control" type="text" id="serverUser" name="serverUser" th:value="${server?.serverUser ?: ''}">
+							</div>
+							<div class="mb-3">
+								<label for="password">사용자 계정 비밀번호</label>
+								<div class="input-group">
+									<input class="form-control" type="password" id="password" name="password" th:value="${server?.password ?: ''}">
+									<button type="button" class="btn btn-outline-secondary toggleViewPassword">보기</button>
+								</div>
+							</div>
+							<div class="mb-3">
 								<label for="databaseName">데이터베이스 이름</label>
-								<input class="form-control" type="text" id="databaseName" name="databaseName"
-									   th:value="${server.databaseName}"
-									   required>
+								<input class="form-control" type="text" id="databaseName" name="databaseName" th:value="${server?.databaseName ?: ''}">
+							</div>
+							<div class="mb-3">
+								<label for="memo">메모</label>
+								<textarea style="height: 300px; resize: vertical;" class="form-control" id="memo" name="memo" th:text="${server?.memo ?: ''}"></textarea>
 							</div>
 							<div class="mt-4 mb-0">
 								<div class="d-grid">
-									<button class="btn btn-primary btn-block btn-submit" type="submit">등록</button>
+									<button class="btn btn-primary btn-block btn-submit" type="submit">확인</button>
 								</div>
 							</div>
 						</form>
@@ -47,6 +57,7 @@
 				</div>
 			</div>
 		</div>
+		<button type="button" class="btn btn-primary mb-3" onclick="location.href='/server/list'">목록</button>
 	</div>
 </div>
 <th:block layout:fragment="script">
@@ -54,63 +65,62 @@
         import { showAlert } from '/js/common.js';
 
         $(function () {
-            const params = new URLSearchParams(window.location.search);
-            const id = params.get('idx');
-
-            console.log('id->', id);
-
-            if (id) {
-                getServerData(id);
-            }
-
             $('.btn-submit').on('click', async function (e) {
                 e.preventDefault();
 
-                const formData = {
-                    ip: $('#ip').val(),
-                    port: $('#port').val(),
-                    serverUser: $('#serverUser').val(),
-                    rootPassword: $('#rootPassword').val(),
-                    databaseName: $('#databaseName').val()
-                };
+				const form = document.getElementById('submitForm');
+				if (!form.checkValidity()) {
+					form.reportValidity();
+					return;
+				}
 
-                $.ajax({
-                    type: 'POST',
-                    url: '/api/server/create',
-                    data: JSON.stringify(formData),
-                    contentType: 'application/json; charset=utf-8',
-                    success: function (res) {
-                        showAlert('Success!', '서버 등록 완료', 'success').then(() => {
-                            window.location = '/server/list';
-                        });
-                    },
-                    error: function (error) {
-                        showAlert('Error!', '서버 등록 실패', 'error');
-                        console.error(error);
-                    }
-                });
-            });
+				const mode = $('#mode').val();
+				const idx = $('#idx').val();
 
-            function getServerData (id) {
-                fetch(`/server/update/${id}`) // 해당 ID로 서버 데이터 요청
-                  .then(response => {
-                      if (!response.ok) {
-                          throw new Error('네트워크 응답이 올바르지 않습니다.');
-                      }
-                      return response.json();
-                  })
-                  .then(data => {
-                      $('#ip').value = data.ip;
-                      $('#port').value = data.port;
-                      $('#serverUser').value = data.serverUser;
-                      $('#rootPassword').value = data.rootPassword;
-                      $('#databaseName').value = data.databaseName;
-                  })
-                  .catch(error => {
-                      console.error('Error:', error);
-                  });
-            }
-        });
+				const formData = {
+					ip: $('#ip').val(),
+					port: $('#port').val(),
+					rootPassword: $('#rootPassword').val(),
+					serverUser: $('#serverUser').val(),
+					password: $('#password').val(),
+					databaseName: $('#databaseName').val(),
+					memo: $('#memo').val()
+				};
+
+				let url = mode == 'create' ? '/api/server/create' : `/api/server/update/${idx}`;
+				let method = mode == 'create' ? 'POST' : 'PUT';
+
+				$.ajax({
+					type: method,
+					url: url,
+					data: JSON.stringify(formData),
+					contentType: 'application/json; charset=utf-8',
+					success: function (res) {
+						showAlert('Success!', mode === 'create' ? '서버 등록 완료' : '서버 수정 완료', 'success').then(() => {
+							window.location = '/server/list';
+						});
+					},
+					error: function (error) {
+						showAlert('Error!', mode === 'create' ? '서버 등록 실패' : '서버 수정 실패', 'error');
+						console.error(error);
+					}
+				});
+			});
+
+			document.querySelectorAll('.toggleViewPassword').forEach(button => {
+				button.addEventListener('click', function () {
+					const passwordField = this.closest('.input-group').querySelector('input[type="password"], input[type="text"]');
+					if (passwordField.type === 'password') {
+						passwordField.type = 'text';
+						this.textContent = '숨기기';
+					} else {
+						passwordField.type = 'password';
+						this.textContent = '보기';
+					}
+				});
+			});
+
+		});
 	</script>
 </th:block>
 </html>
