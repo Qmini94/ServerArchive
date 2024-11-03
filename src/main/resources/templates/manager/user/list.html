@@ -11,7 +11,7 @@
 		<h2 class="mb-4">회원 목록</h2>
 
 		<!-- 검색창 및 필터 -->
-		<div th:insert="~{common/fragments/search :: search(${options})}"></div>
+		<!--		<div th:insert="~{common/fragments/search_box/no_date_search}"></div>-->
 
 		<!-- 반응형 테이블 -->
 		<div class="table-responsive">
@@ -46,16 +46,16 @@
 		</div>
 	</div>
 
-	<div th:insert="~{common/fragments/pagination :: pagination(currentPage=${currentPage}, totalElements=${totalElements}, size=${size}, baseUrl='/user/list')}"></div>
+	<!--	<div th:insert="~{common/fragments/pagination :: pagination(currentPage=${currentPage}, totalElements=${totalElements}, size=${size}, baseUrl='/user/list')}"></div>-->
 
 </div>
 <th:block layout:fragment="script">
 	<script type="module">
-      import { handleUserList } from '/js/user/list.js';
+        import { handleUserList } from '/js/user/list.js';
 
-      $(function () {
-        handleUserList();
-      });
+        $(function () {
+            handleUserList();
+        });
 	</script>
 </th:block>
 </html>
