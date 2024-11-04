@@ -1,7 +1,6 @@
 package com.example.serverarchive.api.request.server
 
 import com.example.serverarchive.domain.server.entity.Server
-import java.time.LocalDateTime
 
 data class ServerUpdateRequest(
     val ip: String,
@@ -21,7 +20,6 @@ data class ServerUpdateRequest(
             this.password = this@ServerUpdateRequest.password
             this.databaseName = this@ServerUpdateRequest.databaseName
             this.memo = this@ServerUpdateRequest.memo
-            this.updatedDate = LocalDateTime.now()
         }
     }
 }
