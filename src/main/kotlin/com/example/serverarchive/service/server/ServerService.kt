@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable
 
 interface ServerService {
     fun findById(id: Long): ServerResponse?
-    fun getAllServers(pageable: Pageable): Page<ServerResponse>
+    fun getAllServers(pageable: Pageable, searchParams: Map<String, String?>): Page<ServerResponse>
     fun createServer(req: ServerRequest): ServerResponse?
     fun updateServer(id: Long, req: ServerUpdateRequest): ServerResponse?
     fun deleteServer(id: Long): Boolean

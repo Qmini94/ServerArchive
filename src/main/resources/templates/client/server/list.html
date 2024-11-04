@@ -7,40 +7,26 @@
 		<h2 class="mb-4">서버 목록</h2>
 		<button type="button" class="btn btn-primary mb-3" onclick="location.href='/server/create'">등록</button>
 		<!-- 검색창 및 필터 -->
-		<div class="row mb-4 justify-content-end align-items-center">
-			<div class="col-auto">
-				<label for="filterSelect" class="visually-hidden">검색 필터 선택</label>
-				<select id="filterSelect" class="form-select form-select-sm" aria-label="검색 필터 선택">
-					<option value="ip">IP</option>
-				</select>
-			</div>
-			<div class="col-auto">
-				<label for="searchInput" class="visually-hidden">검색어 입력</label>
-				<input type="text" id="searchInput" class="form-control form-control-sm" placeholder="검색어를 입력하세요"
-					   aria-label="검색어 입력">
-			</div>
-			<div class="col-auto">
-				<button class="btn btn-primary btn-sm" id="searchBtn">검색</button>
-			</div>
-		</div>
-
+		<div th:insert="~{common/fragments/search}"></div>
 		<div class="table-responsive">
 			<table class="table table-bordered table-hover">
 				<thead class="table-light">
 				<tr>
 					<th scope="col">No</th>
-					<th scope="col">IP Address</th>
-					<th scope="col">User</th>
-					<th scope="col">Updated Date</th>
-					<th scope="col">Update / Delete</th>
+					<th scope="col">IP 주소</th>
+					<th scope="col">사용자 계정</th>
+					<th scope="col">등록일자</th>
+					<th scope="col">최근수정일자</th>
+					<th scope="col">수정 / 삭제</th>
 				</tr>
 				</thead>
 				<tbody>
 				<tr th:each="server, stat : ${servers}" th:attr="data-idx=${server.idx}">
-					<td th:text="${stat.size - stat.index}"></td>
+					<td th:text="${totalElements - (startIndex + stat.index) + 1}"></td>
 					<td th:text="${server.ip} + ':' + ${server.port}"></td>
 					<td th:text="${server.serverUser ?: 'root'}"></td>
-					<td th:text="${#temporals.format(server.updatedDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+					<td th:text="${server.createdDate}"></td>
+					<td th:text="${server.updatedDate}"></td>
 					<td>
 						<button class="btn btn-light btn-sm" th:onclick="'updateServer(' + ${server.idx} + ')'">수정</button>
 						<button class="btn btn-outline-danger btn-sm" th:onclick="'deleteServer(' + ${server.idx} + ')'">삭제</button>

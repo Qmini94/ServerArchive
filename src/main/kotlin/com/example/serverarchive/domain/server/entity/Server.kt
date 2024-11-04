@@ -1,7 +1,7 @@
 package com.example.serverarchive.domain.server.entity
 
+import com.example.serverarchive.domain.common.BaseEntity
 import jakarta.persistence.*
-import java.time.LocalDateTime
 
 @Entity
 @Table(name = "server")
@@ -31,15 +31,9 @@ class Server(
     @Column(name = "memo", nullable = true, columnDefinition = "TEXT")
     var memo: String? = null,
 
-    @Column(name = "created_date", updatable = false)
-    val createdDate: LocalDateTime? = null,
-
-    @Column(name = "updated_date", nullable = true)
-    var updatedDate: LocalDateTime? = null,
-
     @Column(name = "reg_id", nullable = true, length = 30)
     val regId: String? = null,
 
     @Column(columnDefinition = "TEXT", nullable = true)
     val log: String? = null
-)
+) : BaseEntity()

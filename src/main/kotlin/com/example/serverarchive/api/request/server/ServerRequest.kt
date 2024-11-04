@@ -30,9 +30,7 @@ class ServerRequest(
             password = this.password,
             databaseName = this.databaseName,
             memo = this.memo,
-            regId = "hjiwon98",
-            createdDate = LocalDateTime.now(),
-            updatedDate = LocalDateTime.now()
+            regId = "hjiwon98"
         )
     }
 }
