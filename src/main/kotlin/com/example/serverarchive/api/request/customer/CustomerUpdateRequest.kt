@@ -20,7 +20,6 @@ data class CustomerUpdateRequest(
             this.codeType = this@CustomerUpdateRequest.codeType
             this.memo = this@CustomerUpdateRequest.memo
             this.regId = this@CustomerUpdateRequest.registrantId
-            this.updatedDate = java.time.LocalDateTime.now()
         }
     }
 }

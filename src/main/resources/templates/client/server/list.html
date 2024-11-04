@@ -5,7 +5,7 @@
 <div layout:fragment="Content">
 	<div class="container mt-5">
 		<h2 class="mb-4">서버 목록</h2>
-
+		<button type="button" class="btn btn-primary mb-3" onclick="location.href='/server/create'">등록</button>
 		<!-- 검색창 및 필터 -->
 		<div class="row mb-4 justify-content-end align-items-center">
 			<div class="col-auto">
@@ -28,22 +28,22 @@
 			<table class="table table-bordered table-hover">
 				<thead class="table-light">
 				<tr>
+					<th scope="col">No</th>
 					<th scope="col">IP Address</th>
 					<th scope="col">User</th>
-					<th scope="col">Password</th>
 					<th scope="col">Updated Date</th>
-					<th scope="col">Upt/Del</th>
+					<th scope="col">Update / Delete</th>
 				</tr>
 				</thead>
 				<tbody>
-				<tr th:each="server : ${servers}" th:attr="data-idx=${server.idx}">
+				<tr th:each="server, stat : ${servers}" th:attr="data-idx=${server.idx}">
+					<td th:text="${stat.size - stat.index}"></td>
 					<td th:text="${server.ip} + ':' + ${server.port}"></td>
-					<td th:text="${server.serverUser}"></td>
-					<td th:text="${server.rootPassword}"></td>
-					<td th:text="${server.updatedDate}"></td>
+					<td th:text="${server.serverUser ?: 'root'}"></td>
+					<td th:text="${#temporals.format(server.updatedDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
 					<td>
-						<button th:onclick="'updateServer(' + ${server.idx} + ')'">수정</button>
-						<button th:onclick="'deleteServer(' + ${server.idx} + ')'">삭제</button>
+						<button class="btn btn-light btn-sm" th:onclick="'updateServer(' + ${server.idx} + ')'">수정</button>
+						<button class="btn btn-outline-danger btn-sm" th:onclick="'deleteServer(' + ${server.idx} + ')'">삭제</button>
 					</td>
 				</tr>
 				</tbody>
@@ -67,23 +67,24 @@
 </div>
 <th:block layout:fragment="script">
 	<script>
-		function updateServer(id) {
-			window.location.href = `/server/update/${id}`;
+		function updateServer(idx) {
+			window.location.href = `/server/update/${idx}`;
 		}
 
-		function deleteServer (id) {
+		function deleteServer (idx) {
+			// console.log(idx)
             const confirmed = confirm('Are you sure delete it?');
             if (!confirmed) {
                 return;
             }
 
-            fetch(`/server/delete/${id}`, {
+            fetch(`/api/server/delete/${idx}`, {
                 method: 'DELETE'
             })
               .then(response => {
                   if (response.ok) {
                       alert(`Server Info Deleted Complete.`);
-                      const row = document.querySelector(`tr[data-idx='${id}']`);
+                      const row = document.querySelector(`tr[data-idx='${idx}']`);
                       if (row) {
                           row.remove();
                       }

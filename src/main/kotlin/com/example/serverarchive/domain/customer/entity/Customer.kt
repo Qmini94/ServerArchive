@@ -1,8 +1,7 @@
 package com.example.serverarchive.domain.customer.entity
 
+import com.example.serverarchive.domain.common.BaseEntity
 import jakarta.persistence.*
-import java.time.LocalDateTime
-
 
 @Entity
 @Table(name = "customer")
@@ -29,15 +28,9 @@ class Customer (
     @Column(name = "memo", columnDefinition = "TEXT")
     var memo: String? = null,
 
-    @Column(name = "created_date", nullable = false)
-    var createdDate: LocalDateTime? = LocalDateTime.now(),
-
-    @Column(name = "updated_date")
-    var updatedDate: LocalDateTime? = null,
-
     @Column(name = "reg_id", nullable = false, length = 30)
     var regId: String,
 
     @Column(columnDefinition = "TEXT")
     var log: String? = null
-)
+) : BaseEntity()
