@@ -1,5 +1,6 @@
 package com.example.serverarchive.domain.service.entity
 
+import com.example.serverarchive.domain.common.BaseEntity
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
@@ -12,13 +13,13 @@ class Service(
     val idx: Int = 0,
 
     @Column(name = "domain_url", nullable = false, length = 50) // url
-    val domainUrl: String,
+    var domainUrl: String,
 
     @Column(name = "domain_resister", nullable = false, length = 50) // 도메인 등록일?
-    val domainResister: String,
+    var domainResister: String,
 
     @Column(name = "certificate_issuer", length = 50) // 인증서 구매처
-    val certificateIssuer: String,
+    var certificateIssuer: String,
 
     @Column(name="certificate_renewal_date",length = 20) // 인증서 갱신일
     var certificateRenewalDate: String,
@@ -41,4 +42,4 @@ class Service(
     @Column(columnDefinition = "TEXT")
     var log: String? = null,
 
-    ){}
+    )

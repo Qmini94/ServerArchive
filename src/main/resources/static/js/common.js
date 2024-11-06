@@ -42,20 +42,17 @@ export const startSessionTimer = () => {
 const renewToken = () => {
     fetch('/api/user/renew-token', {
         method: 'POST',
-    })
-      .then(response => response.json())
-      .then(({ token }) => {
-          if (token) {
-              startSessionTimer();  // 타이머 재시작
-          } else {
-              alert('세션이 만료되었습니다. 다시 로그인해주세요.');
-              logout();
-          }
-      })
-      .catch((error) => {
-          console.error('Error:', error.message);
-          logout();
-      });
+    }).then(response => response.json()).then(({ token }) => {
+        if (token) {
+            startSessionTimer();  // 타이머 재시작
+        } else {
+            alert('세션이 만료되었습니다. 다시 로그인해주세요.');
+            logout();
+        }
+    }).catch((error) => {
+        console.error('Error:', error.message);
+        logout();
+    });
 };
 
 export const logout = () => {
@@ -79,6 +76,22 @@ export const showAlert = async (title, text, icon, focusElement = null) => {
                     $(focusElement).focus();
                 }, 100);
             }
-        }
+        },
     });
+};
+
+export const makeGetParams = (paramNames) => {
+    try {
+        const params = new URLSearchParams(window.location.search);
+        const result = {};
+
+        paramNames.forEach((param) => {
+            result[param] = params.get(param);
+        });
+
+        return result;
+    } catch (e) {
+        console.error(e.message);
+        return {};
+    }
 };

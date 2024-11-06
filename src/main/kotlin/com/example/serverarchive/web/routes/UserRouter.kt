@@ -1,7 +1,6 @@
 package com.example.serverarchive.web.routes
 
 import JwtUtil
-import com.example.serverarchive.api.request.user.UserListRequest
 import com.example.serverarchive.service.user.UserService
 import com.example.serverarchive.util.Logger
 import org.springframework.context.annotation.Bean
@@ -53,39 +52,8 @@ class UserRouter(
 	}
 
 	fun viewUserListPage(req: ServerRequest): ServerResponse {
-		val defaultPage = 1
-		val defaultSize = 10
-
-		val page = req.param("page").map { it.toIntOrNull() ?: defaultPage }.orElse(defaultPage)
-		val size = req.param("size").map { it.toIntOrNull() ?: defaultSize }.orElse(defaultSize)
-		val searchKey = req.param("searchKey").orElse("")
-		val keyword = req.param("keyword").orElse(null)
-
-		val userListRequest = UserListRequest(
-			page = page,
-			size = size,
-			searchKey = searchKey,
-			keyword = keyword
-		)
-
-		val users = userService.getUserList(userListRequest)
-		val startIndex = (users?.totalElements?.toInt() ?: 0) - ((page - 1) * size)
-
-		// TODO :: 유지보수 차원에서 적합할까?
-		val searchOptions = listOf(
-			mapOf("value" to "userId", "label" to "아이디"),
-			mapOf("value" to "userName", "label" to "회원 이름"),
-			mapOf("value" to "role", "label" to "권한")
-		)
-
 		val data = mapOf(
 			"pageTitle" to "회원목록",
-			"users" to users,
-			"options" to searchOptions,
-			"currentPage" to page,
-			"totalElements" to users?.totalElements,
-			"size" to size,
-			"startIndex" to startIndex,
 		)
 
 		return ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("manager/user/list", data)

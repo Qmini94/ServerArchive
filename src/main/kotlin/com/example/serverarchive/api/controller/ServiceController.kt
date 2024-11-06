@@ -1,20 +1,15 @@
 package com.example.serverarchive.api.controller
 
-import com.example.serverarchive.api.request.service.ServiceDeleteRequest
 import com.example.serverarchive.api.request.service.ServiceRequest
-import com.example.serverarchive.api.request.service.ServiceViewRequest
+import com.example.serverarchive.api.request.service.ServiceUpdateRequest
 import com.example.serverarchive.api.response.ResponseCode
 import com.example.serverarchive.api.response.SingleResponse
-import com.example.serverarchive.api.response.service.ServiceDeleteResponse
-import com.example.serverarchive.api.response.service.ServiceVIewResponse
 import com.example.serverarchive.api.response.service.ServiceResponse
-import com.example.serverarchive.domain.service.repository.ServiceRepository
 import com.example.serverarchive.service.service.ServiceService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
-import java.util.*
 
 @RestController
 @RequestMapping("/api/service")
@@ -37,59 +32,64 @@ class ServiceController(private val serviceService: ServiceService) {
         )
     }
 
-    @DeleteMapping("/{idx}")
-    @Operation(summary = "서비스 삭제", description = "서비스를 삭제합니다.")
-    fun deleteService(@PathVariable idx: Long,@RequestBody req: ServiceDeleteRequest): SingleResponse<ServiceDeleteResponse?> {
-        val result = serviceService.deleteService(req)
-        return if (result != null) {
+    @DeleteMapping("/delete/{idx}")
+    @Operation(summary = "업체삭제", description = "선택된 업체를 삭제합니다.")
+    fun deleteService(@PathVariable idx: Int): SingleResponse<ServiceResponse?> {
+        println("Delete service: $idx")
+        val deletedCustomer = serviceService.deleteServiceById(idx)
+
+        return if (deletedCustomer != null) {
             SingleResponse(
-                result = ResponseCode.SUCCESS,
-                message = "Service deleted successfully",
-                data = result
+                    result = ResponseCode.SUCCESS,
+                    message = "Service deleted successfully",
+                    data = deletedCustomer
             )
         } else {
             SingleResponse(
-                result = ResponseCode.ERROR,
-                message = "Failed to delete service"
+                    result = ResponseCode.ERROR,
+                    message = "Failed to delete service"
             )
         }
     }
 
-    @GetMapping("/{idx}")
-    @Operation(summary = "서비스 상세", description = "서비스 상세내역을 봅니다.")
-    fun ReadService(@RequestBody req: ServiceViewRequest): SingleResponse<ServiceVIewResponse?> {
-        return serviceService.viewService(req)?.let { result ->
+    @PutMapping("/update/{idx}")
+    @Operation(summary = "서비스 수정", description = "선택된 서비스의 정보를 수정합니다.")
+    fun updateService(
+            @PathVariable idx: Int,
+            @RequestBody req: ServiceUpdateRequest
+    ): SingleResponse<ServiceResponse?> {
+        val updateService = serviceService.updateService(idx, req)
+
+        return if (updateService != null) {
             SingleResponse(
-                result = ResponseCode.SUCCESS,
-                message = "Service viewed successfully",
-                data = result
+                    result = ResponseCode.SUCCESS,
+                    message = "Service updated successfully",
+                    data = updateService
             )
-        } ?: SingleResponse(
-            result = ResponseCode.ERROR,
-            message = "Failed to view service"
-        )
+        } else {
+            SingleResponse(
+                    result = ResponseCode.ERROR,
+                    message = "Failed to update Service"
+            )
+        }
     }
 
-//    @GetMapping("/{idx}")
+//    @GetMapping("/view/{idx}")
 //    @Operation(summary = "서비스 상세", description = "서비스 상세내역을 봅니다.")
-//    fun readService(
-//        @PathVariable idx: Long,
-//        @RequestParam(required = false) additionalParam: String? // 필요 시 추가 쿼리 파라미터 사용
-//    ): SingleResponse<ServiceVIewResponse?> {
-//        val result = serviceService.viewService(idx)
-//        return if (result != null) {
+//    fun ReadService(@RequestBody req: ServiceViewRequest): SingleResponse<ServiceVIewResponse?> {
+//        return serviceService.viewService(req)?.let { result ->
 //            SingleResponse(
 //                result = ResponseCode.SUCCESS,
 //                message = "Service viewed successfully",
 //                data = result
 //            )
-//        } else {
-//            SingleResponse(
-//                result = ResponseCode.ERROR,
-//                message = "Failed to view service"
-//            )
-//        }
+//        } ?: SingleResponse(
+//            result = ResponseCode.ERROR,
+//            message = "Failed to view service"
+//        )
 //    }
+
+
 
 
 
