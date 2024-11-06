@@ -6,8 +6,6 @@ import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(description = "서비스 정보")
 data class ServiceRequest(
-        @Schema(description = "고유값", nullable = false, required = true)
-        val idx: Int,
         @Schema(description = "도메인 URL", nullable = false, required = true)
         var domainUrl: String,
         @Schema(description = "도메인 등록일", nullable = false, required = true)

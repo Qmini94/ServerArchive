@@ -1,23 +1,15 @@
 package com.example.serverarchive.api.controller
 
-import com.example.serverarchive.api.request.customer.CustomerUpdateRequest
-import com.example.serverarchive.api.request.service.ServiceDeleteRequest
 import com.example.serverarchive.api.request.service.ServiceRequest
 import com.example.serverarchive.api.request.service.ServiceUpdateRequest
-import com.example.serverarchive.api.request.service.ServiceViewRequest
 import com.example.serverarchive.api.response.ResponseCode
 import com.example.serverarchive.api.response.SingleResponse
-import com.example.serverarchive.api.response.customer.CustomerResponse
-import com.example.serverarchive.api.response.service.ServiceDeleteResponse
-import com.example.serverarchive.api.response.service.ServiceVIewResponse
 import com.example.serverarchive.api.response.service.ServiceResponse
-import com.example.serverarchive.domain.service.repository.ServiceRepository
 import com.example.serverarchive.service.service.ServiceService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
-import java.util.*
 
 @RestController
 @RequestMapping("/api/service")

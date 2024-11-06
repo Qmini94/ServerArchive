@@ -1,136 +1,97 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/layouts/defaultLayout}">
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
 <div layout:fragment="Content">
-  <style>
-      body {
-          font-family: Arial, sans-serif;
-          margin: 20px;
-      }
-
-      h2 {
-          text-align: center;
-      }
-
-      table {
-          width: 100%;
-          max-width: 600px;
-          margin: 0 auto;
-          border-collapse: collapse;
-      }
-
-      table, th, td {
-          border: 1px solid #dddddd;
-      }
-
-      th, td {
-          padding: 10px;
-          text-align: left;
-      }
-
-      th {
-          background-color: #f2f2f2;
-      }
-
-      input[type="text"] {
-          width: 50%;
-          padding: 8px;
-          box-sizing: border-box;
-      }
-
-      input[type="submit"] {
-          display: block;
-          width: 100%;
-          padding: 10px;
-          background-color: #4CAF50;
-          color: white;
-          border: none;
-          cursor: pointer;
-          font-size: 16px;
-      }
-
-      input[type="submit"]:hover {
-          background-color: #45a049;
-      }
-  </style>
-  <h2>데이터 입력 폼</h2>
-  <form method="POST">
-    <input type="hidden" id="idx" name="idx" th:value="${service.idx}">
+  <h2 class="text-center my-4">데이터 입력 폼</h2>
+  <form method="POST" class="container">
+    <input type="hidden" id="idx" name="idx" th:value="${service?.idx ?: ''}">
     <input type="hidden" id="mode" name="mode" th:value="${mode}">
-    <table>
-      <tr>
-        <td>
-          <label for="domainUrl">도메인 URL</label>
-        </td>
-        <td>
-          <input type="text" id="domainUrl" name="domainUrl"  th:value="${service.domainUrl}" required></td>
-      </tr>
-      <tr>
-        <td>
-          <label for="domainResister">도메인 등록일</label>
-        </td>
-        <td>
-          <input type="date" id="domainResister" name="domainResister" th:value="${service.domainResister}" required>
-        </td>
-      </tr>
-      <tr>
-        <td><label for="certificateIssuer">도메인 구매처</label></td>
-        <td>
-          <select id="certificateIssuer" name="certificateIssuer">
-            <option value="all">선택해주세요</option>
-            <option value="hosting"  th:selected="${service.certificateIssuer == 'hosting'}">카페24 호스팅</option>
-            <option value="reseller"  th:selected="${service.certificateIssuer == 'reseller'}">카페24 리셀러</option>
-            <option value="webmail"  th:selected="${service.certificateIssuer == 'webmail'}" >웹메일</option>
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="certificateRenewalDate">인증서 갱신일</label>
-        </td>
-        <td>
-          <input type="date" id="certificateRenewalDate" name="certificateRenewalDate"  th:value="${service.certificateRenewalDate}" required>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="webmailCnt">웹메일 계정 총갯수</label></td>
-        <td><input type="number" id="webmailCnt" name="webmailCnt" th:value="${service.webmailCnt}" required>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="webmailAccount">웹메일 계정</label>
-        </td>
-        <td>
-          <input type="text" id="webmailAccount" name="webmailAccount" th:value="${service.webmailAccount}" required>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="memo">서비스 히스토리</label>
-        </td>
-        <td>
-          <textarea type="text" id="memo" name="memo"  th:value="${service.memo}" required></textarea>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <input type="submit" id="save" value="제출/수정">
-          <button type="button" class="service-delete" th:attr="data-idx=${service.idx}">삭제</button>
-        </td>
-      </tr>
-    </table>
+    <div class="form-group row">
+      <label for="domainUrl" class="col-sm-4 col-form-label">도메인 URL</label>
+      <div class="col-sm-8">
+        <input type="text" class="form-control" id="domainUrl" name="domainUrl" th:value="${service?.domainUrl ?: ''}" required>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="domainResister" class="col-sm-4 col-form-label">도메인 등록일</label>
+      <div class="col-sm-8">
+        <input type="date" class="form-control" id="domainResister" name="domainResister" th:value="${service?.domainResister ?: ''}" required>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="certificateIssuer" class="col-sm-4 col-form-label">도메인 구매처</label>
+      <div class="col-sm-8">
+        <select class="form-control" id="certificateIssuer" name="certificateIssuer">
+          <option value="all">선택해주세요</option>
+          <option value="hosting" th:selected="${service != null && service.certificateIssuer == 'hosting'}">카페24 호스팅</option>
+          <option value="reseller" th:selected="${service != null && service.certificateIssuer == 'reseller'}">카페24 리셀러</option>
+          <option value="webmail" th:selected="${service != null && service.certificateIssuer == 'webmail'}">웹메일</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="certificateRenewalDate" class="col-sm-4 col-form-label">인증서 갱신일</label>
+      <div class="col-sm-8">
+        <input type="date" class="form-control" id="certificateRenewalDate" name="certificateRenewalDate" th:value="${service != null ? service.certificateRenewalDate : ''}" required>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="webmailCnt" class="col-sm-4 col-form-label">웹메일 계정 총갯수</label>
+      <div class="col-sm-8">
+        <input type="number" class="form-control" id="webmailCnt" name="webmailCnt" th:value="${service != null ? service.webmailCnt : ''}" required>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="webmailAccount" class="col-sm-4 col-form-label">웹메일 계정</label>
+      <div class="col-sm-8">
+        <input type="text" class="form-control" id="webmailAccount" name="webmailAccount" th:value="${service != null ? service.webmailAccount : ''}" required>
+        <a id="account_btn" class="btn btn-primary" href="#">추가</a>
+      </div>
+    </div>
+    <div th:if="${service != null and service.createdDate != null}" class="form-group row">
+      <label for="createdDate" class="col-sm-4 col-form-label">글 등록일</label>
+      <div class="col-sm-8">
+        <input type="text" class="form-control" id="createdDate" th:value="${service.createdDate}" required readonly>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="memo" class="col-sm-4 col-form-label">서비스 히스토리</label>
+      <div class="col-sm-8">
+        <textarea class="form-control" id="memo" name="memo" required th:value="${service != null ? service.memo : ''}"></textarea>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-sm-12 text-center">
+        <button type="submit" id="save" class="btn btn-success btn-block">제출/수정</button>
+        <button type="button" class="btn btn-danger btn-block service-delete" th:attr="data-idx=${service != null ? service.idx : ''}">삭제</button>
+      </div>
+    </div>
   </form>
 </div>
 <th:block layout:fragment="script">
-  <script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script type="module">
+    import { validateURL, allowOnlyNumeric } from '/js/validate_form.js';
     $(function () {
       $("#save").on('click', async function (e) {
         e.preventDefault();
-        const idx = $('input[name=\'idx\']').val();
-        const mode = $('input[name=\'mode\']').val();
+        const idx = $('input[name="idx"]').val();
+        const mode = $('input[name="mode"]').val();
         const url = mode === 'create' ? '/api/service/create' : `/api/service/update/${idx}`;
+
+        $('#domainUrl').on('input', function (e) {
+          const inputElement = e.target;
+          validateURL(inputElement);
+        });
+
+        $('#webmailCnt').on('input', function (e) {
+          const inputElement = e.target;
+          allowOnlyNumeric(inputElement);
+        });
         const params = {
           domainUrl: $("#domainUrl").val(),
           domainResister: $("#domainResister").val(),
@@ -138,8 +99,7 @@
           certificateRenewalDate: $("#certificateRenewalDate").val(),
           webmailCnt: $("#webmailCnt").val(),
           webmailAccount: $("#webmailAccount").val(),
-          memo: $("#memo").val(),
-          registrantId: $("#registrantId").val()
+          memo: $("#memo").val()
         };
 
         $.ajax({
@@ -152,7 +112,7 @@
             window.location = '/service/list';
           },
           error: function (error) {
-            alert(error);
+            alert('오류 발생: ' + error.responseText);
             console.error(error);
           }
         });
@@ -162,23 +122,19 @@
         e.preventDefault();
         e.stopPropagation();
         const idx = $(this).data('idx');
-
         try {
           const res = await $.ajax({
             type: 'DELETE',
             url: `/api/service/delete/${idx}`
           });
           alert("데이터 삭제 성공");
+          window.location.href = '/service/list';
         } catch (error) {
-          showAlert('Error!', error, 'error');
+          alert('삭제 실패: ' + error.responseText);
           console.error(error);
         }
       });
-
-
     });
   </script>
 </th:block>
 </html>
-
-

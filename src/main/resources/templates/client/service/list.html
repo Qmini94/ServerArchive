@@ -2,39 +2,48 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/layouts/defaultLayout}">
-<div layout:fragment="Content">
-  <h1 th:text="${message}"></h1>
-  <table>
-    <thead>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<div layout:fragment="Content" class="container my-5">
+  <h1 th:text="${message}" class="text-center my-4"></h1>
+  <div class="text-right mb-3">
+    <a href="/service/create" class="btn btn-success">생성</a>
+  </div>
+  <div th:insert="~{common/fragments/search}"></div>
+  <table class="table table-striped table-bordered text-center">
+    <thead class="thead-dark">
     <tr>
-      <th>domainUrl</th>
-      <th>domainResister</th>
-      <th>certificateIssuer</th>
-      <th>certificateRenewalDate</th>
-      <th>webmailCnt</th>
-      <th>webmailAccount</th>
-      <th>memo</th>
+      <th>NO</th>
+      <th>도메인 URL</th>
+      <th>도메인 등록일</th>
+      <th>도메인 구매처</th>
+      <th>인증서 갱신일</th>
+      <th>웹메일 계정 수</th>
       <th></th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="service : ${services}">
-      <td th:href="@{/service/update/(${service.idx})}" th:text="${service.domainUrl}"></td>
+    <tr th:each="service,iterStat : ${services}">
+      <td th:text="${(pageNumber ?: 1 - 1) * (pageSize ?: 10) + iterStat.index + 1}">1</td>
+      <td><a th:href="@{/service/update/{id}(id=${service.idx})}" th:text="${service.domainUrl}"></a></td>
       <td th:text="${service.domainResister}"></td>
       <td th:text="${service.certificateIssuer}"></td>
       <td th:text="${service.certificateRenewalDate}"></td>
       <td th:text="${service.webmailCnt}"></td>
-      <td th:text="${service.webmailAccount}"></td>
-      <td th:text="${service.memo}"></td>
       <td>
-        <button type="button" class="service-delete" th:attr="data-idx=${service.idx}">삭제</button>
+        <a th:href="@{/service/update/{id}(id=${service.idx})}" class="btn btn-primary btn-sm mr-2">수정</a>
+        <button type="button" class="btn btn-danger btn-sm service-delete" th:attr="data-idx=${service.idx}">삭제</button>
       </td>
     </tr>
     </tbody>
   </table>
+  <div th:insert="~{common/fragments/pagination}"></div>
 </div>
 </html>
 <th:block layout:fragment="script">
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script>
     $(function () {
       $('.service-delete').on('click', async function (e) {
@@ -42,18 +51,20 @@
         e.stopPropagation();
         const idx = $(this).data('idx');
 
-        try {
-          const res = await $.ajax({
-            type: 'DELETE',
-            url: `/api/service/delete/${idx}`
-          });
-          alert("데이터 삭제 성공");
-        } catch (error) {
-          showAlert('Error!', error, 'error');
-          console.error(error);
+        if (confirm("정말로 삭제하시겠습니까?")) {
+          try {
+            const res = await $.ajax({
+              type: 'DELETE',
+              url: `/api/service/delete/${idx}`
+            });
+            alert("데이터 삭제 성공");
+            window.location.reload();
+          } catch (error) {
+            alert('삭제 실패: ' + error.responseText);
+            console.error(error);
+          }
         }
       });
-    })
+    });
   </script>
 </th:block>
-</html>

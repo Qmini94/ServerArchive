@@ -1,5 +1,6 @@
 package com.example.serverarchive.domain.service.entity
 
+import com.example.serverarchive.domain.common.BaseEntity
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
@@ -41,4 +42,4 @@ class Service(
     @Column(columnDefinition = "TEXT")
     var log: String? = null,
 
-    ){}
+    )
