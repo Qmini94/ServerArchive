@@ -29,16 +29,14 @@ class CustomerRouter(private val customerService: CustomerService) {
     }
 
     fun viewListPage(req: ServerRequest): ServerResponse  {
-        val pageable = PaginationUtil.parseParams(req)
+        val customers = customerService.getCustomerList(req)
+
         val searchParams = mapOf(
             "selectedOption" to req.param("selectedOption").orElse(null), //TODO:selectedOption 확장시 `,`로 구분해서 추가시 뒤에서 `,`기준 spilt
             "searchKey" to req.param("searchKey").orElse(null),
             "startDate" to req.param("startDate").orElse(null),
             "endDate" to req.param("endDate").orElse(null)
         )
-
-        val customers = customerService.getCustomerList(pageable, searchParams)
-
         val startIndex = (customers.number * customers.size) + 1
         val baseUrl = PaginationUtil.buildBaseUrl("$BASE_PATH$LIST_PATH", searchParams) //TODO:selectedOption 확장시 buildBaseUrl 수정필요
         val searchOptions = CustomerSearchOption.values().map {

@@ -8,23 +8,22 @@ import com.example.serverarchive.domain.customer.entity.Customer
 import com.example.serverarchive.domain.customer.entity.CustomerSearchOption
 import com.example.serverarchive.domain.customer.repository.CustomerRepository
 import com.example.serverarchive.util.ErrorCode
+import com.example.serverarchive.util.PaginationUtil
 import com.example.serverarchive.util.SearchUtils
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
+import org.springframework.web.servlet.function.ServerRequest
 import java.time.LocalDateTime
 
 @Service
 class CustomerServiceImpl(private val customerRepository: CustomerRepository) : CustomerService {
 
-    override fun getCustomerList(
-        pageable: Pageable,
-        searchParams: Map<String, String?>
-    ): Page<CustomerResponse> {
+    override fun getCustomerList(req: ServerRequest): Page<CustomerResponse> {
         return try {
-            val searchKey = searchParams["searchKey"]?.takeIf { it.isNotBlank() }
-            val searchOptions = searchParams["selectedOption"]?.split(",") ?: emptyList()
+            val pageable = PaginationUtil.parseParams(req)
+            val searchKey = req.param("searchKey").orElse(null)?.takeIf { it.isNotBlank() }
+            val searchOptions = req.param("selectedOption").orElse(null)?.split(",")
 
             if (searchKey != null && !SearchUtils.isValidSearchKey(searchKey)) {
                 throw IllegalArgumentException("Invalid search key")
@@ -33,14 +32,14 @@ class CustomerServiceImpl(private val customerRepository: CustomerRepository) : 
             val searchCriteria = searchKey?.let {
                 SearchUtils.mapSearchParams(
                     searchKey = it,
-                    searchOptions = searchOptions,
+                    searchOptions = searchOptions ?: emptyList(),
                     options = CustomerSearchOption.values(),
                     fieldNameSelector = { it.fieldName }
                 )
             } ?: emptyMap()
 
-            val startDate = searchParams["startDate"]?.takeIf { it.isNotBlank() }?.let { LocalDateTime.parse(it) }
-            val endDate = searchParams["endDate"]?.takeIf { it.isNotBlank() }?.let { LocalDateTime.parse(it) }
+            val startDate = req.param("startDate").orElse(null)?.takeIf { it.isNotBlank() }?.let { LocalDateTime.parse(it) }
+            val endDate = req.param("endDate").orElse(null)?.takeIf { it.isNotBlank() }?.let { LocalDateTime.parse(it) }
 
             val specification: Specification<Customer> = SearchUtils.createSpecification(
                 searchParams = searchCriteria,
